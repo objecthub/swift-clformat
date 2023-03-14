@@ -20,6 +20,7 @@
 		CCB5F0E129C115C400587140 /* ControlParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0E029C115C400587140 /* ControlParser.swift */; };
 		CCB5F0E329C115E600587140 /* StandardDirectiveSpecifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0E229C115E600587140 /* StandardDirectiveSpecifier.swift */; };
 		CCB5F0E529C1160700587140 /* CLFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0E429C1160700587140 /* CLFormat.swift */; };
+		CCB5F0E729C13E1500587140 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0E629C13E1500587140 /* Package.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -50,6 +51,10 @@
 		CCB5F0E029C115C400587140 /* ControlParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlParser.swift; sourceTree = "<group>"; };
 		CCB5F0E229C115E600587140 /* StandardDirectiveSpecifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardDirectiveSpecifier.swift; sourceTree = "<group>"; };
 		CCB5F0E429C1160700587140 /* CLFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLFormat.swift; sourceTree = "<group>"; };
+		CCB5F0E629C13E1500587140 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		CCB5F0E829C13E3D00587140 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		CCB5F0E929C13E5A00587140 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		CCB5F0EA29C13ED200587140 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +78,10 @@
 		CC063B8129C113190000C520 = {
 			isa = PBXGroup;
 			children = (
+				CCB5F0E829C13E3D00587140 /* README.md */,
+				CCB5F0EA29C13ED200587140 /* CHANGELOG.md */,
+				CCB5F0E929C13E5A00587140 /* LICENSE */,
+				CCB5F0E629C13E1500587140 /* Package.swift */,
 				CC063B8C29C113190000C520 /* CLFormat */,
 				CCB5F0CA29C1141700587140 /* CLFormatTests */,
 				CC063B8B29C113190000C520 /* Products */,
@@ -218,6 +227,7 @@
 				CCB5F0D529C114F600587140 /* NumberFormat.swift in Sources */,
 				CCB5F0E129C115C400587140 /* ControlParser.swift in Sources */,
 				CCB5F0D929C1154900587140 /* Parameters.swift in Sources */,
+				CCB5F0E729C13E1500587140 /* Package.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,6 +1,6 @@
 //
 //  Currency.swift
-//  CommonLispFormat
+//  CLFormat
 //
 //  Created by Matthias Zenger on 12/03/2023.
 //  Copyright © 2023 Matthias Zenger. All rights reserved.
