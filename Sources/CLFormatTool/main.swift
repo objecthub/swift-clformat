@@ -19,6 +19,7 @@
 //
 
 import Foundation
+import CLFormat
 
 func assertEqual(_ str: String, _ target: String) {
   if str == target {

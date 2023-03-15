@@ -21,7 +21,7 @@
 import Foundation
 
 
-class ControlParser {
+public class ControlParser {
   let config: ControlParserConfig
   let control: String
   var i: String.Index
@@ -156,7 +156,7 @@ class ControlParser {
   }
 }
 
-struct ControlParserConfig {
+public struct ControlParserConfig {
   var directiveParsers: [Character : DirectiveParser] = [:]
   
   mutating func parse(_ chars: [Character], with parser: @escaping DirectiveParser) {

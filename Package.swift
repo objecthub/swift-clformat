@@ -28,6 +28,7 @@ let package = Package(
   // to other packages.
   products: [
     .library(name: "CLFormat", targets: ["CLFormat"]),
+    .executable(name: "CLFormatTool", targets: ["CLFormatTool"])
   ],
   
   // Dependencies declare other packages that this package depends on.
@@ -39,8 +40,15 @@ let package = Package(
   // a test suite. Targets can depend on other targets in this package, and on products
   // in packages which this package depends on.
   targets: [
-    .target(name: "CLFormat", dependencies: []),
-    .testTarget(name: "CLFormatTests", dependencies: ["CLFormat"]),
+    .target(name: "CLFormat",
+            dependencies: [],
+            exclude: ["CLFormat.h",
+                      "CLFormat.docc"]),
+    .executableTarget(name: "CLFormatTool",
+                      dependencies: ["CLFormat"],
+                      exclude: []),
+    .testTarget(name: "CLFormatTests",
+                dependencies: [.target(name: "CLFormat")]),
   ],
   
   // Required Swift language version.

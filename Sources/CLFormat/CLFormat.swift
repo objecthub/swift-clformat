@@ -58,11 +58,11 @@ extension String {
   }
 }
 
-func clformat(_ control: String,
-              config: ControlParserConfig? = nil,
-              locale: Locale? = nil,
-              tabsize: Int = 8,
-              args: Any?...) throws -> String {
+public func clformat(_ control: String,
+                     config: ControlParserConfig? = nil,
+                     locale: Locale? = nil,
+                     tabsize: Int = 8,
+                     args: Any?...) throws -> String {
   let control = try Control(string: control, config: config)
   return try control.format(with: Arguments(locale: locale, tabsize: tabsize, args: args),
                             in: .root(control.config)).string

@@ -7,24 +7,43 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CC063B8E29C113190000C520 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC063B8D29C113190000C520 /* main.swift */; };
-		CCB5F0CC29C1141700587140 /* CLFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0CB29C1141700587140 /* CLFormatTests.swift */; };
-		CCB5F0D129C1148900587140 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0D029C1148900587140 /* Currency.swift */; };
-		CCB5F0D329C114D300587140 /* Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0D229C114D300587140 /* Number.swift */; };
-		CCB5F0D529C114F600587140 /* NumberFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0D429C114F600587140 /* NumberFormat.swift */; };
-		CCB5F0D729C1152600587140 /* Directive.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0D629C1152600587140 /* Directive.swift */; };
-		CCB5F0D929C1154900587140 /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0D829C1154900587140 /* Parameters.swift */; };
-		CCB5F0DB29C1156400587140 /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0DA29C1156400587140 /* Modifiers.swift */; };
-		CCB5F0DD29C1157C00587140 /* Arguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0DC29C1157C00587140 /* Arguments.swift */; };
-		CCB5F0DF29C115A500587140 /* Control.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0DE29C115A500587140 /* Control.swift */; };
-		CCB5F0E129C115C400587140 /* ControlParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0E029C115C400587140 /* ControlParser.swift */; };
-		CCB5F0E329C115E600587140 /* StandardDirectiveSpecifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0E229C115E600587140 /* StandardDirectiveSpecifier.swift */; };
-		CCB5F0E529C1160700587140 /* CLFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0E429C1160700587140 /* CLFormat.swift */; };
-		CCB5F0E729C13E1500587140 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0E629C13E1500587140 /* Package.swift */; };
+		CCB5F0F629C1455B00587140 /* CLFormat.docc in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0F529C1455B00587140 /* CLFormat.docc */; };
+		CCB5F0FC29C1455B00587140 /* CLFormat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB5F0F229C1455B00587140 /* CLFormat.framework */; };
+		CCB5F10129C1455B00587140 /* CLFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F10029C1455B00587140 /* CLFormatTests.swift */; };
+		CCB5F10229C1455B00587140 /* CLFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = CCB5F0F429C1455B00587140 /* CLFormat.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CCB5F10929C1475F00587140 /* NumberFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0D429C114F600587140 /* NumberFormat.swift */; };
+		CCB5F10A29C1475F00587140 /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0DA29C1156400587140 /* Modifiers.swift */; };
+		CCB5F10B29C1475F00587140 /* CLFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0E429C1160700587140 /* CLFormat.swift */; };
+		CCB5F10C29C1475F00587140 /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0D829C1154900587140 /* Parameters.swift */; };
+		CCB5F10D29C1475F00587140 /* Directive.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0D629C1152600587140 /* Directive.swift */; };
+		CCB5F10E29C1475F00587140 /* Control.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0DE29C115A500587140 /* Control.swift */; };
+		CCB5F10F29C1475F00587140 /* ControlParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0E029C115C400587140 /* ControlParser.swift */; };
+		CCB5F11029C1475F00587140 /* StandardDirectiveSpecifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0E229C115E600587140 /* StandardDirectiveSpecifier.swift */; };
+		CCB5F11229C1475F00587140 /* Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0D229C114D300587140 /* Number.swift */; };
+		CCB5F11329C1475F00587140 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0D029C1148900587140 /* Currency.swift */; };
+		CCB5F11429C1475F00587140 /* Arguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0DC29C1157C00587140 /* Arguments.swift */; };
+		CCB5F11C29C148A400587140 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F11B29C148A400587140 /* main.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		CCB5F0FD29C1455B00587140 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC063B8229C113190000C520 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CCB5F0F129C1455B00587140;
+			remoteInfo = CLFormat;
+		};
+		CCB5F12029C149B600587140 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC063B8229C113190000C520 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CCB5F0F129C1455B00587140;
+			remoteInfo = CLFormat;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
-		CC063B8829C113190000C520 /* CopyFiles */ = {
+		CCB5F11729C148A400587140 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -36,10 +55,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		CC063B8A29C113190000C520 /* CLFormat */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CLFormat; sourceTree = BUILT_PRODUCTS_DIR; };
-		CC063B8D29C113190000C520 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		CCB5F0C929C1141700587140 /* CLFormatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CLFormatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CCB5F0CB29C1141700587140 /* CLFormatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLFormatTests.swift; sourceTree = "<group>"; };
 		CCB5F0D029C1148900587140 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		CCB5F0D229C114D300587140 /* Number.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Number.swift; sourceTree = "<group>"; };
 		CCB5F0D429C114F600587140 /* NumberFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormat.swift; sourceTree = "<group>"; };
@@ -55,17 +70,32 @@
 		CCB5F0E829C13E3D00587140 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		CCB5F0E929C13E5A00587140 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		CCB5F0EA29C13ED200587140 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
+		CCB5F0F229C1455B00587140 /* CLFormat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CLFormat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CCB5F0F429C1455B00587140 /* CLFormat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CLFormat.h; sourceTree = "<group>"; };
+		CCB5F0F529C1455B00587140 /* CLFormat.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = CLFormat.docc; sourceTree = "<group>"; };
+		CCB5F0FB29C1455B00587140 /* CLFormatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CLFormatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CCB5F10029C1455B00587140 /* CLFormatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLFormatTests.swift; sourceTree = "<group>"; };
+		CCB5F11929C148A400587140 /* CLFormatTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CLFormatTool; sourceTree = BUILT_PRODUCTS_DIR; };
+		CCB5F11B29C148A400587140 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		CC063B8729C113190000C520 /* Frameworks */ = {
+		CCB5F0EF29C1455B00587140 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CCB5F0C629C1141700587140 /* Frameworks */ = {
+		CCB5F0F829C1455B00587140 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCB5F0FC29C1455B00587140 /* CLFormat.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CCB5F11629C148A400587140 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -82,8 +112,9 @@
 				CCB5F0EA29C13ED200587140 /* CHANGELOG.md */,
 				CCB5F0E929C13E5A00587140 /* LICENSE */,
 				CCB5F0E629C13E1500587140 /* Package.swift */,
-				CC063B8C29C113190000C520 /* CLFormat */,
-				CCB5F0CA29C1141700587140 /* CLFormatTests */,
+				CCB5F0F329C1455B00587140 /* CLFormat */,
+				CCB5F0FF29C1455B00587140 /* CLFormatTests */,
+				CCB5F11A29C148A400587140 /* CLFormatTool */,
 				CC063B8B29C113190000C520 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -91,13 +122,14 @@
 		CC063B8B29C113190000C520 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CC063B8A29C113190000C520 /* CLFormat */,
-				CCB5F0C929C1141700587140 /* CLFormatTests.xctest */,
+				CCB5F0F229C1455B00587140 /* CLFormat.framework */,
+				CCB5F0FB29C1455B00587140 /* CLFormatTests.xctest */,
+				CCB5F11929C148A400587140 /* CLFormatTool */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CC063B8C29C113190000C520 /* CLFormat */ = {
+		CCB5F0F329C1455B00587140 /* CLFormat */ = {
 			isa = PBXGroup;
 			children = (
 				CCB5F0D029C1148900587140 /* Currency.swift */,
@@ -111,31 +143,53 @@
 				CCB5F0E029C115C400587140 /* ControlParser.swift */,
 				CCB5F0E229C115E600587140 /* StandardDirectiveSpecifier.swift */,
 				CCB5F0E429C1160700587140 /* CLFormat.swift */,
-				CC063B8D29C113190000C520 /* main.swift */,
+				CCB5F0F429C1455B00587140 /* CLFormat.h */,
+				CCB5F0F529C1455B00587140 /* CLFormat.docc */,
 			);
 			name = CLFormat;
 			path = Sources/CLFormat;
 			sourceTree = "<group>";
 		};
-		CCB5F0CA29C1141700587140 /* CLFormatTests */ = {
+		CCB5F0FF29C1455B00587140 /* CLFormatTests */ = {
 			isa = PBXGroup;
 			children = (
-				CCB5F0CB29C1141700587140 /* CLFormatTests.swift */,
+				CCB5F10029C1455B00587140 /* CLFormatTests.swift */,
 			);
 			name = CLFormatTests;
 			path = Tests/CLFormatTests;
 			sourceTree = "<group>";
 		};
+		CCB5F11A29C148A400587140 /* CLFormatTool */ = {
+			isa = PBXGroup;
+			children = (
+				CCB5F11B29C148A400587140 /* main.swift */,
+			);
+			name = CLFormatTool;
+			path = Sources/CLFormatTool;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		CCB5F0ED29C1455B00587140 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCB5F10229C1455B00587140 /* CLFormat.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
-		CC063B8929C113190000C520 /* CLFormat */ = {
+		CCB5F0F129C1455B00587140 /* CLFormat */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CC063B9129C113190000C520 /* Build configuration list for PBXNativeTarget "CLFormat" */;
+			buildConfigurationList = CCB5F10329C1455B00587140 /* Build configuration list for PBXNativeTarget "CLFormat" */;
 			buildPhases = (
-				CC063B8629C113190000C520 /* Sources */,
-				CC063B8729C113190000C520 /* Frameworks */,
-				CC063B8829C113190000C520 /* CopyFiles */,
+				CCB5F0ED29C1455B00587140 /* Headers */,
+				CCB5F0EE29C1455B00587140 /* Sources */,
+				CCB5F0EF29C1455B00587140 /* Frameworks */,
+				CCB5F0F029C1455B00587140 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -143,25 +197,44 @@
 			);
 			name = CLFormat;
 			productName = CLFormat;
-			productReference = CC063B8A29C113190000C520 /* CLFormat */;
-			productType = "com.apple.product-type.tool";
+			productReference = CCB5F0F229C1455B00587140 /* CLFormat.framework */;
+			productType = "com.apple.product-type.framework";
 		};
-		CCB5F0C829C1141700587140 /* CLFormatTests */ = {
+		CCB5F0FA29C1455B00587140 /* CLFormatTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CCB5F0CD29C1141700587140 /* Build configuration list for PBXNativeTarget "CLFormatTests" */;
+			buildConfigurationList = CCB5F10629C1455B00587140 /* Build configuration list for PBXNativeTarget "CLFormatTests" */;
 			buildPhases = (
-				CCB5F0C529C1141700587140 /* Sources */,
-				CCB5F0C629C1141700587140 /* Frameworks */,
-				CCB5F0C729C1141700587140 /* Resources */,
+				CCB5F0F729C1455B00587140 /* Sources */,
+				CCB5F0F829C1455B00587140 /* Frameworks */,
+				CCB5F0F929C1455B00587140 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				CCB5F0FE29C1455B00587140 /* PBXTargetDependency */,
 			);
 			name = CLFormatTests;
 			productName = CLFormatTests;
-			productReference = CCB5F0C929C1141700587140 /* CLFormatTests.xctest */;
+			productReference = CCB5F0FB29C1455B00587140 /* CLFormatTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CCB5F11829C148A400587140 /* CLFormatTool */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CCB5F11D29C148A400587140 /* Build configuration list for PBXNativeTarget "CLFormatTool" */;
+			buildPhases = (
+				CCB5F11529C148A400587140 /* Sources */,
+				CCB5F11629C148A400587140 /* Frameworks */,
+				CCB5F11729C148A400587140 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CCB5F12129C149B600587140 /* PBXTargetDependency */,
+			);
+			name = CLFormatTool;
+			productName = CLFormatTool;
+			productReference = CCB5F11929C148A400587140 /* CLFormatTool */;
+			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
@@ -173,10 +246,13 @@
 				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1420;
 				TargetAttributes = {
-					CC063B8929C113190000C520 = {
+					CCB5F0F129C1455B00587140 = {
 						CreatedOnToolsVersion = 14.2;
 					};
-					CCB5F0C829C1141700587140 = {
+					CCB5F0FA29C1455B00587140 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					CCB5F11829C148A400587140 = {
 						CreatedOnToolsVersion = 14.2;
 					};
 				};
@@ -194,14 +270,22 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CC063B8929C113190000C520 /* CLFormat */,
-				CCB5F0C829C1141700587140 /* CLFormatTests */,
+				CCB5F0F129C1455B00587140 /* CLFormat */,
+				CCB5F0FA29C1455B00587140 /* CLFormatTests */,
+				CCB5F11829C148A400587140 /* CLFormatTool */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		CCB5F0C729C1141700587140 /* Resources */ = {
+		CCB5F0F029C1455B00587140 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CCB5F0F929C1455B00587140 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -211,35 +295,55 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		CC063B8629C113190000C520 /* Sources */ = {
+		CCB5F0EE29C1455B00587140 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CCB5F0DD29C1157C00587140 /* Arguments.swift in Sources */,
-				CCB5F0E529C1160700587140 /* CLFormat.swift in Sources */,
-				CCB5F0E329C115E600587140 /* StandardDirectiveSpecifier.swift in Sources */,
-				CCB5F0D729C1152600587140 /* Directive.swift in Sources */,
-				CCB5F0D129C1148900587140 /* Currency.swift in Sources */,
-				CCB5F0DB29C1156400587140 /* Modifiers.swift in Sources */,
-				CC063B8E29C113190000C520 /* main.swift in Sources */,
-				CCB5F0DF29C115A500587140 /* Control.swift in Sources */,
-				CCB5F0D329C114D300587140 /* Number.swift in Sources */,
-				CCB5F0D529C114F600587140 /* NumberFormat.swift in Sources */,
-				CCB5F0E129C115C400587140 /* ControlParser.swift in Sources */,
-				CCB5F0D929C1154900587140 /* Parameters.swift in Sources */,
-				CCB5F0E729C13E1500587140 /* Package.swift in Sources */,
+				CCB5F11329C1475F00587140 /* Currency.swift in Sources */,
+				CCB5F11429C1475F00587140 /* Arguments.swift in Sources */,
+				CCB5F10C29C1475F00587140 /* Parameters.swift in Sources */,
+				CCB5F11029C1475F00587140 /* StandardDirectiveSpecifier.swift in Sources */,
+				CCB5F0F629C1455B00587140 /* CLFormat.docc in Sources */,
+				CCB5F10E29C1475F00587140 /* Control.swift in Sources */,
+				CCB5F10B29C1475F00587140 /* CLFormat.swift in Sources */,
+				CCB5F11229C1475F00587140 /* Number.swift in Sources */,
+				CCB5F10F29C1475F00587140 /* ControlParser.swift in Sources */,
+				CCB5F10A29C1475F00587140 /* Modifiers.swift in Sources */,
+				CCB5F10929C1475F00587140 /* NumberFormat.swift in Sources */,
+				CCB5F10D29C1475F00587140 /* Directive.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CCB5F0C529C1141700587140 /* Sources */ = {
+		CCB5F0F729C1455B00587140 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CCB5F0CC29C1141700587140 /* CLFormatTests.swift in Sources */,
+				CCB5F10129C1455B00587140 /* CLFormatTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CCB5F11529C148A400587140 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCB5F11C29C148A400587140 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CCB5F0FE29C1455B00587140 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CCB5F0F129C1455B00587140 /* CLFormat */;
+			targetProxy = CCB5F0FD29C1455B00587140 /* PBXContainerItemProxy */;
+		};
+		CCB5F12129C149B600587140 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CCB5F0F129C1455B00587140 /* CLFormat */;
+			targetProxy = CCB5F12029C149B600587140 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		CC063B8F29C113190000C520 /* Debug */ = {
@@ -355,54 +459,140 @@
 			};
 			name = Release;
 		};
-		CC063B9229C113190000C520 /* Debug */ = {
+		CCB5F10429C1455B00587140 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = C72Z63N8M5;
-				ENABLE_HARDENED_RUNTIME = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.objecthub.CLFormat;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = auto;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
-		CC063B9329C113190000C520 /* Release */ = {
+		CCB5F10529C1455B00587140 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = C72Z63N8M5;
-				ENABLE_HARDENED_RUNTIME = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.objecthub.CLFormat;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = auto;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
-		CCB5F0CE29C1141700587140 /* Debug */ = {
+		CCB5F10729C1455B00587140 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = C72Z63N8M5;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.objecthub.CLFormatTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CCB5F10829C1455B00587140 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C72Z63N8M5;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MACOSX_DEPLOYMENT_TARGET = 12.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.objecthub.CLFormatTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CCB5F11E29C148A400587140 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = C72Z63N8M5;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
-		CCB5F0CF29C1141700587140 /* Release */ = {
+		CCB5F11F29C148A400587140 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = C72Z63N8M5;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.objecthub.CLFormatTests;
+				ENABLE_HARDENED_RUNTIME = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -419,20 +609,29 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CC063B9129C113190000C520 /* Build configuration list for PBXNativeTarget "CLFormat" */ = {
+		CCB5F10329C1455B00587140 /* Build configuration list for PBXNativeTarget "CLFormat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CC063B9229C113190000C520 /* Debug */,
-				CC063B9329C113190000C520 /* Release */,
+				CCB5F10429C1455B00587140 /* Debug */,
+				CCB5F10529C1455B00587140 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CCB5F0CD29C1141700587140 /* Build configuration list for PBXNativeTarget "CLFormatTests" */ = {
+		CCB5F10629C1455B00587140 /* Build configuration list for PBXNativeTarget "CLFormatTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CCB5F0CE29C1141700587140 /* Debug */,
-				CCB5F0CF29C1141700587140 /* Release */,
+				CCB5F10729C1455B00587140 /* Debug */,
+				CCB5F10829C1455B00587140 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CCB5F11D29C148A400587140 /* Build configuration list for PBXNativeTarget "CLFormatTool" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CCB5F11E29C148A400587140 /* Debug */,
+				CCB5F11F29C148A400587140 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
