@@ -20,14 +20,14 @@
 
 import Foundation
 
-enum Parameter: Equatable, CustomStringConvertible {
+public enum Parameter: Equatable, CustomStringConvertible {
   case none
   case nextArgument
   case remainingArguments
   case number(Int)
   case character(Character)
   
-  var description: String {
+  public var description: String {
     switch self {
       case .none:
         return ""
@@ -43,22 +43,22 @@ enum Parameter: Equatable, CustomStringConvertible {
   }
 }
 
-struct Parameters: Equatable, CustomStringConvertible {
-  let params: [Parameter]
+public struct Parameters: Equatable, CustomStringConvertible {
+  private let params: [Parameter]
   
-  init(_ params: [Parameter]) {
+  internal init(_ params: [Parameter]) {
     self.params = params
   }
   
-  var parameterCount: Int {
+  public var parameterCount: Int {
     return self.params.count
   }
   
-  func parameterProvided(_ index: Int) -> Bool {
+  public func parameterProvided(_ index: Int) -> Bool {
     return index >= 0 && index < self.params.count && self.params[index] != .none
   }
   
-  func parameter(_ index: Int) -> Parameter? {
+  public func parameter(_ index: Int) -> Parameter? {
     if index >= 0 && index < self.params.count {
       return self.params[index]
     } else {
@@ -66,7 +66,7 @@ struct Parameters: Equatable, CustomStringConvertible {
     }
   }
   
-  func number(_ index: Int, default d: Int? = nil, allowNegative: Bool = false) throws -> Int {
+  public func number(_ index: Int, default d: Int? = nil, allowNegative: Bool = false) throws -> Int {
     if index >= 0 && index < self.params.count {
       guard case .number(let n) = self.params[index] else {
         if case .none = self.params[index], let def = d {
@@ -85,7 +85,7 @@ struct Parameters: Equatable, CustomStringConvertible {
     }
   }
   
-  func character(_ index: Int, default d: Character? = nil) throws -> Character {
+  public func character(_ index: Int, default d: Character? = nil) throws -> Character {
     if index >= 0 && index < self.params.count {
       guard case .character(let ch) = self.params[index] else {
         if case .none = self.params[index], let def = d {
@@ -101,7 +101,7 @@ struct Parameters: Equatable, CustomStringConvertible {
     }
   }
   
-  func process(arguments: Arguments) throws -> Parameters {
+  public func process(arguments: Arguments) throws -> Parameters {
     var params = [Parameter]()
     for param in self.params {
       switch param {
@@ -116,7 +116,7 @@ struct Parameters: Equatable, CustomStringConvertible {
     return Parameters(params)
   }
   
-  var description: String {
+  public var description: String {
     var (res, sep) = ("", "")
     for param in self.params {
       res += "\(sep)\(param)"

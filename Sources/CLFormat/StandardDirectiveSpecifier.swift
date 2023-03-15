@@ -20,7 +20,7 @@
 
 import Foundation
 
-enum StandardDirectiveSpecifier: DirectiveSpecifier {
+public enum StandardDirectiveSpecifier: DirectiveSpecifier {
   case ascii
   case sexpr
   case decimal
@@ -50,7 +50,7 @@ enum StandardDirectiveSpecifier: DirectiveSpecifier {
   case iterationEnd
   case indirection
   
-  var identifier: Character {
+  public var identifier: Character {
     switch self {
       case .ascii:
         return "A"
@@ -111,10 +111,10 @@ enum StandardDirectiveSpecifier: DirectiveSpecifier {
     }
   }
   
-  func apply(context: Context,
-               parameters: Parameters,
-               modifiers: Modifiers,
-               arguments: Arguments) throws -> Instruction {
+  public func apply(context: Context,
+                    parameters: Parameters,
+                    modifiers: Modifiers,
+                    arguments: Arguments) throws -> Instruction {
     switch self {
       case .ascii:
         var str: String
@@ -627,7 +627,7 @@ enum StandardDirectiveSpecifier: DirectiveSpecifier {
     return str
   }
   
-  var description: String {
+  public var description: String {
     switch self {
       case .conversion(let control):
         return "(" + control.description + ")"

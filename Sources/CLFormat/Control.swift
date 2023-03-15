@@ -20,13 +20,13 @@
 
 import Foundation
 
-struct Control: CustomStringConvertible {
+public struct Control: CustomStringConvertible {
   
-  enum Component: CustomStringConvertible {
+  public enum Component: CustomStringConvertible {
     case text(Substring)
     case directive(Directive)
     
-    var description: String {
+    public var description: String {
       switch self {
         case .text(let str):
           return "\"\(str)\""
@@ -36,25 +36,25 @@ struct Control: CustomStringConvertible {
     }
   }
   
-  let config: ControlParserConfig
-  let components: [Component]
+  public let config: ControlParserConfig
+  private let components: [Component]
   
-  init(components: [Component], config: ControlParserConfig? = nil) {
+  public init(components: [Component], config: ControlParserConfig? = nil) {
     self.config = config ?? ControlParserConfig.standard
     self.components = components
   }
   
-  init(string: String, config: ControlParserConfig? = nil) throws {
+  public init(string: String, config: ControlParserConfig? = nil) throws {
     self = try ControlParser(control: string,
                              config: config ?? ControlParserConfig.standard).parse()
   }
   
-  func format(locale: Locale? = nil, tabsize: Int = 8, args: Any?...) throws -> String {
+  public func format(locale: Locale? = nil, tabsize: Int = 8, args: Any?...) throws -> String {
     return try self.format(with: Arguments(locale: locale, tabsize: tabsize, args: args),
                            in: .root(self.config)).string
   }
   
-  func format(with args: Arguments, in context: Context) throws -> Instruction {
+  public func format(with args: Arguments, in context: Context) throws -> Instruction {
     var res = ""
     for component in self.components {
       switch component {
@@ -77,7 +77,7 @@ struct Control: CustomStringConvertible {
     return .append(res)
   }
   
-  var description: String {
+  public var description: String {
     var res = ""
     var sep = ""
     for component in self.components {
@@ -88,11 +88,11 @@ struct Control: CustomStringConvertible {
   }
 }
 
-enum Context {
+public enum Context {
   case root(ControlParserConfig)
   indirect case frame(String, Context)
   
-  var current: String {
+  public var current: String {
     switch self {
       case .root(_):
         return ""
@@ -101,7 +101,7 @@ enum Context {
     }
   }
   
-  var parserConfig: ControlParserConfig {
+  public var parserConfig: ControlParserConfig {
     switch self {
       case .root(let config):
         return config

@@ -22,27 +22,27 @@ import Foundation
 
 extension String {
   
-  init(control: String,
-       config: ControlParserConfig? = nil,
-       locale: Locale? = nil,
-       tabsize: Int = 8,
-       _ args: Any?...) throws {
+  public init(control: String,
+              config: ControlParserConfig? = nil,
+              locale: Locale? = nil,
+              tabsize: Int = 8,
+              _ args: Any?...) throws {
     let control = try Control(string: control, config: config)
     try self.init(control.format(with: Arguments(locale: locale, tabsize: tabsize, args: args),
                                  in: .root(control.config)).string)
   }
   
-  init(control: String,
-       config: ControlParserConfig? = nil,
-       locale: Locale? = nil,
-       tabsize: Int = 8,
-       arguments: [Any?]) throws {
+  public init(control: String,
+              config: ControlParserConfig? = nil,
+              locale: Locale? = nil,
+              tabsize: Int = 8,
+              arguments: [Any?]) throws {
     let control = try Control(string: control, config: config)
     try self.init(control.format(with: Arguments(locale: locale, tabsize: tabsize, args: arguments),
                                  in: .root(control.config)).string)
   }
   
-  func currentColumn(tabsize: Int = 8) -> Int {
+  internal func currentColumn(tabsize: Int = 8) -> Int {
     let index = self.lastIndex(of: "\n")
     var i = index == nil ? self.startIndex : self.index(after: index!)
     var col = 0

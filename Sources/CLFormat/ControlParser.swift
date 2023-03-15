@@ -22,17 +22,17 @@ import Foundation
 
 
 public class ControlParser {
-  let config: ControlParserConfig
-  let control: String
-  var i: String.Index
+  internal let config: ControlParserConfig
+  internal let control: String
+  internal var i: String.Index
   
-  init(control: String, config: ControlParserConfig) {
+  public init(control: String, config: ControlParserConfig) {
     self.config = config
     self.control = control
     self.i = control.startIndex
   }
   
-  func nextChar() throws -> Character {
+  public func nextChar() throws -> Character {
     self.i = self.control.index(after: i)
     if self.i < self.control.endIndex {
       return self.control[i]
@@ -41,7 +41,7 @@ public class ControlParser {
     }
   }
   
-  func parse() throws -> (Control, Directive?) {
+  public func parse() throws -> (Control, Directive?) {
     var components = [Control.Component]()
     var start = self.i
     while i < control.endIndex {
@@ -139,7 +139,7 @@ public class ControlParser {
     return (Control(components: components, config: self.config), nil)
   }
   
-  func parse() throws -> Control {
+  public func parse() throws -> Control {
     let (control, directive) = try self.parse()
     if let directive = directive {
       switch directive.specifier.identifier {
@@ -157,21 +157,21 @@ public class ControlParser {
 }
 
 public struct ControlParserConfig {
-  var directiveParsers: [Character : DirectiveParser] = [:]
+  internal var directiveParsers: [Character : DirectiveParser] = [:]
   
-  mutating func parse(_ chars: [Character], with parser: @escaping DirectiveParser) {
+  public mutating func parse(_ chars: [Character], with parser: @escaping DirectiveParser) {
     for char in chars {
       self.directiveParsers[char] = parser
     }
   }
   
-  mutating func parse(_ chars: Character..., with parser: @escaping DirectiveParser) {
+  public mutating func parse(_ chars: Character..., with parser: @escaping DirectiveParser) {
     for char in chars {
       self.directiveParsers[char] = parser
     }
   }
   
-  mutating func parse(_ chars: Character..., appending specifier: DirectiveSpecifier) {
+  public mutating func parse(_ chars: Character..., appending specifier: DirectiveSpecifier) {
     self.parse(chars) { parser, parameters, modifiers in
       return .append(Directive(parameters: parameters,
                                modifiers: modifiers,
@@ -179,7 +179,7 @@ public struct ControlParserConfig {
     }
   }
   
-  static let standard: ControlParserConfig = {
+  public static let standard: ControlParserConfig = {
     var config = ControlParserConfig()
     config.parse("a", "A", appending: StandardDirectiveSpecifier.ascii)
     config.parse("s", "S", appending: StandardDirectiveSpecifier.sexpr)
@@ -282,29 +282,29 @@ public struct ControlParserConfig {
 /// parse anything (parsing of parameters and modifiers is done generically already
 /// by the control parser), they simply package up parameters and modifiers in a new
 /// directive.
-typealias DirectiveParser = (ControlParser, Parameters, Modifiers) throws -> ParseResult
+public typealias DirectiveParser = (ControlParser, Parameters, Modifiers) throws -> ParseResult
 
 /// Directive parsers generate `ParseResult` values as their result
-enum ParseResult {
+public enum ParseResult {
   case append(Directive)
   case exit(Directive)
   
   /// Convenience method for generating an append result with a new directive
-  static func append(_ parameters: Parameters,
-                     _ modifiers: Modifiers,
-                     _ spec: DirectiveSpecifier) -> ParseResult {
+  public static func append(_ parameters: Parameters,
+                            _ modifiers: Modifiers,
+                            _ spec: DirectiveSpecifier) -> ParseResult {
     return .append(Directive(parameters: parameters, modifiers: modifiers, specifier: spec))
   }
   
   /// Convenience method for generating an exit result with a new directive
-  static func exit(_ parameters: Parameters,
-                   _ modifiers: Modifiers,
-                   _ spec: DirectiveSpecifier) -> ParseResult {
+  public static func exit(_ parameters: Parameters,
+                          _ modifiers: Modifiers,
+                          _ spec: DirectiveSpecifier) -> ParseResult {
     return .exit(Directive(parameters: parameters, modifiers: modifiers, specifier: spec))
   }
 }
 
-enum ControlParsingError: Error, CustomStringConvertible {
+public enum ControlParsingError: Error, CustomStringConvertible {
   case prematureEndOfControl
   case duplicateModifier(String)
   case malformedParameter
@@ -315,7 +315,7 @@ enum ControlParsingError: Error, CustomStringConvertible {
   case unsupportedDirective(String)
   case unknownDirective(String)
   
-  var description: String {
+  public var description: String {
     switch self {
       case .prematureEndOfControl:
         return "premature end of control"

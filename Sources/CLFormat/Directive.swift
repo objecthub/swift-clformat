@@ -20,23 +20,23 @@
 
 import Foundation
 
-struct Directive: CustomStringConvertible {
-  let parameters: Parameters
-  let modifiers: Modifiers
-  let specifier: DirectiveSpecifier
+public struct Directive: CustomStringConvertible {
+  public let parameters: Parameters
+  public let modifiers: Modifiers
+  public let specifier: DirectiveSpecifier
   
-  init(parameters: Parameters, modifiers: Modifiers, specifier: DirectiveSpecifier) {
+  public init(parameters: Parameters, modifiers: Modifiers, specifier: DirectiveSpecifier) {
     self.parameters = parameters
     self.modifiers = modifiers
     self.specifier = specifier
   }
   
-  var description: String {
+  public var description: String {
     return "~\(self.parameters)\(self.modifiers)\(self.specifier)"
   }
 }
 
-protocol DirectiveSpecifier: CustomStringConvertible {
+public protocol DirectiveSpecifier: CustomStringConvertible {
   var identifier: Character { get }
   func apply(context: Context,
              parameters: Parameters,
@@ -44,12 +44,12 @@ protocol DirectiveSpecifier: CustomStringConvertible {
              arguments: Arguments) throws -> Instruction
 }
 
-enum Instruction {
+public enum Instruction: Equatable {
   case `append`(String)       // Append the string to the output
   case `continue`(String)     // Stop the current iteration and continue with next
   case `break`(String)        // Exit the iteration
   
-  var string: String {
+  public var string: String {
     switch self {
       case .append(let str):
         return str

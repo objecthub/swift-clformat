@@ -23,7 +23,7 @@ import Foundation
 ///
 /// `NumberFormat` provides a few static methods for formatting numbers.
 /// 
-struct NumberFormat {
+public struct NumberFormat {
   public static let defaultLocale = Locale(identifier: "en_US")
   public static let currentLocale = Locale.current
   

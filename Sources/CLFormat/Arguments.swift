@@ -20,15 +20,15 @@
 
 import Foundation
 
-class Arguments: CustomStringConvertible {
-  let locale: Locale?
-  let tabsize: Int
+public class Arguments: CustomStringConvertible {
+  public let locale: Locale?
+  public let tabsize: Int
   private let args: [Any?]
   private var index: Int
-  let numArgumentsLeft: Int?
+  internal let numArgumentsLeft: Int?
   private var firstArg: Int
   
-  init(locale: Locale? = nil, tabsize: Int = 8, args: [Any?], numArgumentsLeft: Int? = nil) {
+  public init(locale: Locale? = nil, tabsize: Int = 8, args: [Any?], numArgumentsLeft: Int? = nil) {
     self.locale = locale
     self.tabsize = tabsize
     self.args = args
@@ -37,21 +37,21 @@ class Arguments: CustomStringConvertible {
     self.firstArg = 0
   }
   
-  var count: Int {
+  public var count: Int {
     return self.args.count
   }
   
-  var left: Int {
+  public var left: Int {
     return self.args.count - self.index
   }
   
-  func setFirstArg(to f: Int? = nil) -> Int {
+  public func setFirstArg(to f: Int? = nil) -> Int {
     let res = self.firstArg
     self.firstArg = f ?? self.index
     return res
   }
   
-  func advance(by n: Int = 1) throws {
+  public func advance(by n: Int = 1) throws {
     if self.index + n >= self.firstArg && self.index + n <= self.args.count {
       self.index += n
     } else {
@@ -59,7 +59,7 @@ class Arguments: CustomStringConvertible {
     }
   }
   
-  func jump(to i: Int) throws {
+  public func jump(to i: Int) throws {
     if i >= 0 && i <= self.args.count - self.firstArg {
       self.index = self.firstArg + i
     } else {
@@ -67,7 +67,7 @@ class Arguments: CustomStringConvertible {
     }
   }
   
-  func current() throws -> Any? {
+  public func current() throws -> Any? {
     if self.index < self.args.count {
       return self.args[self.index]
     } else {
@@ -75,7 +75,7 @@ class Arguments: CustomStringConvertible {
     }
   }
   
-  func next() throws -> Any? {
+  public func next() throws -> Any? {
     if self.index < self.args.count {
       let arg = self.args[self.index]
       self.index += 1
@@ -85,7 +85,7 @@ class Arguments: CustomStringConvertible {
     }
   }
   
-  func nextAsNumber() throws -> Number {
+  public func nextAsNumber() throws -> Number {
     if let arg = try self.next() {
       if let num = Number(arg) {
         return num
@@ -97,7 +97,7 @@ class Arguments: CustomStringConvertible {
     }
   }
   
-  func nextAsInt() throws -> Int {
+  public func nextAsInt() throws -> Int {
     if let arg = try self.next() {
       if let num = arg as? Int {
         return num
@@ -115,7 +115,7 @@ class Arguments: CustomStringConvertible {
     }
   }
   
-  func nextAsCharacter() throws -> Character {
+  public func nextAsCharacter() throws -> Character {
     if let arg = try self.next() {
       if let ch = arg as? Character {
         return ch
@@ -129,7 +129,7 @@ class Arguments: CustomStringConvertible {
     }
   }
   
-  func nextAsString() throws -> String {
+  public func nextAsString() throws -> String {
     if let arg = try self.next() {
       if let str = arg as? String {
         return str
@@ -145,7 +145,7 @@ class Arguments: CustomStringConvertible {
     }
   }
   
-  func nextAsArguments(maxArgs: Int = Int.max) throws -> Arguments {
+  public func nextAsArguments(maxArgs: Int = Int.max) throws -> Arguments {
     if let arg = try self.next() {
       if let seq = arg as? any Sequence {
         var newargs = [Any?]()
@@ -166,7 +166,7 @@ class Arguments: CustomStringConvertible {
     }
   }
   
-  func nextAsParameter() throws -> Parameter {
+  public func nextAsParameter() throws -> Parameter {
     if let arg = try self.next() {
       if let num = arg as? Int {
         return .number(num)
@@ -188,7 +188,7 @@ class Arguments: CustomStringConvertible {
     }
   }
   
-  var description: String {
+  public var description: String {
     var res = "["
     var sep = ""
     for arg in self.args[self.index..<self.args.count] {

@@ -20,13 +20,17 @@
 
 import Foundation
 
-struct Modifiers: OptionSet, CustomStringConvertible {
-  let rawValue: Int
-  static let colon = Modifiers(rawValue: 1 << 0)
-  static let at = Modifiers(rawValue: 1 << 1)
-  static let plus = Modifiers(rawValue: 1 << 2)
+public struct Modifiers: OptionSet, CustomStringConvertible {
+  public let rawValue: Int
+  public static let colon = Modifiers(rawValue: 1 << 0)
+  public static let at = Modifiers(rawValue: 1 << 1)
+  public static let plus = Modifiers(rawValue: 1 << 2)
   
-  var description: String {
+  public init(rawValue: Int) {
+    self.rawValue = rawValue
+  }
+  
+  public var description: String {
     var res = ""
     if self.contains(.colon) {
       res += ":"
