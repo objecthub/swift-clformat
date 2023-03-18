@@ -21,4 +21,23 @@ final class CLFormatTests: XCTestCase {
     XCTAssertEqual(try clformat("|~8,3,0,'-F|", args: 123456.78901), "|--------|")
     XCTAssertEqual(try clformat("|~8,3,-2F|", args: 123456.78901), "|1234.568|")
   }
+  
+  func testSimpleJustification() throws {
+    XCTAssertEqual(try clformat("|~16<foo~>|"), "|             foo|")
+    XCTAssertEqual(try clformat("|~16:<foo~>|"), "|             foo|")
+    XCTAssertEqual(try clformat("|~16@<foo~>|"), "|foo             |")
+    XCTAssertEqual(try clformat("|~16:@<foo~>|"), "|       foo      |")
+    XCTAssertEqual(try clformat("|~16<foo~;barab~>|"), "|foo        barab|")
+    XCTAssertEqual(try clformat("|~16:<foo~;barab~>|"), "|    foo    barab|")
+    XCTAssertEqual(try clformat("|~16@<foo~;barab~>|"), "|foo    barab    |")
+    XCTAssertEqual(try clformat("|~16:@<foo~;barab~>|"), "|   foo   barab  |")
+    XCTAssertEqual(try clformat("|~19<one~;two~;three~>|"), "|one    two    three|")
+    XCTAssertEqual(try clformat("|~19:<one~;two~;three~>|"), "|   one   two  three|")
+    XCTAssertEqual(try clformat("|~19@<one~;two~;three~>|"), "|one   two   three  |")
+    XCTAssertEqual(try clformat("|~19:@<one~;two~;three~>|"), "|  one  two  three  |")
+  }
+  
+  func testUpAndOutJustification() throws {
+    
+  }
 }

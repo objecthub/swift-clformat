@@ -23,14 +23,20 @@ import Foundation
 public class Arguments: CustomStringConvertible {
   public let locale: Locale?
   public let tabsize: Int
+  public let linewidth: Int
   private let args: [Any?]
   private var index: Int
   internal let numArgumentsLeft: Int?
   private var firstArg: Int
   
-  public init(locale: Locale? = nil, tabsize: Int = 8, args: [Any?], numArgumentsLeft: Int? = nil) {
+  public init(locale: Locale? = nil,
+              tabsize: Int = 8,
+              linewidth: Int = 72,
+              args: [Any?],
+              numArgumentsLeft: Int? = nil) {
     self.locale = locale
     self.tabsize = tabsize
+    self.linewidth = linewidth
     self.args = args
     self.index = 0
     self.numArgumentsLeft = numArgumentsLeft

@@ -62,9 +62,9 @@ public struct Control: CustomStringConvertible {
           res += str
         case .directive(let dir):
           switch try dir.specifier.apply(context: .frame(res, context),
-                                           parameters: dir.parameters.process(arguments: args),
-                                           modifiers: dir.modifiers,
-                                           arguments: args) {
+                                         parameters: dir.parameters.process(arguments: args),
+                                         modifiers: dir.modifiers,
+                                         arguments: args) {
             case .append(let str):
               res += str
             case .continue(let str):

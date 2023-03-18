@@ -168,3 +168,26 @@ print(try clformat("Num1: ~O", args: 1234))
 print(try clformat("Num1: ~X", args: 700000255))
 
 print(try clformat("Float = ~14,5@F", args: 12345.6789))
+
+print("++++++++++++++++++++++++++++++")
+print(try clformat("|~16<foo~>|"))
+print(try clformat("|~16:<foo~>|"))
+print(try clformat("|~16@<foo~>|"))
+print(try clformat("|~16:@<foo~>|"))
+print(try clformat("|~16<foo~;barab~>|"))
+print(try clformat("|~16:<foo~;barab~>|"))
+print(try clformat("|~16@<foo~;barab~>|"))
+print(try clformat("|~16:@<foo~;barab~>|"))
+print(try clformat("|~19<one~;two~;three~>|"))
+print(try clformat("|~19:<one~;two~;three~>|"))
+print(try clformat("|~19@<one~;two~;three~>|"))
+print(try clformat("|~19:@<one~;two~;three~>|"))
+
+print(try clformat("|~19:@<one~;two~^ four~;three~>|"))
+
+print(try clformat("~%;;~{~<~%;;~1,50:; ~A~>~^,~}.~%", args: ["one dfdafadf", "two adfadfadf", "three adfdaf adffda", "four adf adfadf adfadf adfaffaf"]))
+
+print(try clformat("~e and ~,4e", args: Double.pi, Double.pi))
+print(try clformat("~$ and ~2,4$", args: Double.pi, Double.pi))
+print(try clformat("|~10,,,,10@A|", args: "This it!"))
+print(try clformat("|~10,,,,10@A|", args: "This was it!"))

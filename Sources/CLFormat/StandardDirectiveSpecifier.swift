@@ -22,6 +22,7 @@ import Foundation
 
 public enum StandardDirectiveSpecifier: DirectiveSpecifier {
   case ascii
+  case write
   case sexpr
   case decimal
   case radix
@@ -33,6 +34,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
   case exponentFloat
   case generalFloat
   case moneyAmount
+  case newline
   case percent
   case ampersand
   case bar
@@ -48,12 +50,16 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
   case separator
   case iteration(Control)
   case iterationEnd
+  case justification([Control], Int?, Int?)
+  case justificationEnd
   case indirection
   
   public var identifier: Character {
     switch self {
       case .ascii:
         return "A"
+      case .write:
+        return "W"
       case .sexpr:
         return "S"
       case .decimal:
@@ -76,6 +82,8 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         return "G"
       case .moneyAmount:
         return "$"
+      case .newline:
+        return "_"
       case .percent:
         return "%"
       case .ampersand:
@@ -106,6 +114,10 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         return "{"
       case .iterationEnd:
         return "}"
+      case .justification(_, _, _):
+        return "<"
+      case .justificationEnd:
+        return ">"
       case .indirection:
         return "?"
     }
@@ -117,33 +129,10 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                     arguments: Arguments) throws -> Instruction {
     switch self {
       case .ascii:
-        var str: String
+        let str: String
         if let arg = try arguments.next() {
-          if let x = arg as? CustomStringConvertible {
-            str = x.description
-          } else {
-            str = "\(arg)"
-          }
-        } else {
-          str = "nil"
-        }
-        return .append(self.pad(string: str,
-                                right: !modifiers.contains(.at),
-                                padchar: try parameters.character(3, default: " "),
-                                mincol: try parameters.number(0, default: 0),
-                                colinc: try parameters.number(1, default: 1),
-                                minpad: try parameters.number(2, default: 0)))
-      case .sexpr:
-        var str: String
-        if let arg = try arguments.next() {
-          if let x = arg as? String {
-            str = "\"\(x)\""
-          } else if let x = arg as? NSMutableString {
-            str = "\"\(x as String)\""
-          } else if let x = arg as? NSString {
-            str = "\"\(x as String)\""
-          } else if let x = arg as? Character {
-            str = "'\(x)'"
+          if modifiers.contains(.colon), let x = arg as? CustomDebugStringConvertible {
+            str = x.debugDescription
           } else if let x = arg as? CustomStringConvertible {
             str = x.description
           } else {
@@ -155,9 +144,64 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         return .append(self.pad(string: str,
                                 right: !modifiers.contains(.at),
                                 padchar: try parameters.character(3, default: " "),
+                                ellipsis: try parameters.character(5, default: "…"),
                                 mincol: try parameters.number(0, default: 0),
                                 colinc: try parameters.number(1, default: 1),
-                                minpad: try parameters.number(2, default: 0)))
+                                minpad: try parameters.number(2, default: 0),
+                                maxcol: parameters.parameterProvided(4) ?
+                                          try parameters.number(4, default: Int.max) : nil))
+      case .write:
+        let str: String
+        if let arg = try arguments.next() {
+          if modifiers.contains(.colon), let x = arg as? CustomDebugStringConvertible {
+            str = x.debugDescription
+          } else if let x = arg as? CustomStringConvertible {
+            str = x.description
+          } else {
+            str = "\(arg)"
+          }
+        } else {
+          str = "nil"
+        }
+        return .append(self.pad(string: str,
+                                right: !modifiers.contains(.at),
+                                padchar: try parameters.character(3, default: " "),
+                                ellipsis: try parameters.character(5, default: "…"),
+                                mincol: try parameters.number(0, default: 0),
+                                colinc: try parameters.number(1, default: 1),
+                                minpad: try parameters.number(2, default: 0),
+                                maxcol: parameters.parameterProvided(4) ?
+                                          try parameters.number(4, default: Int.max) : nil))
+      case .sexpr:
+        let str: String
+        if let arg = try arguments.next() {
+          if let x = arg as? String {
+            str = "\"\(x)\""
+          } else if let x = arg as? NSMutableString {
+            str = "\"\(x as String)\""
+          } else if let x = arg as? NSString {
+            str = "\"\(x as String)\""
+          } else if let x = arg as? Character {
+            str = "'\(x)'"
+          } else if modifiers.contains(.colon), let x = arg as? CustomDebugStringConvertible {
+            str = x.debugDescription
+          } else if let x = arg as? CustomStringConvertible {
+            str = x.description
+          } else {
+            str = "\(arg)"
+          }
+        } else {
+          str = "nil"
+        }
+        return .append(self.pad(string: str,
+                                right: !modifiers.contains(.at),
+                                padchar: try parameters.character(3, default: " "),
+                                ellipsis: try parameters.character(5, default: "…"),
+                                mincol: try parameters.number(0, default: 0),
+                                colinc: try parameters.number(1, default: 1),
+                                minpad: try parameters.number(2, default: 0),
+                                maxcol: parameters.parameterProvided(4) ?
+                                          try parameters.number(4, default: Int.max) : nil))
       case .decimal:
         return .append(NumberFormat.format(
                          try arguments.nextAsNumber(),
@@ -421,6 +465,17 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                                    parameters.parameterProvided(6),
                          forcesign: modifiers.contains(.at),
                          signBeforePad: modifiers.contains(.colon)))
+      case .newline:
+        // TODO: Figure out a way how to use that in Swift
+        if modifiers.contains(.colon) && modifiers.contains(.at) {
+          return .append("\n")
+        } else if modifiers.contains(.colon) {
+          return .append("\n")
+        } else if modifiers.contains(.at) {
+          return .append("\n")
+        } else {
+          return .append("\n")
+        }
       case .percent:
         return .append(String(repeating: "\n", count: try parameters.number(0, default: 1)))
       case .ampersand:
@@ -593,6 +648,61 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
           _ = iterargs.setFirstArg(to: firstArg)
         }
         return .append(res)
+      case .justification(let sections, let spare, let linewidth):
+        let mincol = try parameters.number(0, default: 0)
+        let colinc = try parameters.number(1, default: 1)
+        let minpad = try parameters.number(2, default: 0)
+        let padchar = try parameters.character(3, default: " ")
+        let linewidth = linewidth ?? arguments.linewidth
+        var strs = [String]()
+        var len = modifiers.contains(.colon) ? minpad : 0
+        loop: for section in sections {
+          switch try section.format(with: arguments, in: context) {
+            case .append(let str):
+              strs.append(str)
+              len += str.count + minpad
+            case .continue(_):
+              break loop
+            case .break(_):
+              throw CLFormatError.malformedDirective("~:^")
+          }
+        }
+        guard strs.count > 0 else {
+          return .append("")
+        }
+        if !modifiers.contains(.at) {
+          len -= minpad
+        }
+        let width = len > mincol ? mincol + ((len - mincol + colinc - 1)/colinc) * colinc : mincol
+        let ignore = spare == nil ? 0 : 1
+        let gaps = strs.count - ignore - 1
+                 + (modifiers.contains(.at) ? 1 : 0)
+                 + (modifiers.contains(.colon) ? 1 : 0)
+        var justified = ""
+        if gaps == 0 {
+          justified = String(repeating: padchar, count: width - len) + strs[ignore]
+        } else {
+          let minpad = (width - len) / gaps
+          var nummaxpad = (width - len) % gaps
+          var leftpad = modifiers.contains(.colon)
+          for str in strs[ignore...] {
+            if leftpad {
+              justified += String(repeating: padchar, count: minpad + (nummaxpad > 0 ? 1 : 0))
+              nummaxpad -= 1
+            }
+            justified += str
+            leftpad = true
+          }
+          if modifiers.contains(.at) {
+            justified += String(repeating: padchar, count: minpad)
+          }
+        }
+        let col = context.current.currentColumn(tabsize: arguments.tabsize)
+        if col + justified.count + (spare == nil ? 0 : spare!) <= linewidth {
+          return .append(justified)
+        } else {
+          return .append(strs[0] + justified)
+        }
       case .indirection:
         let control = try Control(string: try arguments.nextAsString(),
                                   config: context.parserConfig)
@@ -610,14 +720,26 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
   func pad(string: String,
            right: Bool,
            padchar: Character,
+           ellipsis: Character,
            mincol: Int,
            colinc: Int,
-           minpad: Int) -> String {
+           minpad: Int,
+           maxcol: Int?) -> String {
     var str = string
-    if str.count < mincol || minpad > 0 {
-      let padding = String(repeating: padchar,
-                           count: max(((mincol - str.count - minpad + colinc - 1) / colinc)
-                                        * colinc + minpad, minpad))
+    let count = string.count
+    if let maxcol = maxcol, count > maxcol {
+      str.removeLast(count - maxcol)
+      if str.count > 1 {
+        str.removeLast()
+        str.append(ellipsis)
+      }
+    } else if count < mincol || minpad > 0 {
+      var padcount = max(((mincol - str.count - minpad + colinc - 1) / colinc)
+                         * colinc + minpad, minpad)
+      if let maxcol = maxcol, padcount + count > maxcol {
+        padcount = maxcol - count
+      }
+      let padding = String(repeating: padchar, count: padcount)
       if right {
         str = str + padding
       } else {
