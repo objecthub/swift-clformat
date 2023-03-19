@@ -20,12 +20,23 @@
 
 import Foundation
 
+///
+/// Struct `Control` represents a parsed control string. The driver of the
+/// format function is provided by this struct. The format function can be
+/// called arbitrary many times for a given struct (it is reentrant as well).
+/// 
+/// A `Control` value consists of a control parser configuration as well as
+/// a sequence of "components". A component is either a text fragment or a
+/// formatting directive.
+/// 
 public struct Control: CustomStringConvertible {
   
+  /// Implementation of control components as an enumeration.
   public enum Component: CustomStringConvertible {
     case text(Substring)
     case directive(Directive)
     
+    /// Returns a string representation of this component.
     public var description: String {
       switch self {
         case .text(let str):
@@ -36,24 +47,41 @@ public struct Control: CustomStringConvertible {
     }
   }
   
+  /// The control parser configuration. This value needs to be preserved
+  /// because there is the need to potentially parse arguments as control
+  /// strings, e.g. via the ~?/indirection directive.
   public let config: ControlParserConfig
-  private let components: [Component]
   
+  /// The parsed control components.
+  public let components: [Component]
+  
+  /// Constructor for manually creating control values.
   public init(components: [Component], config: ControlParserConfig? = nil) {
     self.config = config ?? ControlParserConfig.standard
     self.components = components
   }
   
+  /// Constructor for parsing a control string into a control value.
   public init(string: String, config: ControlParserConfig? = nil) throws {
     self = try ControlParser(control: string,
                              config: config ?? ControlParserConfig.standard).parse()
   }
   
-  public func format(locale: Locale? = nil, tabsize: Int = 8, args: Any?...) throws -> String {
-    return try self.format(with: Arguments(locale: locale, tabsize: tabsize, args: args),
+  /// Main format function. Creates an `Argument` object from the given parameters
+  /// and invokes the driver of the formatting logic.
+  public func format(locale: Locale? = nil,
+                     tabsize: Int = 4,
+                     linewidth: Int = 80,
+                     args: Any?...) throws -> String {
+    return try self.format(with: Arguments(locale: locale,
+                                           tabsize: tabsize,
+                                           linewidth: linewidth,
+                                           args: args),
                            in: .root(self.config)).string
   }
   
+  /// Driver of the formatting logic. Can be called directly for low-level applications.
+  /// Typically, this is not called directly.
   public func format(with args: Arguments, in context: Context) throws -> Instruction {
     var res = ""
     for component in self.components {
@@ -77,6 +105,7 @@ public struct Control: CustomStringConvertible {
     return .append(res)
   }
   
+  /// Returns a description of this control value.
   public var description: String {
     var res = ""
     var sep = ""
@@ -88,6 +117,11 @@ public struct Control: CustomStringConvertible {
   }
 }
 
+///
+/// A `Context` value represents a formatting context (i.e. a linked list of
+/// context values. The root refers to the control parser configuration (to make
+/// it accessible from the formatting logic).
+/// 
 public enum Context {
   case root(ControlParserConfig)
   indirect case frame(String, Context)

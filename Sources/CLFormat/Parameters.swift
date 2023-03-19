@@ -20,6 +20,17 @@
 
 import Foundation
 
+///
+/// Enumeration `Parameter` lists all possible types of directive parameters.
+/// Supported are:
+/// 
+///   - `none`: No parameter is specified.
+///   - `nextArgument`: The parameter is specified by the next argument.
+///   - `remainingArguments`: The parameter is a number corresponding to the remaining
+///     number of unprocessed arguments.
+///   - `number(N)`: Represents the integer `N`.
+///   - `character(C)`: Represents the character `C`.
+/// 
 public enum Parameter: Equatable, CustomStringConvertible {
   case none
   case nextArgument
@@ -27,6 +38,8 @@ public enum Parameter: Equatable, CustomStringConvertible {
   case number(Int)
   case character(Character)
   
+  /// Returns a description of the parameter that can also be read by the format
+  /// parser.
   public var description: String {
     switch self {
       case .none:
@@ -43,21 +56,29 @@ public enum Parameter: Equatable, CustomStringConvertible {
   }
 }
 
+///
+/// Struct `Parameters` represents a sequence of parameters.
+/// 
 public struct Parameters: Equatable, CustomStringConvertible {
   private let params: [Parameter]
   
+  /// Constructor.
   public init(_ params: [Parameter] = []) {
     self.params = params
   }
   
+  /// Returns the total number of parameters.
   public var parameterCount: Int {
     return self.params.count
   }
   
+  /// Returns true iff the parameter at `index` was specified (i.e. it was specified
+  /// and it is not `none`).
   public func parameterProvided(_ index: Int) -> Bool {
     return index >= 0 && index < self.params.count && self.params[index] != .none
   }
   
+  /// Returns the parameter at `index`.
   public func parameter(_ index: Int) -> Parameter? {
     if index >= 0 && index < self.params.count {
       return self.params[index]
@@ -66,41 +87,45 @@ public struct Parameters: Equatable, CustomStringConvertible {
     }
   }
   
-  public func number(_ index: Int, default d: Int? = nil, allowNegative: Bool = false) throws -> Int {
+  /// Returns the `index`-th parameter as a number; throws an error if the parameter
+  /// is not a number. Returns `nil` if the parameter was not provided.
+  public func number(_ index: Int, allowNegative: Bool = false) throws -> Int? {
     if index >= 0 && index < self.params.count {
-      guard case .number(let n) = self.params[index] else {
-        if case .none = self.params[index], let def = d {
-          return def
-        }
-        throw CLFormatError.expectedNumberParameter(index, self.params[index])
+      switch self.params[index] {
+        case .none:
+          return nil
+        case .number(let n):
+          if n < 0 && !allowNegative {
+            throw CLFormatError.expectedPositiveNumberParameter(index, n)
+          }
+          return n
+        default:
+          throw CLFormatError.expectedNumberParameter(index, self.params[index])
       }
-      if n < 0 && !allowNegative {
-        throw CLFormatError.expectedPositiveNumberParameter(index, n)
-      }
-      return n
-    } else if let def = d {
-      return def
     } else {
-      throw CLFormatError.missingNumberParameter(index)
+      return nil
     }
   }
   
-  public func character(_ index: Int, default d: Character? = nil) throws -> Character {
+  /// Returns the `index`-th parameter as a character; throws an error if the parameter
+  /// is not a character. Returns `nil` if the parameter was not provided.
+  public func character(_ index: Int) throws -> Character? {
     if index >= 0 && index < self.params.count {
-      guard case .character(let ch) = self.params[index] else {
-        if case .none = self.params[index], let def = d {
-          return def
-        }
-        throw CLFormatError.expectedCharacterParameter(index, self.params[index])
+      switch self.params[index] {
+        case .none:
+          return nil
+        case .character(let ch):
+          return ch
+        default:
+          throw CLFormatError.expectedCharacterParameter(index, self.params[index])
       }
-      return ch
-    } else if let def = d {
-      return def
     } else {
-      throw CLFormatError.missingCharacterParameter(index)
+      return nil
     }
   }
   
+  /// Creates a new set of parameters by expanding `nextArgument` and
+  /// `remainingArguments` parameters for a given list of arguments.
   public func process(arguments: Arguments) throws -> Parameters {
     var params = [Parameter]()
     for param in self.params {
@@ -116,6 +141,8 @@ public struct Parameters: Equatable, CustomStringConvertible {
     return Parameters(params)
   }
   
+  /// Returns a description of the parameters in a syntax compatible with
+  /// the control language.
   public var description: String {
     var (res, sep) = ("", "")
     for param in self.params {

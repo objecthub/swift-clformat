@@ -20,15 +20,39 @@
 
 import Foundation
 
+///
+/// Class `Arguments` is used to encapsulate arguments and environment variables.
+/// An instance of `Arguments` is passed to the format function when interpreting
+/// the control string. `Argument` objects cannot be reused. They can only be used
+/// once to format a string.
+/// 
 public class Arguments: CustomStringConvertible {
+  
+  /// The locale to be used (for locale-specific directives; typically enabled
+  /// via the `+` modifier.
   public let locale: Locale?
+  
+  /// The size of tabs.
   public let tabsize: Int
+  
+  /// The maximum length of a line.
   public let linewidth: Int
+  
+  /// The arguments used to format a string.
   private let args: [Any?]
+  
+  /// Index pointing at the next argument to consume.
   private var index: Int
+  
+  /// If this instance isn't referring to all arguments (at formatting time,
+  /// nested arguments might be created, e.g. to implement the ~?/indirection
+  /// directive.
   internal let numArgumentsLeft: Int?
+  
+  /// The first argument to consume.
   private var firstArg: Int
   
+  /// Constructor.
   public init(locale: Locale? = nil,
               tabsize: Int = 8,
               linewidth: Int = 72,
@@ -43,20 +67,25 @@ public class Arguments: CustomStringConvertible {
     self.firstArg = 0
   }
   
+  /// Returns the total number of available arguments.
   public var count: Int {
     return self.args.count
   }
   
+  /// Returns the number of arguments that are still available for consumption.
   public var left: Int {
     return self.args.count - self.index
   }
   
+  /// Returns the current first argument and sets a new first argument.
   public func setFirstArg(to f: Int? = nil) -> Int {
     let res = self.firstArg
     self.firstArg = f ?? self.index
     return res
   }
   
+  /// Advances the next available argument by `n`. The resulting index must be
+  /// between `firstArg` and the total number of available arguments.
   public func advance(by n: Int = 1) throws {
     if self.index + n >= self.firstArg && self.index + n <= self.args.count {
       self.index += n
@@ -65,6 +94,7 @@ public class Arguments: CustomStringConvertible {
     }
   }
   
+  /// Sets the next argument to consume to `i`, relative to `firstArg`.
   public func jump(to i: Int) throws {
     if i >= 0 && i <= self.args.count - self.firstArg {
       self.index = self.firstArg + i
@@ -73,6 +103,8 @@ public class Arguments: CustomStringConvertible {
     }
   }
   
+  /// Returns the next argument to consume; this is, in fact, a lookahead as
+  /// the next argument is not being consumed by `current`.
   public func current() throws -> Any? {
     if self.index < self.args.count {
       return self.args[self.index]
@@ -81,6 +113,7 @@ public class Arguments: CustomStringConvertible {
     }
   }
   
+  /// Returns and consumes the next argument.
   public func next() throws -> Any? {
     if self.index < self.args.count {
       let arg = self.args[self.index]
@@ -91,6 +124,8 @@ public class Arguments: CustomStringConvertible {
     }
   }
   
+  /// Returns and consumes the next argument as a number. The function throws an
+  /// exception if the next argument is not a number.
   public func nextAsNumber() throws -> Number {
     if let arg = try self.next() {
       if let num = Number(arg) {
@@ -103,6 +138,8 @@ public class Arguments: CustomStringConvertible {
     }
   }
   
+  /// Returns and consumes the next argument as an `Int`. The function throws an
+  /// exception if the next argument cannot be exactly represented as an `Int`.
   public func nextAsInt() throws -> Int {
     if let arg = try self.next() {
       if let num = arg as? Int {
@@ -121,6 +158,8 @@ public class Arguments: CustomStringConvertible {
     }
   }
   
+  /// Returns and consumes the next argument as a character. The function throws an
+  /// exception if the next argument is not a character.
   public func nextAsCharacter() throws -> Character {
     if let arg = try self.next() {
       if let ch = arg as? Character {
@@ -135,6 +174,8 @@ public class Arguments: CustomStringConvertible {
     }
   }
   
+  /// Returns and consumes the next argument as a string. The function throws an
+  /// exception if the next argument is not a string.
   public func nextAsString() throws -> String {
     if let arg = try self.next() {
       if let str = arg as? String {
@@ -151,6 +192,9 @@ public class Arguments: CustomStringConvertible {
     }
   }
   
+  /// Returns and consumes the next argument as an `Arguments` object. The function throws
+  /// an exception if the next argument is not a sequence (which is being converted into an
+  /// `Arguments` object).
   public func nextAsArguments(maxArgs: Int = Int.max) throws -> Arguments {
     if let arg = try self.next() {
       if let seq = arg as? any Sequence {
@@ -172,6 +216,8 @@ public class Arguments: CustomStringConvertible {
     }
   }
   
+  /// Returns and consumes the next argument as a parameter. The function throws an
+  /// exception if the next argument cannot be represented as a parameter.
   public func nextAsParameter() throws -> Parameter {
     if let arg = try self.next() {
       if let num = arg as? Int {
@@ -194,9 +240,19 @@ public class Arguments: CustomStringConvertible {
     }
   }
   
+  /// Returns a string representation of the arguments.
   public var description: String {
-    var res = "["
-    var sep = ""
+    var res = "<Arguments:"
+    var sep = " "
+    if let locale = self.locale {
+      res += "\(sep)locale = \(locale)"
+      sep = ", "
+    }
+    res += "\(sep)tabsize = \(self.tabsize)"
+    sep = ", "
+    res += "\(sep)linewidth = \(self.linewidth)"
+    res += "\(sep)args = ["
+    sep = ""
     for arg in self.args[self.index..<self.args.count] {
       if let arg = arg {
         res += "\(sep)\(arg)"
@@ -205,6 +261,6 @@ public class Arguments: CustomStringConvertible {
       }
       sep = ", "
     }
-    return res + "]"
+    return res + "]>"
   }
 }

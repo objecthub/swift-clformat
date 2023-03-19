@@ -23,6 +23,7 @@
 		CCB5F11329C1475F00587140 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0D029C1148900587140 /* Currency.swift */; };
 		CCB5F11429C1475F00587140 /* Arguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0DC29C1157C00587140 /* Arguments.swift */; };
 		CCB5F11C29C148A400587140 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F11B29C148A400587140 /* main.swift */; };
+		CCB5F12329C7974B00587140 /* ControlParserConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F12229C7974B00587140 /* ControlParserConfig.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		CCB5F10029C1455B00587140 /* CLFormatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLFormatTests.swift; sourceTree = "<group>"; };
 		CCB5F11929C148A400587140 /* CLFormatTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CLFormatTool; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCB5F11B29C148A400587140 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		CCB5F12229C7974B00587140 /* ControlParserConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlParserConfig.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 				CCB5F0DC29C1157C00587140 /* Arguments.swift */,
 				CCB5F0DE29C115A500587140 /* Control.swift */,
 				CCB5F0E029C115C400587140 /* ControlParser.swift */,
+				CCB5F12229C7974B00587140 /* ControlParserConfig.swift */,
 				CCB5F0E229C115E600587140 /* StandardDirectiveSpecifier.swift */,
 				CCB5F0E429C1160700587140 /* CLFormat.swift */,
 				CCB5F0F429C1455B00587140 /* CLFormat.h */,
@@ -301,6 +304,7 @@
 			files = (
 				CCB5F11329C1475F00587140 /* Currency.swift in Sources */,
 				CCB5F11429C1475F00587140 /* Arguments.swift in Sources */,
+				CCB5F12329C7974B00587140 /* ControlParserConfig.swift in Sources */,
 				CCB5F10C29C1475F00587140 /* Parameters.swift in Sources */,
 				CCB5F11029C1475F00587140 /* StandardDirectiveSpecifier.swift in Sources */,
 				CCB5F0F629C1455B00587140 /* CLFormat.docc in Sources */,

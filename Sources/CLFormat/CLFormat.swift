@@ -25,21 +25,27 @@ extension String {
   public init(control: String,
               config: ControlParserConfig? = nil,
               locale: Locale? = nil,
-              tabsize: Int = 8,
+              tabsize: Int = 4,
+              linewidth: Int = 80,
               _ args: Any?...) throws {
     let control = try Control(string: control, config: config)
-    try self.init(control.format(with: Arguments(locale: locale, tabsize: tabsize, args: args),
-                                 in: .root(control.config)).string)
+    try self.init(control.format(locale: locale,
+                                 tabsize: tabsize,
+                                 linewidth: linewidth,
+                                 args: args))
   }
   
   public init(control: String,
               config: ControlParserConfig? = nil,
               locale: Locale? = nil,
-              tabsize: Int = 8,
+              tabsize: Int = 4,
+              linewidth: Int = 80,
               arguments: [Any?]) throws {
     let control = try Control(string: control, config: config)
-    try self.init(control.format(with: Arguments(locale: locale, tabsize: tabsize, args: arguments),
-                                 in: .root(control.config)).string)
+    try self.init(control.format(locale: locale,
+                                 tabsize: tabsize,
+                                 linewidth: linewidth,
+                                 args: arguments))
   }
   
   internal func currentColumn(tabsize: Int = 8) -> Int {
@@ -61,9 +67,9 @@ extension String {
 public func clformat(_ control: String,
                      config: ControlParserConfig? = nil,
                      locale: Locale? = nil,
-                     tabsize: Int = 8,
+                     tabsize: Int = 4,
+                     linewidth: Int = 80,
                      args: Any?...) throws -> String {
   let control = try Control(string: control, config: config)
-  return try control.format(with: Arguments(locale: locale, tabsize: tabsize, args: args),
-                            in: .root(control.config)).string
+  return try control.format(locale: locale, tabsize: tabsize, linewidth: linewidth, args: args)
 }

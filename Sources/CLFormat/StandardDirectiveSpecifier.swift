@@ -141,13 +141,12 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         return .append(self.pad(string: str,
                                 left: modifiers.contains(.at),
                                 right: !modifiers.contains(.at),
-                                padchar: try parameters.character(3, default: " "),
-                                ellipsis: try parameters.character(5, default: "…"),
-                                mincol: try parameters.number(0, default: 0),
-                                colinc: try parameters.number(1, default: 1),
-                                minpad: try parameters.number(2, default: 0),
-                                maxcol: parameters.parameterProvided(4) ?
-                                          try parameters.number(4, default: Int.max) : nil))
+                                padchar: try parameters.character(3) ?? " ",
+                                ellipsis: try parameters.character(5) ?? "…",
+                                mincol: try parameters.number(0) ?? 0,
+                                colinc: try parameters.number(1) ?? 1,
+                                minpad: try parameters.number(2) ?? 0,
+                                maxcol: try parameters.number(4)))
       case .write:
         let str: String
         if let arg = try arguments.next() {
@@ -164,13 +163,12 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         return .append(self.pad(string: str,
                                 left: modifiers.contains(.at),
                                 right: !modifiers.contains(.at),
-                                padchar: try parameters.character(3, default: " "),
-                                ellipsis: try parameters.character(5, default: "…"),
-                                mincol: try parameters.number(0, default: 0),
-                                colinc: try parameters.number(1, default: 1),
-                                minpad: try parameters.number(2, default: 0),
-                                maxcol: parameters.parameterProvided(4) ?
-                                          try parameters.number(4, default: Int.max) : nil))
+                                padchar: try parameters.character(3) ?? " ",
+                                ellipsis: try parameters.character(5) ?? "…",
+                                mincol: try parameters.number(0) ?? 0,
+                                colinc: try parameters.number(1) ?? 1,
+                                minpad: try parameters.number(2) ?? 0,
+                                maxcol: try parameters.number(4)))
       case .sexpr:
         let str: String
         if let arg = try arguments.next() {
@@ -195,30 +193,27 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         return .append(self.pad(string: str,
                                 left: modifiers.contains(.at),
                                 right: !modifiers.contains(.at),
-                                padchar: try parameters.character(3, default: " "),
-                                ellipsis: try parameters.character(5, default: "…"),
-                                mincol: try parameters.number(0, default: 0),
-                                colinc: try parameters.number(1, default: 1),
-                                minpad: try parameters.number(2, default: 0),
-                                maxcol: parameters.parameterProvided(4) ?
-                                          try parameters.number(4, default: Int.max) : nil))
+                                padchar: try parameters.character(3) ?? " ",
+                                ellipsis: try parameters.character(5) ?? "…",
+                                mincol: try parameters.number(0) ?? 0,
+                                colinc: try parameters.number(1) ?? 1,
+                                minpad: try parameters.number(2) ?? 0,
+                                maxcol: try parameters.number(4)))
       case .decimal:
         return .append(NumberFormat.format(
                          try arguments.nextAsNumber(),
                          style: .decimal,
-                         mincol: try parameters.number(0, default: 0),
-                         padchar: try parameters.character(1, default: " "),
-                         groupsep: parameters.parameterProvided(2) ?
-                                     try parameters.character(2, default: ",") : nil,
-                         groupsize: parameters.parameterProvided(3) ?
-                                      try parameters.number(3, default: 3) : nil,
+                         mincol: try parameters.number(0) ?? 0,
+                         padchar: try parameters.character(1) ?? " ",
+                         groupsep: try parameters.character(2),
+                         groupsize: try parameters.number(3),
                          locale: arguments.locale,
                          usegroup: modifiers.contains(.colon),
                          uselocale: modifiers.contains(.plus),
                          forcesign: modifiers.contains(.at)))
       case .radix:
         let number = try arguments.nextAsNumber()
-        let radix = try parameters.number(0, default: 10)
+        let radix = try parameters.number(0) ?? 10
         if parameters.parameterCount == 0 {
           if !modifiers.contains(.colon) && !modifiers.contains(.at) {
             let formatter = NumberFormatter()
@@ -251,12 +246,10 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
           let str = NumberFormat.format(
                       number,
                       style: .decimal,
-                      mincol: try parameters.number(1, default: 0),
-                      padchar: try parameters.character(2, default: " "),
-                      groupsep: parameters.parameterProvided(3) ?
-                                  try parameters.character(3, default: ",") : nil,
-                      groupsize: parameters.parameterProvided(4) ?
-                                   try parameters.number(4, default: 3) : nil,
+                      mincol: try parameters.number(1) ?? 0,
+                      padchar: try parameters.character(2) ?? " ",
+                      groupsep: try parameters.character(3),
+                      groupsize: try parameters.number(4),
                       locale: arguments.locale,
                       usegroup: modifiers.contains(.colon),
                       uselocale: modifiers.contains(.plus),
@@ -265,10 +258,10 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         } else if let str = NumberFormat.format(
                               number,
                               radix: radix,
-                              mincol: try parameters.number(1, default: 0),
-                              padchar: try parameters.character(2, default: " "),
-                              groupsep: try parameters.character(3, default: ","),
-                              groupsize: try parameters.number(4, default: 3),
+                              mincol: try parameters.number(1) ?? 0,
+                              padchar: try parameters.character(2) ?? " ",
+                              groupsep: try parameters.character(3) ?? ",",
+                              groupsize: try parameters.number(4) ?? 3,
                               usegroup: modifiers.contains(.colon),
                               forcesign: modifiers.contains(.at),
                               uppercase: modifiers.contains(.plus),
@@ -282,10 +275,10 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         if let str = NumberFormat.format(
                        number,
                        radix: 2,
-                       mincol: try parameters.number(0, default: 0),
-                       padchar: try parameters.character(1, default: " "),
-                       groupsep: try parameters.character(2, default: " "),
-                       groupsize: try parameters.number(3, default: 4),
+                       mincol: try parameters.number(0) ?? 0,
+                       padchar: try parameters.character(1) ?? " ",
+                       groupsep: try parameters.character(2) ?? " ",
+                       groupsize: try parameters.number(3) ?? 4,
                        usegroup: modifiers.contains(.colon),
                        forcesign: modifiers.contains(.at),
                        uppercase: modifiers.contains(.plus),
@@ -299,10 +292,10 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         if let str = NumberFormat.format(
                        number,
                        radix: 8,
-                       mincol: try parameters.number(0, default: 0),
-                       padchar: try parameters.character(1, default: " "),
-                       groupsep: try parameters.character(2, default: " "),
-                       groupsize: try parameters.number(3, default: 4),
+                       mincol: try parameters.number(0) ?? 0,
+                       padchar: try parameters.character(1) ?? " ",
+                       groupsep: try parameters.character(2) ?? " ",
+                       groupsize: try parameters.number(3) ?? 4,
                        usegroup: modifiers.contains(.colon),
                        forcesign: modifiers.contains(.at),
                        uppercase: modifiers.contains(.plus),
@@ -316,10 +309,10 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         if let str = NumberFormat.format(
                        number,
                        radix: 16,
-                       mincol: try parameters.number(0, default: 0),
-                       padchar: try parameters.character(1, default: " "),
-                       groupsep: try parameters.character(2, default: ":"),
-                       groupsize: try parameters.number(3, default: 2),
+                       mincol: try parameters.number(0) ?? 0,
+                       padchar: try parameters.character(1) ?? " ",
+                       groupsep: try parameters.character(2) ?? ":",
+                       groupsize: try parameters.number(3) ?? 2,
                        usegroup: modifiers.contains(.colon),
                        forcesign: modifiers.contains(.at),
                        uppercase: modifiers.contains(.plus),
@@ -354,11 +347,11 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
           return .append("\(char)")
         }
       case .fixedFloat:
-        let w = try parameters.number(0, default: Int.min)
-        let d = try parameters.number(1, default: Int.min)
-        let k = try parameters.number(2, default: 0, allowNegative: true)
-        let oc = parameters.parameterProvided(3) ? try parameters.character(3, default: "#") : nil
-        let pc = try parameters.character(4, default: " ")
+        let w = try parameters.number(0) ?? Int.min
+        let d = try parameters.number(1) ?? Int.min
+        let k = try parameters.number(2, allowNegative: true) ?? 0
+        let oc = try parameters.character(3)
+        let pc = try parameters.character(4) ?? " "
         let number = try arguments.nextAsNumber()
         return .append(NumberFormat.format(number,
                                            width: w == Int.min ? nil : w,
@@ -366,22 +359,20 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                                            overflowchar: oc,
                                            fractionDigits: d == Int.min ? nil : d,
                                            exponent: k,
-                                           groupsep: parameters.parameterProvided(5) ?
-                                                       try parameters.character(5, default: ",") : nil,
-                                           groupsize: parameters.parameterProvided(6) ?
-                                                        try parameters.number(6, default: 3) : nil,
+                                           groupsep: try parameters.character(5),
+                                           groupsize: try parameters.number(6),
                                            locale: arguments.locale,
                                            usegroup: modifiers.contains(.colon),
                                            uselocale: modifiers.contains(.plus),
                                            forcesign: modifiers.contains(.at)))
       case .exponentFloat:
-        let w = try parameters.number(0, default: Int.min)
-        let d = try parameters.number(1, default: Int.min)
-        let e = try parameters.number(2, default: Int.min)
-        let k = try parameters.number(3, default: 1, allowNegative: true)
-        let oc = parameters.parameterProvided(4) ? try parameters.character(4, default: "#") : nil
-        let pc = try parameters.character(5, default: " ")
-        let ec = try parameters.character(6, default: "E")
+        let w = try parameters.number(0) ?? Int.min
+        let d = try parameters.number(1) ?? Int.min
+        let e = try parameters.number(2) ?? Int.min
+        let k = try parameters.number(3, allowNegative: true) ?? 1
+        let oc = try parameters.character(4)
+        let pc = try parameters.character(5) ?? " "
+        let ec = try parameters.character(6) ?? "E"
         let number = try arguments.nextAsNumber()
         return .append(NumberFormat.format(number,
                                            width: w == Int.min ? nil : w,
@@ -395,13 +386,13 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                                            uselocale: modifiers.contains(.plus),
                                            forcesign: modifiers.contains(.at)))
       case .generalFloat:
-        let w = try parameters.number(0, default: Int.min)
-        let d = try parameters.number(1, default: Int.min)
-        let e = try parameters.number(2, default: Int.min)
-        let k = try parameters.number(3, default: 1, allowNegative: true)
-        let oc = parameters.parameterProvided(4) ? try parameters.character(4, default: "#") : nil
-        let pc = try parameters.character(5, default: " ")
-        let ec = try parameters.character(6, default: "E")
+        let w = try parameters.number(0) ?? Int.min
+        let d = try parameters.number(1) ?? Int.min
+        let e = try parameters.number(2) ?? Int.min
+        let k = try parameters.number(3, allowNegative: true) ?? 1
+        let oc = try parameters.character(4)
+        let pc = try parameters.character(5) ?? " "
+        let ec = try parameters.character(6) ?? "E"
         let number = try arguments.nextAsNumber()
         let arg = number.nsnumber.doubleValue
         let n = arg.isZero ? 0 : Int(floor(log10(arg))) + 1
@@ -449,16 +440,13 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         let number = try arguments.nextAsNumber()
         return .append(NumberFormat.format(
                          number,
-                         fractionDigits: try parameters.number(0, default: 2),
-                         minIntegerDigits: try parameters.number(1, default: 1),
-                         minWidth: try parameters.number(2, default: 0),
-                         padchar: try parameters.character(3, default: " "),
-                         curchar: parameters.parameterProvided(4) ?
-                                    try parameters.character(4, default: " ") : nil,
-                         groupsep: parameters.parameterProvided(5) ?
-                                     try parameters.character(5, default: " ") : nil,
-                         groupsize: parameters.parameterProvided(6) ?
-                                      try parameters.number(6, default: 3) : nil,
+                         fractionDigits: try parameters.number(0) ?? 2,
+                         minIntegerDigits: try parameters.number(1) ?? 1,
+                         minWidth: try parameters.number(2) ?? 0,
+                         padchar: try parameters.character(3) ?? " ",
+                         curchar: try parameters.character(4),
+                         groupsep: try parameters.character(5),
+                         groupsize: try parameters.number(6),
                          locale: arguments.locale,
                          uselocale: modifiers.contains(.plus),
                          usegroup: parameters.parameterProvided(5) ||
@@ -466,17 +454,17 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                          forcesign: modifiers.contains(.at),
                          signBeforePad: modifiers.contains(.colon)))
       case .percent:
-        return .append(String(repeating: "\n", count: try parameters.number(0, default: 1)))
+        return .append(String(repeating: "\n", count: try parameters.number(0) ?? 1))
       case .ampersand:
-        var n = try parameters.number(0, default: 1)
+        var n = try parameters.number(0) ?? 1
         if let last = context.current.last, last == "\n" {
           n -= 1
         }
         return .append(n > 0 ? String(repeating: "\n", count: n) : "")
       case .bar:
-        return .append(String(repeating: "\u{12}", count: try parameters.number(0, default: 1)))
+        return .append(String(repeating: "\u{12}", count: try parameters.number(0) ?? 1))
       case .tilde:
-        return .append(String(repeating: "~", count: try parameters.number(0, default: 1)))
+        return .append(String(repeating: "~", count: try parameters.number(0) ?? 1))
       case .plural:
         // Back up first
         if modifiers.contains(.colon) {
@@ -491,8 +479,8 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         }
       case .tabular:
         let col = context.current.currentColumn(tabsize: arguments.tabsize)
-        let colnum = try parameters.number(0, default: 1)
-        let colinc = try parameters.number(1, default: 1)
+        let colnum = try parameters.number(0) ?? 1
+        let colinc = try parameters.number(1) ?? 1
         if modifiers.contains(.at) {
           if colinc > 0 && (col + colnum) % colinc > 0 {
             return .append(String(repeating: " ",
@@ -512,16 +500,16 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
       case .ignoreArgs:
         // Absolute jump
         if modifiers.contains(.at) && !modifiers.contains(.colon) {
-          try arguments.jump(to: parameters.number(0, default: 0))
+          try arguments.jump(to: parameters.number(0) ?? 0)
         // Go backwards
         } else if modifiers.contains(.colon) && !modifiers.contains(.at) {
-          try arguments.advance(by: -parameters.number(0, default: 1))
+          try arguments.advance(by: -(parameters.number(0) ?? 1))
         // Go forward
         } else if !modifiers.contains(.colon) && !modifiers.contains(.at) {
-          try arguments.advance(by: parameters.number(0, default: 1))
+          try arguments.advance(by: parameters.number(0) ?? 1)
         // Illegal
         } else {
-          throw CLFormatError.malformedDirective("~\(modifiers)*")
+          throw CLFormatError.malformedDirective("~\(parameters)\(modifiers)*")
         }
         return .append("")
       case .upAndOut:
@@ -530,7 +518,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
             return .break("")
           }
         } else if parameters.parameterCount < 2 {
-          if try parameters.number(0, default: arguments.left) == 0 {
+          if (try parameters.number(0) ?? arguments.left) == 0 {
             return modifiers.contains(.colon) ? .break("") : .continue("")
           }
         } else if parameters.parameterCount == 2 {
@@ -538,12 +526,16 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
             return modifiers.contains(.colon) ? .break("") : .continue("")
           }
         } else if parameters.parameterCount == 3 {
-          if try parameters.number(0) <= parameters.number(1) &&
-                 parameters.number(1) <= parameters.number(2) {
+          guard let fst = try parameters.number(0),
+                let snd = try parameters.number(1),
+                let trd = try parameters.number(2) else {
+            throw CLFormatError.malformedDirective("~\(parameters)\(modifiers)^")
+          }
+          if fst <= snd && snd <= trd {
             return modifiers.contains(.colon) ? .break("") : .continue("")
           }
         } else {
-          throw CLFormatError.malformedDirective("~^")
+          throw CLFormatError.malformedDirective("~\(parameters)\(modifiers)^")
         }
         return .append("")
       case .conversion(let control):
@@ -577,9 +569,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
             return .append("")
           }
         } else {
-          let choice = parameters.parameterProvided(0)
-                     ? try parameters.number(0)
-                     : try arguments.nextAsInt()
+          let choice = try parameters.number(0) ?? arguments.nextAsInt()
           if choice >= 0 && choice < controls.count {
             return .append(try controls[choice].format(with: arguments, in: context).string)
           } else if defaultCase {
@@ -590,13 +580,13 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         }
       case .iteration(let control):
         var res = ""
-        let itercap = try parameters.number(0, default: Int.max)
+        let itercap = try parameters.number(0) ?? Int.max
         if modifiers.contains(.colon) {
           let iterargs = modifiers.contains(.at) ? arguments
                                                  : try arguments.nextAsArguments(maxArgs: itercap)
           while iterargs.left > 0 {
             let arg = try iterargs.next()
-            var itercap = try parameters.number(1, default: Int.max)
+            var itercap = try parameters.number(1) ?? Int.max
             if let seq = arg as? any Sequence {
               var newargs = [Any?]()
               var iterator = seq.makeIterator() as (any IteratorProtocol)
@@ -638,13 +628,12 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         }
         return .append(res)
       case .justification(let sections, let spare, let linewidth):
-        let mincol = try parameters.number(0, default: 0)
-        let colinc = try parameters.number(1, default: 1)
-        let minpad = try parameters.number(2, default: 0)
-        let padchar = try parameters.character(3, default: " ")
-        let maxcol = parameters.parameterProvided(4) ?
-                       try parameters.number(4, default: Int.max) : nil
-        let ellipsis = try parameters.character(5, default: "…")
+        let mincol = try parameters.number(0) ?? 0
+        let colinc = try parameters.number(1) ?? 1
+        let minpad = try parameters.number(2) ?? 0
+        let padchar = try parameters.character(3) ?? " "
+        let maxcol = try parameters.number(4)
+        let ellipsis = try parameters.character(5) ?? "…"
         let linewidth = linewidth ?? arguments.linewidth
         var strs = [String]()
         var len = modifiers.contains(.colon) ? minpad : 0

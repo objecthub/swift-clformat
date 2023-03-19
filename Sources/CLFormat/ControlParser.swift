@@ -20,7 +20,12 @@
 
 import Foundation
 
-
+///
+/// Implementation of a control string parser. The parser implements a generic
+/// directive parser which then triggers directive-specific parsers that handle
+/// composite directives (such as conversion, iteration, justification, and
+/// conditional directives).
+/// 
 public class ControlParser {
   internal let config: ControlParserConfig
   internal let control: String
@@ -163,190 +168,6 @@ public class ControlParser {
   }
 }
 
-public struct ControlParserConfig {
-  internal var directiveParsers: [Character : DirectiveParser] = [:]
-  
-  public mutating func parse(_ chars: [Character], with parser: @escaping DirectiveParser) {
-    for char in chars {
-      self.directiveParsers[char] = parser
-    }
-  }
-  
-  public mutating func parse(_ chars: Character..., with parser: @escaping DirectiveParser) {
-    for char in chars {
-      self.directiveParsers[char] = parser
-    }
-  }
-  
-  public mutating func parse(_ chars: Character..., appending specifier: DirectiveSpecifier) {
-    self.parse(chars) { parser, parameters, modifiers in
-      return .append(Directive(parameters: parameters,
-                               modifiers: modifiers,
-                               specifier: specifier))
-    }
-  }
-  
-  public static let standard: ControlParserConfig = {
-    var config = ControlParserConfig()
-    config.parse("a", "A", appending: StandardDirectiveSpecifier.ascii)
-    config.parse("w", "W", appending: StandardDirectiveSpecifier.write)
-    config.parse("s", "S", appending: StandardDirectiveSpecifier.sexpr)
-    config.parse("d", "D", appending: StandardDirectiveSpecifier.decimal)
-    config.parse("r", "R", appending: StandardDirectiveSpecifier.radix)
-    config.parse("b", "B", appending: StandardDirectiveSpecifier.binary)
-    config.parse("o", "O", appending: StandardDirectiveSpecifier.octal)
-    config.parse("x", "X", appending: StandardDirectiveSpecifier.hexadecimal)
-    config.parse("c", "C", appending: StandardDirectiveSpecifier.character)
-    config.parse("f", "F", appending: StandardDirectiveSpecifier.fixedFloat)
-    config.parse("e", "E", appending: StandardDirectiveSpecifier.exponentFloat)
-    config.parse("g", "G", appending: StandardDirectiveSpecifier.generalFloat)
-    config.parse("$",      appending: StandardDirectiveSpecifier.moneyAmount)
-    config.parse("p", "P", appending: StandardDirectiveSpecifier.plural)
-    config.parse("t", "T", appending: StandardDirectiveSpecifier.tabular)
-    config.parse("%",      appending: StandardDirectiveSpecifier.percent)
-    config.parse("&",      appending: StandardDirectiveSpecifier.ampersand)
-    config.parse("|",      appending: StandardDirectiveSpecifier.bar)
-    config.parse("~",      appending: StandardDirectiveSpecifier.tilde)
-    config.parse("*",      appending: StandardDirectiveSpecifier.ignoreArgs)
-    config.parse("^",      appending: StandardDirectiveSpecifier.upAndOut)
-    config.parse("?",      appending: StandardDirectiveSpecifier.indirection)
-    config.parse("\n") { parser, parameters, modifiers in
-      if modifiers.contains(.colon) && modifiers.contains(.at) {
-        throw ControlParsingError.malformedDirective("~:@\\n")
-      } else if modifiers.contains(.colon) {
-        return .ignore
-      }
-      while let next = parser.lookaheadChar(), next == " " {
-        _ = try parser.nextChar()
-      }
-      if modifiers.contains(.at) {
-        return .append(Parameters(), Modifiers(), StandardDirectiveSpecifier.percent)
-      } else {
-        return .ignore
-      }
-    }
-    config.parse("(") { parser, parameters, modifiers in
-      _ = try parser.nextChar()
-      let (control, directive) = try parser.parse()
-      guard let directive = directive,
-            directive.specifier.identifier ==
-              StandardDirectiveSpecifier.conversionEnd.identifier else {
-        throw ControlParsingError.malformedDirectiveSyntax("conversion", "~(...~)")
-      }
-      return .append(parameters, modifiers, StandardDirectiveSpecifier.conversion(control))
-    }
-    config.parse(")") { parser, parameters, modifiers in
-      guard parameters.parameterCount == 0,
-            !modifiers.contains(.at), !modifiers.contains(.colon) else {
-        throw ControlParsingError.malformedDirective("~\(modifiers))")
-      }
-      return .exit(parameters, modifiers, StandardDirectiveSpecifier.conversionEnd)
-    }
-    config.parse("[") { parser, parameters, modifiers in
-      var alternatives = [Control]()
-      var def = false
-      _ = try parser.nextChar()
-      while true {
-        let (control, directive) = try parser.parse()
-        alternatives.append(control)
-        if let dir = directive {
-          if dir.specifier.identifier == StandardDirectiveSpecifier.separator.identifier {
-            guard !def else {
-              throw ControlParsingError.malformedDirectiveSyntax("conditional", "~[...~:;...~]")
-            }
-            if dir.modifiers.contains(.colon) {
-              def = true
-            }
-            continue
-          } else if dir.specifier.identifier ==
-                      StandardDirectiveSpecifier.conditionalEnd.identifier {
-            break
-          }
-        }
-        throw ControlParsingError.malformedDirectiveSyntax("conditional", "~[...~]")
-      }
-      return .append(parameters,
-                     modifiers,
-                     StandardDirectiveSpecifier.conditional(alternatives, def))
-    }
-    config.parse("]") { parser, parameters, modifiers in
-      guard parameters.parameterCount == 0,
-            !modifiers.contains(.at), !modifiers.contains(.colon) else {
-        throw ControlParsingError.malformedDirective("~\(modifiers)]")
-      }
-      return .exit(parameters, modifiers, StandardDirectiveSpecifier.conditionalEnd)
-    }
-    config.parse(";") { parser, parameters, modifiers in
-      guard parameters.parameterCount == 0 ||
-              (parameters.parameterCount <= 2 && modifiers.contains(.colon)),
-            !modifiers.contains(.at) else {
-        throw ControlParsingError.malformedDirective("~:;")
-      }
-      parser.i = parser.control.index(after: parser.i)
-      return .exit(parameters, modifiers, StandardDirectiveSpecifier.separator)
-    }
-    config.parse("{") { parser, parameters, modifiers in
-      _ = try parser.nextChar()
-      let (control, directive) = try parser.parse()
-      guard let directive = directive,
-            directive.specifier.identifier ==
-              StandardDirectiveSpecifier.iterationEnd.identifier else {
-        throw ControlParsingError.malformedDirectiveSyntax("iteration", "~{...~}")
-      }
-      return .append(parameters, modifiers, StandardDirectiveSpecifier.iteration(control))
-    }
-    config.parse("}") { parser, parameters, modifiers in
-      guard parameters.parameterCount == 0,
-            !modifiers.contains(.at), !modifiers.contains(.colon) else {
-        throw ControlParsingError.malformedDirective("~\(modifiers)}")
-      }
-      return .exit(parameters, modifiers, StandardDirectiveSpecifier.iterationEnd)
-    }
-    config.parse("<") { parser, parameters, modifiers in
-      var sections = [Control]()
-      var spare: Int? = nil
-      var width: Int? = nil
-      _ = try parser.nextChar()
-      while true {
-        let (control, directive) = try parser.parse()
-        sections.append(control)
-        if let dir = directive {
-          if dir.specifier.identifier == StandardDirectiveSpecifier.separator.identifier {
-            if dir.modifiers.contains(.colon) {
-              guard sections.count == 1 else {
-                throw ControlParsingError.malformedDirectiveSyntax("justification", "~<...~:;...~>")
-              }
-              spare = try dir.parameters.number(0, default: 0)
-              if dir.parameters.parameterProvided(1) {
-                width = try dir.parameters.number(1, default: 72)
-              }
-            }
-            continue
-          } else if dir.specifier.identifier ==
-                      StandardDirectiveSpecifier.justificationEnd.identifier {
-            break
-          }
-        }
-        throw ControlParsingError.malformedDirectiveSyntax("justification", "~<...~>")
-      }
-      guard !parameters.parameterProvided(4) || sections.count == 1 else {
-        throw ControlParsingError.malformedDirectiveSyntax("justification", "~,,,,X<...~>")
-      }
-      return .append(parameters,
-                     modifiers,
-                     StandardDirectiveSpecifier.justification(sections, spare, width))
-    }
-    config.parse(">") { parser, parameters, modifiers in
-      guard parameters.parameterCount == 0,
-            !modifiers.contains(.at), !modifiers.contains(.colon) else {
-        throw ControlParsingError.malformedDirective("~\(modifiers)>")
-      }
-      return .exit(parameters, modifiers, StandardDirectiveSpecifier.justificationEnd)
-    }
-    return config
-  }()
-}
-
 /// A directive parser is a function that takes a control parser, parameters, and
 /// modifiers generating a parse result message. Most directive parsers don't really
 /// parse anything (parsing of parameters and modifiers is done generically already
@@ -375,6 +196,10 @@ public enum ParseResult {
   }
 }
 
+///
+/// Enumeration encapsulating all parsing errors for the built-in directive
+/// parsers.
+/// 
 public enum ControlParsingError: Error, CustomStringConvertible {
   case prematureEndOfControl
   case duplicateModifier(String)

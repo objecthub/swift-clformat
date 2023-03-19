@@ -20,16 +20,24 @@
 
 import Foundation
 
+///
+/// Option set `Modifiers` implements the three available format directive
+/// modifiers: `colon`, `at`, and `plus`. `plus` is CLFormat-specific and not
+/// available in the original Common Lisp implementation.
+/// 
 public struct Modifiers: OptionSet, CustomStringConvertible {
   public let rawValue: Int
   public static let colon = Modifiers(rawValue: 1 << 0)
   public static let at = Modifiers(rawValue: 1 << 1)
   public static let plus = Modifiers(rawValue: 1 << 2)
   
+  /// Constructor.
   public init(rawValue: Int) {
     self.rawValue = rawValue
   }
   
+  /// Returns a string representation of the modifiers in the syntax used
+  /// by control strings.
   public var description: String {
     var res = ""
     if self.contains(.colon) {
