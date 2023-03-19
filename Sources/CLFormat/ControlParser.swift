@@ -32,6 +32,11 @@ public class ControlParser {
     self.i = control.startIndex
   }
   
+  public func lookaheadChar() -> Character? {
+    let i = self.control.index(after: i)
+    return i < self.control.endIndex ? self.control[i] : nil
+  }
+  
   public func nextChar() throws -> Character {
     self.i = self.control.index(after: i)
     if self.i < self.control.endIndex {
@@ -119,6 +124,8 @@ public class ControlParser {
         }
         if let parser = self.config.directiveParsers[ch] {
           switch try parser(self, Parameters(params), modifiers) {
+            case .ignore:
+              break
             case .append(let directive):
               components.append(.directive(directive))
             case .exit(let directive):
@@ -194,10 +201,8 @@ public struct ControlParserConfig {
     config.parse("e", "E", appending: StandardDirectiveSpecifier.exponentFloat)
     config.parse("g", "G", appending: StandardDirectiveSpecifier.generalFloat)
     config.parse("$",      appending: StandardDirectiveSpecifier.moneyAmount)
-    config.parse("_",      appending: StandardDirectiveSpecifier.newline)
     config.parse("p", "P", appending: StandardDirectiveSpecifier.plural)
     config.parse("t", "T", appending: StandardDirectiveSpecifier.tabular)
-    config.parse("~",      appending: StandardDirectiveSpecifier.tilde)
     config.parse("%",      appending: StandardDirectiveSpecifier.percent)
     config.parse("&",      appending: StandardDirectiveSpecifier.ampersand)
     config.parse("|",      appending: StandardDirectiveSpecifier.bar)
@@ -205,6 +210,21 @@ public struct ControlParserConfig {
     config.parse("*",      appending: StandardDirectiveSpecifier.ignoreArgs)
     config.parse("^",      appending: StandardDirectiveSpecifier.upAndOut)
     config.parse("?",      appending: StandardDirectiveSpecifier.indirection)
+    config.parse("\n") { parser, parameters, modifiers in
+      if modifiers.contains(.colon) && modifiers.contains(.at) {
+        throw ControlParsingError.malformedDirective("~:@\\n")
+      } else if modifiers.contains(.colon) {
+        return .ignore
+      }
+      while let next = parser.lookaheadChar(), next == " " {
+        _ = try parser.nextChar()
+      }
+      if modifiers.contains(.at) {
+        return .append(Parameters(), Modifiers(), StandardDirectiveSpecifier.percent)
+      } else {
+        return .ignore
+      }
+    }
     config.parse("(") { parser, parameters, modifiers in
       _ = try parser.nextChar()
       let (control, directive) = try parser.parse()
@@ -309,6 +329,9 @@ public struct ControlParserConfig {
         }
         throw ControlParsingError.malformedDirectiveSyntax("justification", "~<...~>")
       }
+      guard !parameters.parameterProvided(4) || sections.count == 1 else {
+        throw ControlParsingError.malformedDirectiveSyntax("justification", "~,,,,X<...~>")
+      }
       return .append(parameters,
                      modifiers,
                      StandardDirectiveSpecifier.justification(sections, spare, width))
@@ -333,6 +356,7 @@ public typealias DirectiveParser = (ControlParser, Parameters, Modifiers) throws
 
 /// Directive parsers generate `ParseResult` values as their result
 public enum ParseResult {
+  case ignore
   case append(Directive)
   case exit(Directive)
   

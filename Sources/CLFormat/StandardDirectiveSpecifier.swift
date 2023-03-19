@@ -34,7 +34,6 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
   case exponentFloat
   case generalFloat
   case moneyAmount
-  case newline
   case percent
   case ampersand
   case bar
@@ -82,8 +81,6 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         return "G"
       case .moneyAmount:
         return "$"
-      case .newline:
-        return "_"
       case .percent:
         return "%"
       case .ampersand:
@@ -142,6 +139,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
           str = "nil"
         }
         return .append(self.pad(string: str,
+                                left: modifiers.contains(.at),
                                 right: !modifiers.contains(.at),
                                 padchar: try parameters.character(3, default: " "),
                                 ellipsis: try parameters.character(5, default: "…"),
@@ -164,6 +162,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
           str = "nil"
         }
         return .append(self.pad(string: str,
+                                left: modifiers.contains(.at),
                                 right: !modifiers.contains(.at),
                                 padchar: try parameters.character(3, default: " "),
                                 ellipsis: try parameters.character(5, default: "…"),
@@ -194,6 +193,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
           str = "nil"
         }
         return .append(self.pad(string: str,
+                                left: modifiers.contains(.at),
                                 right: !modifiers.contains(.at),
                                 padchar: try parameters.character(3, default: " "),
                                 ellipsis: try parameters.character(5, default: "…"),
@@ -465,17 +465,6 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                                    parameters.parameterProvided(6),
                          forcesign: modifiers.contains(.at),
                          signBeforePad: modifiers.contains(.colon)))
-      case .newline:
-        // TODO: Figure out a way how to use that in Swift
-        if modifiers.contains(.colon) && modifiers.contains(.at) {
-          return .append("\n")
-        } else if modifiers.contains(.colon) {
-          return .append("\n")
-        } else if modifiers.contains(.at) {
-          return .append("\n")
-        } else {
-          return .append("\n")
-        }
       case .percent:
         return .append(String(repeating: "\n", count: try parameters.number(0, default: 1)))
       case .ampersand:
@@ -483,7 +472,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         if let last = context.current.last, last == "\n" {
           n -= 1
         }
-        return .append(String(repeating: "\n", count: n))
+        return .append(n > 0 ? String(repeating: "\n", count: n) : "")
       case .bar:
         return .append(String(repeating: "\u{12}", count: try parameters.number(0, default: 1)))
       case .tilde:
@@ -653,6 +642,9 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         let colinc = try parameters.number(1, default: 1)
         let minpad = try parameters.number(2, default: 0)
         let padchar = try parameters.character(3, default: " ")
+        let maxcol = parameters.parameterProvided(4) ?
+                       try parameters.number(4, default: Int.max) : nil
+        let ellipsis = try parameters.character(5, default: "…")
         let linewidth = linewidth ?? arguments.linewidth
         var strs = [String]()
         var len = modifiers.contains(.colon) ? minpad : 0
@@ -679,7 +671,17 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                  + (modifiers.contains(.at) ? 1 : 0)
                  + (modifiers.contains(.colon) ? 1 : 0)
         var justified = ""
-        if gaps == 0 {
+        if strs.count == 1 && ignore == 0, let maxcol = maxcol {
+          justified = self.pad(string: strs[0],
+                               left: modifiers.contains(.colon),
+                               right: modifiers.contains(.at),
+                               padchar: padchar,
+                               ellipsis: ellipsis,
+                               mincol: width,
+                               colinc: 1,
+                               minpad: 0,
+                               maxcol: maxcol)
+        } else if gaps == 0 {
           justified = String(repeating: padchar, count: width - len) + strs[ignore]
         } else {
           let minpad = (width - len) / gaps
@@ -718,6 +720,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
   }
   
   func pad(string: String,
+           left: Bool,
            right: Bool,
            padchar: Character,
            ellipsis: Character,
@@ -739,11 +742,16 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
       if let maxcol = maxcol, padcount + count > maxcol {
         padcount = maxcol - count
       }
-      let padding = String(repeating: padchar, count: padcount)
-      if right {
-        str = str + padding
+      if left && right {
+        str = String(repeating: padchar, count: padcount - (padcount / 2)) + str +
+              String(repeating: padchar, count: padcount / 2)
       } else {
-        str = padding + str
+        let padding = String(repeating: padchar, count: padcount)
+        if right {
+          str = str + padding
+        } else {
+          str = padding + str
+        }
       }
     }
     return str

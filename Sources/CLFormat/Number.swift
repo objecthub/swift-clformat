@@ -22,7 +22,8 @@ import Foundation
 
 ///
 /// Enumeration `Number` is used to bundle different numeric datatypes into a single
-/// wrapper. `Number` can be instaniated using any numeric type. It also acts as a
+/// wrapper. `Number` can be instaniated using any native numeric type. `Decimal` is
+/// also supported (e.g. for monetary use cases). Enumeration `Number` also acts as a
 /// factory for `NSNumber` instances. Finally, enumeration `Number` implements a few
 /// features needed for `CLFormat`.
 /// 
@@ -72,10 +73,12 @@ public enum Number: Equatable, Codable, CustomStringConvertible {
     }
   }
   
+  /// Returns true if this number is an integer number
   public var isInteger: Bool {
     return !self.isFloatingPointNumber
   }
   
+  /// Returns true if this number is an unsigned integer number
   public var isUnsignedInteger: Bool {
     switch self {
       case .uint(_), .uint8(_), .uint16(_), .uint32(_), .uint64(_):
@@ -85,6 +88,7 @@ public enum Number: Equatable, Codable, CustomStringConvertible {
     }
   }
   
+  /// Returns true if this number is a floating-point number
   public var isFloatingPointNumber: Bool {
     switch self {
       case .float(_), .double(_), .decimal(_):
@@ -94,6 +98,8 @@ public enum Number: Equatable, Codable, CustomStringConvertible {
     }
   }
   
+  /// Returns true if this number is equal to the given integer `i`. For
+  /// floating-point numbers, this procedure always returns false.
   public func equals(integer i: Int) -> Bool {
     switch self {
       case .int(let num):
@@ -123,6 +129,8 @@ public enum Number: Equatable, Codable, CustomStringConvertible {
     }
   }
   
+  /// Tries to return a roman numeral for this number. If this is not possible
+  /// (e.g. for floating-point numbers), returns another representation.
   public var romanNumeral: String {
     switch self {
       case .int(let num):
@@ -184,6 +192,8 @@ public enum Number: Equatable, Codable, CustomStringConvertible {
     }
   }
   
+  /// Internal function to compute roman numerals. Only numbers between 1 and 3999 are
+  /// supported.
   private static func romanNumeral(for n: Int) -> String? {
     guard n > 0 && n < 4000 else {
       return nil
@@ -202,6 +212,7 @@ public enum Number: Equatable, Codable, CustomStringConvertible {
     return res
   }
   
+  /// Returns an `NSNumber` object representing this number.
   public var nsnumber: NSNumber {
     switch self {
       case .int(let num):
@@ -231,6 +242,7 @@ public enum Number: Equatable, Codable, CustomStringConvertible {
     }
   }
   
+  /// Returns a description of this number.
   public var description: String {
     switch self {
       case .int(let num):

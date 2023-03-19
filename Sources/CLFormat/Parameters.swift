@@ -46,7 +46,7 @@ public enum Parameter: Equatable, CustomStringConvertible {
 public struct Parameters: Equatable, CustomStringConvertible {
   private let params: [Parameter]
   
-  internal init(_ params: [Parameter]) {
+  public init(_ params: [Parameter] = []) {
     self.params = params
   }
   
