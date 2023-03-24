@@ -69,7 +69,23 @@ public func clformat(_ control: String,
                      locale: Locale? = nil,
                      tabsize: Int = 4,
                      linewidth: Int = 80,
-                     args: Any?...) throws -> String {
+                     _ args: Any?...) throws -> String {
   let control = try Control(string: control, config: config)
-  return try control.format(locale: locale, tabsize: tabsize, linewidth: linewidth, args: args)
+  return try control.format(locale: locale,
+                            tabsize: tabsize,
+                            linewidth: linewidth,
+                            args: args)
+}
+
+public func clformat(_ control: String,
+                     config: ControlParserConfig? = nil,
+                     locale: Locale? = nil,
+                     tabsize: Int = 4,
+                     linewidth: Int = 80,
+                     arguments: [Any?]) throws -> String {
+  let control = try Control(string: control, config: config)
+  return try control.format(locale: locale,
+                            tabsize: tabsize,
+                            linewidth: linewidth,
+                            args: arguments)
 }

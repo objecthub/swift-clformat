@@ -47,7 +47,7 @@ public class ControlParser {
     if self.i < self.control.endIndex {
       return self.control[i]
     } else {
-      throw ControlParsingError.prematureEndOfControl
+      throw CLControlError.prematureEndOfControl
     }
   }
   
@@ -82,7 +82,7 @@ public class ControlParser {
                   case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
                     numstr.append(ch)
                   default:
-                    throw ControlParsingError.malformedNumericParameter("\(numstr)\(ch)")
+                    throw CLControlError.malformedNumericParameter("\(numstr)\(ch)")
                 }
               }
               ch = try self.nextChar()
@@ -95,7 +95,7 @@ public class ControlParser {
               if let num = Int(numstr, radix: 10) {
                 params.append(.number(num))
               } else {
-                throw ControlParsingError.malformedNumericParameter(numstr)
+                throw CLControlError.malformedNumericParameter(numstr)
               }
             case ",":
               params.append(.none)
@@ -107,19 +107,19 @@ public class ControlParser {
           switch ch {
             case ":":
               if modifiers.contains(.colon) {
-                throw ControlParsingError.duplicateModifier(":")
+                throw CLControlError.duplicateModifier(":")
               }
               modifiers.insert(.colon)
               ch = try self.nextChar()
             case "@":
               if modifiers.contains(.at) {
-                throw ControlParsingError.duplicateModifier("@")
+                throw CLControlError.duplicateModifier("@")
               }
               modifiers.insert(.at)
               ch = try self.nextChar()
             case "+":
               if modifiers.contains(.plus) {
-                throw ControlParsingError.duplicateModifier("+")
+                throw CLControlError.duplicateModifier("+")
               }
               modifiers.insert(.plus)
               ch = try self.nextChar()
@@ -137,7 +137,7 @@ public class ControlParser {
               return (Control(components: components, config: self.config), directive)
           }
         } else {
-          throw ControlParsingError.unknownDirective("~" + String(ch))
+          throw CLControlError.unknownDirective("~" + String(ch))
         }
         self.i = control.index(after: self.i)
         start = i
@@ -159,9 +159,9 @@ public class ControlParser {
              StandardDirectiveSpecifier.conversionEnd.identifier,
              StandardDirectiveSpecifier.conditionalEnd.identifier,
              StandardDirectiveSpecifier.iterationEnd.identifier:
-          throw ControlParsingError.misplacedDirective(directive.description)
+          throw CLControlError.misplacedDirective(directive.description)
         default:
-          throw ControlParsingError.prematureEndOfControl
+          throw CLControlError.prematureEndOfControl
       }
     }
     return control
@@ -200,7 +200,7 @@ public enum ParseResult {
 /// Enumeration encapsulating all parsing errors for the built-in directive
 /// parsers.
 /// 
-public enum ControlParsingError: Error, CustomStringConvertible {
+public enum CLControlError: Error, CustomStringConvertible {
   case prematureEndOfControl
   case duplicateModifier(String)
   case malformedParameter

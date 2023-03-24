@@ -766,7 +766,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
   }
 }
 
-enum CLFormatError: Error, CustomStringConvertible {
+public enum CLFormatError: Error, CustomStringConvertible {
   case malformedDirective(String)
   case unsupportedDirective(String)
   case argumentOutOfRange(Int, Int)
@@ -782,7 +782,7 @@ enum CLFormatError: Error, CustomStringConvertible {
   case expectedSequenceParameter(Int, Any?)
   case cannotRepresentNumber(Number, Int)
   
-  var description: String {
+  public var description: String {
     switch self {
       case .malformedDirective(let dir):
         return "malformed directive \(dir) in control string"
