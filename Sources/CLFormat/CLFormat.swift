@@ -20,6 +20,70 @@
 
 import Foundation
 
+protocol CLFormatConvertible {
+  var clformatDescription: String { get }
+}
+
+protocol DebugCLFormatConvertible {
+  var clformatDebugDescription: String { get }
+}
+
+extension Array: CLFormatConvertible where Element: CLFormatConvertible {
+  var clformatDescription: String {
+    var res = "["
+    var sep = ""
+    for element in self {
+      res += sep + element.clformatDescription
+      sep = ", "
+    }
+    return res + "]"
+  }
+}
+
+extension Array: DebugCLFormatConvertible where Element: DebugCLFormatConvertible {
+  var clformatDebugDescription: String {
+    var res = "["
+    var sep = ""
+    for element in self {
+      res += sep + element.clformatDebugDescription
+      sep = ", "
+    }
+    return res + "]"
+  }
+}
+
+extension Optional: CLFormatConvertible, DebugCLFormatConvertible {
+  var clformatDescription: String {
+    switch self {
+      case .none:
+        return "nil"
+      case .some(let value):
+        if let x = value as? CLFormatConvertible {
+          return x.clformatDescription
+        } else if let x = value as? CustomDebugStringConvertible {
+          return x.debugDescription
+        } else {
+          return "\(value)"
+        }
+    }
+  }
+  
+  var clformatDebugDescription: String {
+    switch self {
+      case .none:
+        return "nil"
+      case .some(let value):
+        if let x = value as? DebugCLFormatConvertible {
+          return x.clformatDebugDescription
+        } else if let x = value as? CustomDebugStringConvertible {
+          return x.debugDescription
+        } else {
+          return "\(value)"
+        }
+    }
+  }
+}
+
 extension String {
   
   public init(control: String,

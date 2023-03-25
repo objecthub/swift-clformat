@@ -128,8 +128,12 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
       case .ascii:
         let str: String
         if let arg = try arguments.next() {
-          if modifiers.contains(.colon), let x = arg as? CustomDebugStringConvertible {
+          if modifiers.contains(.colon), let x = arg as? DebugCLFormatConvertible {
+            str = x.clformatDebugDescription
+          } else if modifiers.contains(.colon), let x = arg as? CustomDebugStringConvertible {
             str = x.debugDescription
+          } else if let x = arg as? CLFormatConvertible {
+            str = x.clformatDescription
           } else if let x = arg as? CustomStringConvertible {
             str = x.description
           } else {
@@ -180,8 +184,12 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
             str = "\"\(x as String)\""
           } else if let x = arg as? Character {
             str = "'\(x)'"
+          } else if modifiers.contains(.colon), let x = arg as? DebugCLFormatConvertible {
+            str = x.clformatDebugDescription
           } else if modifiers.contains(.colon), let x = arg as? CustomDebugStringConvertible {
             str = x.debugDescription
+          } else if let x = arg as? CLFormatConvertible {
+            str = x.clformatDescription
           } else if let x = arg as? CustomStringConvertible {
             str = x.description
           } else {
