@@ -16,14 +16,14 @@
 		CCB5F10B29C1475F00587140 /* CLFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0E429C1160700587140 /* CLFormat.swift */; };
 		CCB5F10C29C1475F00587140 /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0D829C1154900587140 /* Parameters.swift */; };
 		CCB5F10D29C1475F00587140 /* Directive.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0D629C1152600587140 /* Directive.swift */; };
-		CCB5F10E29C1475F00587140 /* Control.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0DE29C115A500587140 /* Control.swift */; };
-		CCB5F10F29C1475F00587140 /* ControlParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0E029C115C400587140 /* ControlParser.swift */; };
+		CCB5F10E29C1475F00587140 /* CLControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0DE29C115A500587140 /* CLControl.swift */; };
+		CCB5F10F29C1475F00587140 /* CLControlParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0E029C115C400587140 /* CLControlParser.swift */; };
 		CCB5F11029C1475F00587140 /* StandardDirectiveSpecifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0E229C115E600587140 /* StandardDirectiveSpecifier.swift */; };
 		CCB5F11229C1475F00587140 /* Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0D229C114D300587140 /* Number.swift */; };
 		CCB5F11329C1475F00587140 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0D029C1148900587140 /* Currency.swift */; };
 		CCB5F11429C1475F00587140 /* Arguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0DC29C1157C00587140 /* Arguments.swift */; };
 		CCB5F11C29C148A400587140 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F11B29C148A400587140 /* main.swift */; };
-		CCB5F12329C7974B00587140 /* ControlParserConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F12229C7974B00587140 /* ControlParserConfig.swift */; };
+		CCB5F12329C7974B00587140 /* CLControlParserConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F12229C7974B00587140 /* CLControlParserConfig.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,8 +63,8 @@
 		CCB5F0D829C1154900587140 /* Parameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
 		CCB5F0DA29C1156400587140 /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
 		CCB5F0DC29C1157C00587140 /* Arguments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Arguments.swift; sourceTree = "<group>"; };
-		CCB5F0DE29C115A500587140 /* Control.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Control.swift; sourceTree = "<group>"; };
-		CCB5F0E029C115C400587140 /* ControlParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlParser.swift; sourceTree = "<group>"; };
+		CCB5F0DE29C115A500587140 /* CLControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLControl.swift; sourceTree = "<group>"; };
+		CCB5F0E029C115C400587140 /* CLControlParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLControlParser.swift; sourceTree = "<group>"; };
 		CCB5F0E229C115E600587140 /* StandardDirectiveSpecifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardDirectiveSpecifier.swift; sourceTree = "<group>"; };
 		CCB5F0E429C1160700587140 /* CLFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLFormat.swift; sourceTree = "<group>"; };
 		CCB5F0E629C13E1500587140 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
@@ -78,7 +78,7 @@
 		CCB5F10029C1455B00587140 /* CLFormatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLFormatTests.swift; sourceTree = "<group>"; };
 		CCB5F11929C148A400587140 /* CLFormatTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CLFormatTool; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCB5F11B29C148A400587140 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		CCB5F12229C7974B00587140 /* ControlParserConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlParserConfig.swift; sourceTree = "<group>"; };
+		CCB5F12229C7974B00587140 /* CLControlParserConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLControlParserConfig.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,9 +141,9 @@
 				CCB5F0D829C1154900587140 /* Parameters.swift */,
 				CCB5F0DA29C1156400587140 /* Modifiers.swift */,
 				CCB5F0DC29C1157C00587140 /* Arguments.swift */,
-				CCB5F0DE29C115A500587140 /* Control.swift */,
-				CCB5F0E029C115C400587140 /* ControlParser.swift */,
-				CCB5F12229C7974B00587140 /* ControlParserConfig.swift */,
+				CCB5F0DE29C115A500587140 /* CLControl.swift */,
+				CCB5F0E029C115C400587140 /* CLControlParser.swift */,
+				CCB5F12229C7974B00587140 /* CLControlParserConfig.swift */,
 				CCB5F0E229C115E600587140 /* StandardDirectiveSpecifier.swift */,
 				CCB5F0E429C1160700587140 /* CLFormat.swift */,
 				CCB5F0F429C1455B00587140 /* CLFormat.h */,
@@ -304,14 +304,14 @@
 			files = (
 				CCB5F11329C1475F00587140 /* Currency.swift in Sources */,
 				CCB5F11429C1475F00587140 /* Arguments.swift in Sources */,
-				CCB5F12329C7974B00587140 /* ControlParserConfig.swift in Sources */,
+				CCB5F12329C7974B00587140 /* CLControlParserConfig.swift in Sources */,
 				CCB5F10C29C1475F00587140 /* Parameters.swift in Sources */,
 				CCB5F11029C1475F00587140 /* StandardDirectiveSpecifier.swift in Sources */,
 				CCB5F0F629C1455B00587140 /* CLFormat.docc in Sources */,
-				CCB5F10E29C1475F00587140 /* Control.swift in Sources */,
+				CCB5F10E29C1475F00587140 /* CLControl.swift in Sources */,
 				CCB5F10B29C1475F00587140 /* CLFormat.swift in Sources */,
 				CCB5F11229C1475F00587140 /* Number.swift in Sources */,
-				CCB5F10F29C1475F00587140 /* ControlParser.swift in Sources */,
+				CCB5F10F29C1475F00587140 /* CLControlParser.swift in Sources */,
 				CCB5F10A29C1475F00587140 /* Modifiers.swift in Sources */,
 				CCB5F10929C1475F00587140 /* NumberFormat.swift in Sources */,
 				CCB5F10D29C1475F00587140 /* Directive.swift in Sources */,

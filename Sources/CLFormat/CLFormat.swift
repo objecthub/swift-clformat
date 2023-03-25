@@ -87,12 +87,12 @@ extension Optional: CLFormatConvertible, DebugCLFormatConvertible {
 extension String {
   
   public init(control: String,
-              config: ControlParserConfig? = nil,
+              config: CLControlParserConfig? = nil,
               locale: Locale? = nil,
               tabsize: Int = 4,
               linewidth: Int = 80,
-              _ args: Any?...) throws {
-    let control = try Control(string: control, config: config)
+              args: Any?...) throws {
+    let control = try CLControl(string: control, config: config)
     try self.init(control.format(locale: locale,
                                  tabsize: tabsize,
                                  linewidth: linewidth,
@@ -100,12 +100,12 @@ extension String {
   }
   
   public init(control: String,
-              config: ControlParserConfig? = nil,
+              config: CLControlParserConfig? = nil,
               locale: Locale? = nil,
               tabsize: Int = 4,
               linewidth: Int = 80,
               arguments: [Any?]) throws {
-    let control = try Control(string: control, config: config)
+    let control = try CLControl(string: control, config: config)
     try self.init(control.format(locale: locale,
                                  tabsize: tabsize,
                                  linewidth: linewidth,
@@ -129,12 +129,12 @@ extension String {
 }
 
 public func clformat(_ control: String,
-                     config: ControlParserConfig? = nil,
+                     config: CLControlParserConfig? = CLControlParserConfig.default,
                      locale: Locale? = nil,
                      tabsize: Int = 4,
                      linewidth: Int = 80,
-                     _ args: Any?...) throws -> String {
-  let control = try Control(string: control, config: config)
+                     args: Any?...) throws -> String {
+  let control = try CLControl(string: control, config: config)
   return try control.format(locale: locale,
                             tabsize: tabsize,
                             linewidth: linewidth,
@@ -142,14 +142,46 @@ public func clformat(_ control: String,
 }
 
 public func clformat(_ control: String,
-                     config: ControlParserConfig? = nil,
+                     config: CLControlParserConfig? = CLControlParserConfig.default,
                      locale: Locale? = nil,
                      tabsize: Int = 4,
                      linewidth: Int = 80,
                      arguments: [Any?]) throws -> String {
-  let control = try Control(string: control, config: config)
+  let control = try CLControl(string: control, config: config)
   return try control.format(locale: locale,
                             tabsize: tabsize,
                             linewidth: linewidth,
                             args: arguments)
+}
+
+public func clprintf(_ control: String,
+                     config: CLControlParserConfig? = CLControlParserConfig.default,
+                     locale: Locale? = nil,
+                     tabsize: Int = 4,
+                     linewidth: Int = 80,
+                     args: Any?...,
+                     terminator: String = "\n") throws {
+  print(try clformat(control,
+                     config: config,
+                     locale: locale,
+                     tabsize: tabsize,
+                     linewidth: linewidth,
+                     arguments: args),
+        terminator: terminator)
+}
+
+public func clprintf(_ control: String,
+                     config: CLControlParserConfig? = CLControlParserConfig.default,
+                     locale: Locale? = nil,
+                     tabsize: Int = 4,
+                     linewidth: Int = 80,
+                     arguments: [Any?],
+                     terminator: String = "\n") throws {
+  print(try clformat(control,
+                     config: config,
+                     locale: locale,
+                     tabsize: tabsize,
+                     linewidth: linewidth,
+                     arguments: arguments),
+        terminator: terminator)
 }

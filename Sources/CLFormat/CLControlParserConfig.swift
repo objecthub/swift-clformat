@@ -28,21 +28,28 @@ import Foundation
 /// new directive specifier value. Composite directives have more complex parsing
 /// logic.
 /// 
-public struct ControlParserConfig {
-  public private(set) var directiveParsers: [Character : DirectiveParser] = [:]
+public struct CLControlParserConfig {
+  private var directiveParsers: [Character : DirectiveParser] = [:]
   
+  /// Add a new directive parser to this control parser configuration for the given
+  /// array of characters.
   public mutating func parse(_ chars: [Character], with parser: @escaping DirectiveParser) {
     for char in chars {
       self.directiveParsers[char] = parser
     }
   }
   
+  /// Add a new directive parser to this control parser configuration for the given
+  /// characters.
   public mutating func parse(_ chars: Character..., with parser: @escaping DirectiveParser) {
     for char in chars {
       self.directiveParsers[char] = parser
     }
   }
   
+  /// Add a new default directive parser which simply appends the directive to the list of
+  /// control components to this control parser configuration for the given
+  /// characters.
   public mutating func parse(_ chars: Character..., appending specifier: DirectiveSpecifier) {
     self.parse(chars) { parser, parameters, modifiers in
       return .append(Directive(parameters: parameters,
@@ -51,8 +58,24 @@ public struct ControlParserConfig {
     }
   }
   
-  public static let standard: ControlParserConfig = {
-    var config = ControlParserConfig()
+  /// Remove the directive parser for the given characters.
+  public mutating func remove(_ chars: Character...) {
+    for ch in chars {
+      self.directiveParsers.removeValue(forKey: ch)
+    }
+  }
+  
+  /// Returns the directive parser for the given character, or `null` if the character
+  /// does not have an associated directive parser in this configuration.
+  public func parser(for ch: Character) -> DirectiveParser? {
+    return self.directiveParsers[ch]
+  }
+  
+  /// The standard control parser configuration. Whenever `nil` is specified as a
+  /// control parser config, this struct is used. The `String` initializers use this
+  /// configuration as a default.
+  public static let standard: CLControlParserConfig = {
+    var config = CLControlParserConfig()
     config.parse("a", "A", appending: StandardDirectiveSpecifier.ascii)
     config.parse("w", "W", appending: StandardDirectiveSpecifier.write)
     config.parse("s", "S", appending: StandardDirectiveSpecifier.sexpr)
@@ -108,7 +131,7 @@ public struct ControlParserConfig {
       return .exit(parameters, modifiers, StandardDirectiveSpecifier.conversionEnd)
     }
     config.parse("[") { parser, parameters, modifiers in
-      var alternatives = [Control]()
+      var alternatives = [CLControl]()
       var def = false
       _ = try parser.nextChar()
       while true {
@@ -168,7 +191,7 @@ public struct ControlParserConfig {
       return .exit(parameters, modifiers, StandardDirectiveSpecifier.iterationEnd)
     }
     config.parse("<") { parser, parameters, modifiers in
-      var sections = [Control]()
+      var sections = [CLControl]()
       var spare: Int? = nil
       var width: Int? = nil
       _ = try parser.nextChar()
@@ -208,4 +231,10 @@ public struct ControlParserConfig {
     }
     return config
   }()
+  
+  /// The default control parser configuration for the functions `clformat` and
+  /// `clprintf`. This parser configuation is mutable so that the behavior can be
+  /// changed globally. Please note that the `String` initializers do not rely on
+  /// this mutable config as a default.
+  public static var `default`: CLControlParserConfig = CLControlParserConfig.standard
 }

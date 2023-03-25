@@ -26,12 +26,12 @@ import Foundation
 /// composite directives (such as conversion, iteration, justification, and
 /// conditional directives).
 /// 
-public class ControlParser {
-  internal let config: ControlParserConfig
+public class CLControlParser {
+  internal let config: CLControlParserConfig
   internal let control: String
   internal var i: String.Index
   
-  public init(control: String, config: ControlParserConfig) {
+  public init(control: String, config: CLControlParserConfig) {
     self.config = config
     self.control = control
     self.i = control.startIndex
@@ -51,8 +51,8 @@ public class ControlParser {
     }
   }
   
-  public func parse() throws -> (Control, Directive?) {
-    var components = [Control.Component]()
+  public func parse() throws -> (CLControl, Directive?) {
+    var components = [CLControl.Component]()
     var start = self.i
     while i < control.endIndex {
       var ch = self.control[self.i]
@@ -127,14 +127,14 @@ public class ControlParser {
               break parsemods
           }
         }
-        if let parser = self.config.directiveParsers[ch] {
+        if let parser = self.config.parser(for: ch) {
           switch try parser(self, Parameters(params), modifiers) {
             case .ignore:
               break
             case .append(let directive):
               components.append(.directive(directive))
             case .exit(let directive):
-              return (Control(components: components, config: self.config), directive)
+              return (CLControl(components: components, config: self.config), directive)
           }
         } else {
           throw CLControlError.unknownDirective("~" + String(ch))
@@ -148,10 +148,10 @@ public class ControlParser {
     if start < self.control.endIndex {
       components.append(.text(self.control[start..<self.control.endIndex]))
     }
-    return (Control(components: components, config: self.config), nil)
+    return (CLControl(components: components, config: self.config), nil)
   }
   
-  public func parse() throws -> Control {
+  public func parse() throws -> CLControl {
     let (control, directive) = try self.parse()
     if let directive = directive {
       switch directive.specifier.identifier {
@@ -173,7 +173,7 @@ public class ControlParser {
 /// parse anything (parsing of parameters and modifiers is done generically already
 /// by the control parser), they simply package up parameters and modifiers in a new
 /// directive.
-public typealias DirectiveParser = (ControlParser, Parameters, Modifiers) throws -> ParseResult
+public typealias DirectiveParser = (CLControlParser, Parameters, Modifiers) throws -> ParseResult
 
 /// Directive parsers generate `ParseResult` values as their result
 public enum ParseResult {

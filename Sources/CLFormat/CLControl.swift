@@ -29,7 +29,7 @@ import Foundation
 /// a sequence of "components". A component is either a text fragment or a
 /// formatting directive.
 /// 
-public struct Control: CustomStringConvertible {
+public struct CLControl: CustomStringConvertible {
   
   /// Implementation of control components as an enumeration.
   public enum Component: CustomStringConvertible {
@@ -50,21 +50,21 @@ public struct Control: CustomStringConvertible {
   /// The control parser configuration. This value needs to be preserved
   /// because there is the need to potentially parse arguments as control
   /// strings, e.g. via the ~?/indirection directive.
-  public let config: ControlParserConfig
+  public let config: CLControlParserConfig
   
   /// The parsed control components.
   public let components: [Component]
   
   /// Constructor for manually creating control values.
-  public init(components: [Component], config: ControlParserConfig? = nil) {
-    self.config = config ?? ControlParserConfig.standard
+  public init(components: [Component], config: CLControlParserConfig? = nil) {
+    self.config = config ?? CLControlParserConfig.standard
     self.components = components
   }
   
   /// Constructor for parsing a control string into a control value.
-  public init(string: String, config: ControlParserConfig? = nil) throws {
-    self = try ControlParser(control: string,
-                             config: config ?? ControlParserConfig.standard).parse()
+  public init(string: String, config: CLControlParserConfig? = nil) throws {
+    self = try CLControlParser(control: string,
+                             config: config ?? CLControlParserConfig.standard).parse()
   }
   
   /// Main format function. Creates an `Argument` object from the given parameters
@@ -77,6 +77,19 @@ public struct Control: CustomStringConvertible {
                                            tabsize: tabsize,
                                            linewidth: linewidth,
                                            args: args),
+                           in: .root(self.config)).string
+  }
+  
+  /// Main format function. Creates an `Argument` object from the given parameters
+  /// and invokes the driver of the formatting logic.
+  public func format(locale: Locale? = nil,
+                     tabsize: Int = 4,
+                     linewidth: Int = 80,
+                     arguments: [Any?]) throws -> String {
+    return try self.format(with: Arguments(locale: locale,
+                                           tabsize: tabsize,
+                                           linewidth: linewidth,
+                                           args: arguments),
                            in: .root(self.config)).string
   }
   
@@ -123,7 +136,7 @@ public struct Control: CustomStringConvertible {
 /// it accessible from the formatting logic).
 /// 
 public enum Context {
-  case root(ControlParserConfig)
+  case root(CLControlParserConfig)
   indirect case frame(String, Context)
   
   public var current: String {
@@ -135,7 +148,7 @@ public enum Context {
     }
   }
   
-  public var parserConfig: ControlParserConfig {
+  public var parserConfig: CLControlParserConfig {
     switch self {
       case .root(let config):
         return config

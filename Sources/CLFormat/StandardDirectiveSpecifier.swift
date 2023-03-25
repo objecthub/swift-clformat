@@ -42,14 +42,14 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
   case tabular
   case ignoreArgs
   case upAndOut
-  case conversion(Control)
+  case conversion(CLControl)
   case conversionEnd
-  case conditional([Control], Bool)
+  case conditional([CLControl], Bool)
   case conditionalEnd
   case separator
-  case iteration(Control)
+  case iteration(CLControl)
   case iterationEnd
-  case justification([Control], Int?, Int?)
+  case justification([CLControl], Int?, Int?)
   case justificationEnd
   case indirection
   
@@ -703,7 +703,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
           return .append(strs[0] + justified)
         }
       case .indirection:
-        let control = try Control(string: try arguments.nextAsString(),
+        let control = try CLControl(string: try arguments.nextAsString(),
                                   config: context.parserConfig)
         if modifiers.contains(.at) {
           return .append(try control.format(with: arguments, in: context).string)
