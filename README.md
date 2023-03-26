@@ -14,7 +14,7 @@ own preferred formatting strings.
 
 ## API
 
-### `clformat` and `clprintf`
+### clformat and clprintf
 
 The primary formatting procedure provided by framework _CLFormat_ is `clformat`. It has
 the following signature:
@@ -73,6 +73,11 @@ func clprintf(_ control: String,
               terminator: String = "\n") throws
 ```
 
+Note that, by default, both `clformat` and `clprintf` use the formatting directives as
+specified by `CLControlParserConfig.default`. This is a mutable parser configuration that
+can be used to influence all invocations of `clformat` and `clprintf` which don't provide
+their own parser configuration.
+
 ### String extensions
 
 Similar to how `printf` is integrated into Swift's `String` API, framework _CLFormat_
@@ -87,13 +92,13 @@ extension String {
        locale: Locale? = nil,
        tabsize: Int = 4,
        linewidth: Int = 80,
-       args: Any?...) throws { ... }
+       args: Any?...) throws
   init(control: String,
        config: CLControlParserConfig? = nil,
        locale: Locale? = nil,
        tabsize: Int = 4,
        linewidth: Int = 80,
-       arguments: [Any?]) throws { ... }
+       arguments: [Any?]) throws
 }
 ```
 
@@ -103,7 +108,8 @@ Every single time `clformat` is being invoked, a control language parser is conv
 the control string into an easier to process intermediate format. If a control string is
 being used over and over again by a program, it makes sense to convert the control string
 only once into its intermediate format and reuse it whenever a new list of arguments is
-applied. The following code shows how to do that:
+applied. The following code shows how to do that. Values of struct `CLControl` represent
+the intermediate format of a given control string.
 
 ```swift
 let control = try CLControl(string: "~A = ~,2F (time: ~4,1,,,'0Fms)")
