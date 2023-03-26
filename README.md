@@ -74,8 +74,8 @@ This grammar describes the syntax of directives formally:
                | <character>
 <number>     ::= <digit>
                | <digit> <number>
-<digit>      ::= "0" | "1" | "2" | ... | "9"
-<character>  ::= "'"
+<digit>      ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+<character>  ::= "'" <char>
 ```
 
 The following sections introduce a few directives and explain how directives are
@@ -100,7 +100,7 @@ clformat("I received ~A as a response", args: "a long email")
 ⇒ "I received a long email as a response"
 ```
 
-Directive `~A` may be provided parameters to influence the formatted output. The first
+Directive `~A` may be given parameters to influence the formatted output. The first
 parameter defines the minimal length. If the length of the textual representation of the
 next argument is smaller than the minimal length, padding characters are inserted:
 
@@ -140,7 +140,7 @@ either 2 or 4 in the examples above).
 The next example shows how one can refer to the total number of arguments that are not
 yet consumed in the formatting process by using `#` as the parameter value.
 
-```
+```swift
 clformat("~A left for formatting: ~#[none~;one~;two~:;many~].",
          args: "Arguments", "eins", 2)
 ⇒ "Arguments left for formatting: two."
@@ -160,12 +160,11 @@ For instance, `"~1[zero~;one~;two~:;many~]"` will output `"one"` as clause 1 is 
 is the second one, given that numbering starts with zero). The last clause is special because
 it is prefixed with the `~;` directive using a `:` modifier: this is a default clause which is
 chosen when none of the others are applicable. Thus, `"~8[zero~;one~;two~:;many~]"` outputs
-`"many"`. With this explanation, it should be possible to understand the examples above: here
-`#` refers to the number of arguments that are still available and this number drives what is
-being returned.
+`"many"`. This also explains how the example above works: here `#` refers to the number of
+arguments that are still available and this number drives what is being returned in this
+directive: `~#[...~]`.
 
-
-## Supported formatting directives
+## Formatting directive reference
 
 The formatting directives supported by the _CLFormat_ framework are based on the directives
 specified in [Common Lisp the Language, 2nd Edition](https://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node1.html)
