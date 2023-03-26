@@ -48,12 +48,40 @@ after the tilde character, separated by comma. Both integers and characters are 
 as parameters. They may be followed by formatting _modifiers_ `:`, `@`, and `+`. This is
 the general format of a formatting directive:
 
-```
+```ebnf
 ~param1,param2,...mX
 
-where m is a (potentially empty) sequence of modifier characters :, @, and +
-      X is a character identifying the directive type
+where m = (potentially empty) sequence of modifier characters ":", "@", and "+"
+      X = character identifying the directive type
 ```
+
+This grammar describes the syntax of directives formally:
+
+```ebnf
+<directive>  ::= "~" <modifiers> <char>
+               | "~" <parameters> <modifiers> <char>
+<modifiers>  ::= <empty>
+               | ":" <modifiers>
+               | "@" <modifiers>
+               | "+" <modifiers>
+<parameters> ::= <parameter>
+               | <parameter> "," <parameters>
+<parameter>  ::= <empty>
+               | "#"
+               | "v"
+               | <number>
+               | "-" <number>
+               | <character>
+<number>     ::= <digit>
+               | <digit> <number>
+<digit>      ::= "0" | "1" | "2" | ... | "9"
+<character>  ::= "'"
+```
+
+The following sections introduce a few directives and explain how directives are
+combined to build control strings that define expressive formatting instructions.
+
+### Simple Directives
 
 Here is a simple control string which injects a readable description of an argument via
 the directive `~A`:
@@ -73,10 +101,10 @@ clformat("I received ~A as a response", args: "a long email")
 ```
 
 Directive `~A` may be provided parameters to influence the formatted output. The first
-parameter defines a minimal length. If the length of the textual representation of the
-next argument is smaller than the minimal lenght, padding characters are inserted:
+parameter defines the minimal length. If the length of the textual representation of the
+next argument is smaller than the minimal length, padding characters are inserted:
 
-```
+```swift
 clformat("|Name: ~10A|Location: ~13A|", args: "Smith", "New York")
 ⇒ "|Name: Smith     |Location: New York     |"
 clformat("|Name: ~10A|Location: ~13A|", args: "Williams", "San Francisco")
@@ -90,7 +118,52 @@ The third example above utilizes more than one parameter and, in one case, inclu
 second and third parameter are omitted and thus defaults are used. The fourth parameter
 defines the padding character. If character literals are used in the parameter list,
 they are prefixed with a quote `'`. The directive `~10,,,'_@A` includes an `@` modifier
-which will result in the output to be padded on the left.
+which will result in padding of the output on the left.
+
+It is possible to inject a parameter from the list of arguments. The following examples
+show how `v` is used to do this for formatting a floating-point number with a configurable
+number of fractional digits:
+
+```swift
+clformat("length = ~,vF", args: 2, Double.pi)
+⇒ "length = 3.14"
+clformat("length = ~,vF", args: 4, Double.pi)
+⇒ "length = 3.1416"
+```
+
+Here `v` is used as the second parameter of the fixed floating-point directive `~F`,
+indicating the number of fractional digits. It refers to the next provided argument (which is
+either 2 or 4 in the examples above).
+
+### Composite Directives
+
+The next example shows how one can refer to the total number of arguments that are not
+yet consumed in the formatting process by using `#` as the parameter value.
+
+```
+clformat("~A left for formatting: ~#[none~;one~;two~:;many~].",
+         args: "Arguments", "eins", 2)
+⇒ "Arguments left for formatting: two."
+clformat("~A left for formatting: ~#[none~;one~;two~:;many~].",
+         args: "Arguments")
+⇒ "Arguments left for formatting: none."
+clformat("~A left for formatting: ~#[none~;one~;two~:;many~].",
+         args: "Arguments", "eins", 2, "drei", "vier")
+⇒ "Arguments left for formatting: many."
+```
+
+In these examples, the _conditional directive_ `~[` is used. It is followed by _clauses_
+separared by directive `~;` until `~]` is reached. Thus, there are four clauses in the example
+above: `"none"`, `"one"`, `"two"`, and `"many"`. The parameter in front of the `~[` directive
+determines which of the clauses is being output. All other clauses will be discarded.
+For instance, `"~1[zero~;one~;two~:;many~]"` will output `"one"` as clause 1 is chosen (which
+is the second one, given that numbering starts with zero). The last clause is special because
+it is prefixed with the `~;` directive using a `:` modifier: this is a default clause which is
+chosen when none of the others are applicable. Thus, `"~8[zero~;one~;two~:;many~]"` outputs
+`"many"`. With this explanation, it should be possible to understand the examples above: here
+`#` refers to the number of arguments that are still available and this number drives what is
+being returned.
+
 
 ## Supported formatting directives
 
