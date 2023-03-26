@@ -14,6 +14,8 @@ own preferred formatting strings.
 
 ## API
 
+### `clformat` and `clprintf`
+
 The primary formatting procedure provided by framework _CLFormat_ is `clformat`. It has
 the following signature:
 
@@ -37,6 +39,89 @@ line (this is used by the justification directive only). Finally, `args` refers 
 sequence of arguments provided for inclusion in the formatting procedure. The control
 string determines how these arguments will be injected into the final output that
 function `clformat` returns.
+
+There is also an overloaded variant of `clformat` which supports arguments provided as
+an array. It is otherwise equivalent to the first variant.
+
+```swift
+func clformat(_ control: String,
+              config: CLControlParserConfig? = CLControlParserConfig.default,
+              locale: Locale? = nil,
+              tabsize: Int = 4,
+              linewidth: Int = 80,
+              arguments: [Any?]) throws -> String
+```
+
+Finally, there are is an overloaded function `clprintf` which prints out the formatted
+string directly to the standard output port. Via the `terminator` argument it is possible
+to control whether a newline character is added automatically.
+
+```swift
+func clprintf(_ control: String,
+              config: CLControlParserConfig? = CLControlParserConfig.default,
+              locale: Locale? = nil,
+              tabsize: Int = 4,
+              linewidth: Int = 80,
+              args: Any?...,
+              terminator: String = "\n") throws
+func clprintf(_ control: String,
+              config: CLControlParserConfig? = CLControlParserConfig.default,
+              locale: Locale? = nil,
+              tabsize: Int = 4,
+              linewidth: Int = 80,
+              arguments: [Any?],
+              terminator: String = "\n") throws
+```
+
+### String extensions
+
+Similar to how `printf` is integrated into Swift's `String` API, framework _CLFormat_
+provides two new `String` initializers which make use of the _CLFormat_ formatting mechanism.
+They can be used interchangably with `clformat` to allow for a more object-oriented style as
+opposed to the procedural nature of `clformat`.
+
+```swift
+extension String {
+  init(control: String,
+       config: CLControlParserConfig? = nil,
+       locale: Locale? = nil,
+       tabsize: Int = 4,
+       linewidth: Int = 80,
+       args: Any?...) throws { ... }
+  init(control: String,
+       config: CLControlParserConfig? = nil,
+       locale: Locale? = nil,
+       tabsize: Int = 4,
+       linewidth: Int = 80,
+       arguments: [Any?]) throws { ... }
+}
+```
+
+### Optimizing repeated formatting
+
+Every single time `clformat` is being invoked, a control language parser is converting
+the control string into an easier to process intermediate format. If a control string is
+being used over and over again by a program, it makes sense to convert the control string
+only once into its intermediate format and reuse it whenever a new list of arguments is
+applied. The following code shows how to do that:
+
+```swift
+let control = try CLControl(string: "~A = ~,2F (time: ~4,1,,,'0Fms)")
+let values: [[Any?]] = [["Stage 1", 317.452, 12.7],
+                        ["Stage 2", 570.159, 41.2],
+                        ["Stage 3", 123.745, 9.4]]
+for args in values {
+  print(try control.format(arguments: args))
+}
+```
+
+This is the generated output:
+
+```
+Stage 1 = 317.45 (time: 12.7ms)
+Stage 2 = 570.16 (time: 41.2ms)
+Stage 3 = 123.74 (time: 09.4ms)
+```
 
 ## Formatting language
 
