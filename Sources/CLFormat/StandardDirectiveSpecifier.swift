@@ -142,15 +142,15 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         } else {
           str = "nil"
         }
-        return .append(self.pad(string: str,
-                                left: modifiers.contains(.at),
-                                right: !modifiers.contains(.at),
-                                padchar: try parameters.character(3) ?? " ",
-                                ellipsis: try parameters.character(5) ?? "…",
-                                mincol: try parameters.number(0) ?? 0,
-                                colinc: try parameters.number(1) ?? 1,
-                                minpad: try parameters.number(2) ?? 0,
-                                maxcol: try parameters.number(4)))
+        return .append(StandardDirectiveSpecifier.pad(string: str,
+                                                      left: modifiers.contains(.at),
+                                                      right: !modifiers.contains(.at),
+                                                      padchar: try parameters.character(3) ?? " ",
+                                                      ellipsis: try parameters.character(5) ?? "…",
+                                                      mincol: try parameters.number(0) ?? 0,
+                                                      colinc: try parameters.number(1) ?? 1,
+                                                      minpad: try parameters.number(2) ?? 0,
+                                                      maxcol: try parameters.number(4)))
       case .write:
         let str: String
         if let arg = try arguments.next() {
@@ -164,26 +164,26 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         } else {
           str = "nil"
         }
-        return .append(self.pad(string: str,
-                                left: modifiers.contains(.at),
-                                right: !modifiers.contains(.at),
-                                padchar: try parameters.character(3) ?? " ",
-                                ellipsis: try parameters.character(5) ?? "…",
-                                mincol: try parameters.number(0) ?? 0,
-                                colinc: try parameters.number(1) ?? 1,
-                                minpad: try parameters.number(2) ?? 0,
-                                maxcol: try parameters.number(4)))
+        return .append(StandardDirectiveSpecifier.pad(string: str,
+                                                      left: modifiers.contains(.at),
+                                                      right: !modifiers.contains(.at),
+                                                      padchar: try parameters.character(3) ?? " ",
+                                                      ellipsis: try parameters.character(5) ?? "…",
+                                                      mincol: try parameters.number(0) ?? 0,
+                                                      colinc: try parameters.number(1) ?? 1,
+                                                      minpad: try parameters.number(2) ?? 0,
+                                                      maxcol: try parameters.number(4)))
       case .sexpr:
         let str: String
         if let arg = try arguments.next() {
           if let x = arg as? String {
-            str = "\"\(x)\""
+            str = "\"\(StandardDirectiveSpecifier.escapeStr(x))\""
           } else if let x = arg as? NSMutableString {
-            str = "\"\(x as String)\""
+            str = "\"\(StandardDirectiveSpecifier.escapeStr(x as String))\""
           } else if let x = arg as? NSString {
-            str = "\"\(x as String)\""
+            str = "\"\(StandardDirectiveSpecifier.escapeStr(x as String))\""
           } else if let x = arg as? Character {
-            str = "'\(x)'"
+            str = "'\(StandardDirectiveSpecifier.escapeStr(String(x)))'"
           } else if modifiers.contains(.colon), let x = arg as? DebugCLFormatConvertible {
             str = x.clformatDebugDescription
           } else if modifiers.contains(.colon), let x = arg as? CustomDebugStringConvertible {
@@ -198,15 +198,15 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         } else {
           str = "nil"
         }
-        return .append(self.pad(string: str,
-                                left: modifiers.contains(.at),
-                                right: !modifiers.contains(.at),
-                                padchar: try parameters.character(3) ?? " ",
-                                ellipsis: try parameters.character(5) ?? "…",
-                                mincol: try parameters.number(0) ?? 0,
-                                colinc: try parameters.number(1) ?? 1,
-                                minpad: try parameters.number(2) ?? 0,
-                                maxcol: try parameters.number(4)))
+        return .append(StandardDirectiveSpecifier.pad(string: str,
+                                                      left: modifiers.contains(.at),
+                                                      right: !modifiers.contains(.at),
+                                                      padchar: try parameters.character(3) ?? " ",
+                                                      ellipsis: try parameters.character(5) ?? "…",
+                                                      mincol: try parameters.number(0) ?? 0,
+                                                      colinc: try parameters.number(1) ?? 1,
+                                                      minpad: try parameters.number(2) ?? 0,
+                                                      maxcol: try parameters.number(4)))
       case .decimal:
         return .append(NumberFormat.format(
                          try arguments.nextAsNumber(),
@@ -669,15 +669,15 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                  + (modifiers.contains(.colon) ? 1 : 0)
         var justified = ""
         if strs.count == 1 && ignore == 0, let maxcol = maxcol {
-          justified = self.pad(string: strs[0],
-                               left: modifiers.contains(.colon),
-                               right: modifiers.contains(.at),
-                               padchar: padchar,
-                               ellipsis: ellipsis,
-                               mincol: width,
-                               colinc: 1,
-                               minpad: 0,
-                               maxcol: maxcol)
+          justified = StandardDirectiveSpecifier.pad(string: strs[0],
+                                                     left: modifiers.contains(.colon),
+                                                     right: modifiers.contains(.at),
+                                                     padchar: padchar,
+                                                     ellipsis: ellipsis,
+                                                     mincol: width,
+                                                     colinc: 1,
+                                                     minpad: 0,
+                                                     maxcol: maxcol)
         } else if gaps == 0 {
           justified = String(repeating: padchar, count: width - len) + strs[ignore]
         } else {
@@ -716,15 +716,34 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
     }
   }
   
-  func pad(string: String,
-           left: Bool,
-           right: Bool,
-           padchar: Character,
-           ellipsis: Character,
-           mincol: Int,
-           colinc: Int,
-           minpad: Int,
-           maxcol: Int?) -> String {
+  internal static func escapeStr(_ str: String) -> String {
+    var res = ""
+    for c in str {
+      switch c {
+        case "\u{7}":  res += "\\a"
+        case "\u{8}":  res += "\\b"
+        case "\t":     res += "\\t"
+        case "\n":     res += "\\n"
+        case "\u{11}": res += "\\v"
+        case "\u{12}": res += "\\f"
+        case "\r":     res += "\\r"
+        case "\"":     res += "\\\""
+        case "\\":     res += "\\\\"
+        default:       res.append(c)
+      }
+    }
+    return res
+  }
+  
+  internal static func pad(string: String,
+                           left: Bool,
+                           right: Bool,
+                           padchar: Character,
+                           ellipsis: Character,
+                           mincol: Int,
+                           colinc: Int,
+                           minpad: Int,
+                           maxcol: Int?) -> String {
     var str = string
     let count = string.count
     if let maxcol = maxcol, count > maxcol {

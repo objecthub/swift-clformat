@@ -39,6 +39,9 @@ final class CLFormatTests: XCTestCase {
     XCTAssertEqual(try clformat("|~S|", args: 9876512345678901234.1234), "|9.876512345678901e+18|")
     XCTAssertEqual(try clformat("|~S|", args: 12345678901234567.1234), "|1.2345678901234568e+16|")
     XCTAssertEqual(try clformat("|~S|", args: 1234567890123456789.1234), "|1.2345678901234568e+18|")
+    XCTAssertEqual(try clformat("string = ~S", args: "hello\ncrazy\t\tworld"),
+                                "string = \"hello\\ncrazy\\t\\tworld\"")
+
   }
   
   func testCharacters() throws {
