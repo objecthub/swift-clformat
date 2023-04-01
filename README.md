@@ -287,7 +287,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~a</b><br/><b>~A</b></td>
   <td>
-  <p><i>ASCII:</i>&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>A</b></p>
+  <p><u>ASCII:</u>&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>A</b></p>
   <p>The next argument <i>arg</i> is output without escape characters. In particular, if <i>arg</i>
      is a string, its characters will be output verbatim. If <i>arg</i> is nil, it will be output as
      <tt>nil</tt>. If <i>arg</i> is not nil, then the formatter will attempt to convert <i>arg</i>
@@ -319,6 +319,64 @@ introduced in a way to not impact backward compatibility.
          <tt>debugDescription</tt> will be output.</li>
      <li>The properties as listed above are tried to generate the output.
   </ol>
+  <p>Modifier <tt>@</tt> enables padding on the left to right-align the output.</p>
+  </td>
+</tr>
+<tr valign="top">
+  <td><b>~w</b><br/><b>~W</b></td>
+  <td>
+  <p><u>Write:</u>&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>A</b></p>
+  <p>The next argument <i>arg</i> is output without escape characters just as if it was
+     printed via Swift's <tt>print</tt> function. If <i>arg</i> is nil, it will be output as
+     <tt>nil</tt>. If <i>arg</i> is not nil, then the formatter will attempt to convert <i>arg</i>
+     using one of the following properties (tried in the order as listed below) into a string that
+     is output:</p>
+  <ol>
+     <li>If <i>arg</i> implements protocol <tt>CustomStringConvertible</tt> then property
+         <tt>description</tt> will be output.</li>
+     <li>String interpolation is used to turn <i>arg</i> into a string.
+   </ol>
+  <p>Parameters <i>mincol</i> (default: 0), <i>colinc</i> (default: 1), <i>minpad</i> (default: 0),
+     <i>padchar</i> (default: ' '), <i>maxcol</i> (default: &infin;), and
+     <i>elchar</i> (default: '&hellip;') are used just as described for the <i>ASCII directive</i>
+     <tt>~A</tt>.<p>
+  <p>Modifier <tt>:</tt> enables debugging output, i.e. the following sequence of properties of
+     <i>arg</i> are considered for generating the output:</p>
+  <ol>
+     <li>If <i>arg</i> implements protocol <tt>CustomDebugStringConvertible</tt> then property
+         <tt>debugDescription</tt> will be output.</li>
+     <li>The properties as listed above are tried to generate the output.
+  </ol>
+  <p>Modifier <tt>@</tt> enables padding on the left to right-align the output.</p>
+  </td>
+</tr>
+<tr valign="top">
+  <td><b>~s</b><br/><b>~S</b></td>
+  <td>
+  <p><u>S-Expr:</u>&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>A</b></p>
+  <p>The next argument <i>arg</i> is output with escape characters. In particular, if <i>arg</i>
+     is a string, double-quotes delimit the characters of the string. If <i>arg</i> is a character,
+     single-quotes delimit the character. If <i>arg</i> is nil, it will be output as
+     <tt>nil</tt>. For all other values, the formatter will attempt to convert <i>arg</i>
+     using one of the following properties (tried in the order as listed below) into a string that
+     is output:</p>
+  <ol>
+     <li>If the <tt>:</tt> modifier was provided and <i>arg</i> implements protocol
+         <tt>DebugCLFormatConvertible</tt> then property <tt>clformatDebugDescription</tt> will
+         be output.</li>
+     <li>If the <tt>:</tt> modifier was provided and <i>arg</i> implements protocol
+         <tt>CustomDebugStringConvertible</tt> then property <tt>debugDescription</tt> will
+         be output.</li>
+     <li>If <i>arg</i> implements protocol <tt>CLFormatConvertible</tt> then property
+         <tt>clformatDescription</tt> will be output.</li>
+     <li>If <i>arg</i> implements protocol <tt>CustomStringConvertible</tt> then property
+         <tt>description</tt> will be output.</li>
+     <li>String interpolation is used to turn <i>arg</i> into a string.
+  </ol>
+  <p>Parameters <i>mincol</i> (default: 0), <i>colinc</i> (default: 1), <i>minpad</i> (default: 0),
+     <i>padchar</i> (default: ' '), <i>maxcol</i> (default: &infin;), and
+     <i>elchar</i> (default: '&hellip;') are used just as described for the <i>ASCII directive</i>
+     <tt>~A</tt>.<p>
   <p>Modifier <tt>@</tt> enables padding on the left to right-align the output.</p>
   </td>
 </tr>
