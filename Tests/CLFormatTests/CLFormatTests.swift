@@ -247,6 +247,13 @@ final class CLFormatTests: XCTestCase {
     XCTAssertEqual(try clformat("|~8,4,,,11:@<foobargoo012~>|"), "|foobargoo0…|")
   }
   
+  func testIteration() throws {
+    XCTAssertEqual(try clformat("Numbers:~{ ~A~}", args: ["one", "two", "three"]),
+                   "Numbers: one two three")
+    XCTAssertEqual(try clformat("Numbers:~{ ~A~}", args: ["one", nil, "three"]),
+                   "Numbers: one nil three")
+  }
+  
   func testAdvancedUseCases() throws {
     let choiceHash = "Items:~#[ none~; ~A~; ~A and ~A~:;~@{~#[~; and~] ~A~^,~}~]."
     XCTAssertEqual(try clformat(choiceHash), "Items: none.")

@@ -134,10 +134,10 @@ Stage 3 = 123.74 (time: 09.4ms)
 The control string used by `clformat` and related functions and constructors consists of
 characters that are copied verbatim into the output as well as _formatting directives_.
 All formatting directives start with a tilde (`~`) and end with a single character
-identifying the directive type. Directives may take prefix _parameters_ written immediately
-after the tilde character, separated by comma. Both integers and characters are allowed
-as parameters. They may be followed by formatting _modifiers_ `:`, `@`, and `+`. This is
-the general format of a formatting directive:
+identifying the type of the directive. Directives may take prefix _parameters_ written
+immediately after the tilde character, separated by comma. Both integers and characters
+are allowed as parameters. They may be followed by formatting _modifiers_ `:`, `@`, and
+`+`. This is the general format of a formatting directive:
 
 ```ebnf
 ~param1,param2,...mX
@@ -181,7 +181,7 @@ the directive `~A`:
 "I received ~A as a response"
 ```
 
-Directive `~A` refers to a the next argument provided to `clformat` when compiling the
+Directive `~A` refers to a the _next argument_ provided to `clformat` when compiling the
 formatted output:
 
 ```swift
@@ -192,8 +192,9 @@ clformat("I received ~A as a response", args: "a long email")
 ```
 
 Directive `~A` may be given parameters to influence the formatted output. The first
-parameter defines the minimal length. If the length of the textual representation of the
-next argument is smaller than the minimal length, padding characters are inserted:
+parameter of `~A`-directives defines the minimal length. If the length of the textual
+representation of the next argument is smaller than the minimal length, padding characters
+are inserted:
 
 ```swift
 clformat("|Name: ~10A|Location: ~13A|", args: "Smith", "New York")
@@ -212,8 +213,8 @@ they are prefixed with a quote `'`. The directive `~10,,,'_@A` includes an `@` m
 which will result in padding of the output on the left.
 
 It is possible to inject a parameter from the list of arguments. The following examples
-show how `v` is used to do this for formatting a floating-point number with a configurable
-number of fractional digits:
+show how parameter `v` is used to do this for formatting a floating-point number with
+a configurable number of fractional digits.
 
 ```swift
 clformat("length = ~,vF", args: 2, Double.pi)
@@ -229,7 +230,7 @@ either 2 or 4 in the examples above).
 ### Composite Directives
 
 The next example shows how one can refer to the total number of arguments that are not
-yet consumed in the formatting process by using `#` as the parameter value.
+yet consumed in the formatting process by using `#` as a parameter value.
 
 ```swift
 clformat("~A left for formatting: ~#[none~;one~;two~:;many~].",
@@ -245,15 +246,30 @@ clformat("~A left for formatting: ~#[none~;one~;two~:;many~].",
 
 In these examples, the _conditional directive_ `~[` is used. It is followed by _clauses_
 separared by directive `~;` until `~]` is reached. Thus, there are four clauses in the example
-above: `"none"`, `"one"`, `"two"`, and `"many"`. The parameter in front of the `~[` directive
+above: `none`, `one`, `two`, and `many`. The parameter in front of the `~[` directive
 determines which of the clauses is being output. All other clauses will be discarded.
-For instance, `"~1[zero~;one~;two~:;many~]"` will output `"one"` as clause 1 is chosen (which
+For instance, `~1[zero~;one~;two~:;many~]` will output `one` as clause 1 is chosen (which
 is the second one, given that numbering starts with zero). The last clause is special because
-it is prefixed with the `~;` directive using a `:` modifier: this is a default clause which is
-chosen when none of the others are applicable. Thus, `"~8[zero~;one~;two~:;many~]"` outputs
-`"many"`. This also explains how the example above works: here `#` refers to the number of
+it is prefixed with the `~;` directive using a `:` modifier: this is a _default clause_ which is
+chosen when none of the others are applicable. Thus, `~8[zero~;one~;two~:;many~]` outputs
+`many`. This also explains how the example above works: here `#` refers to the number of
 arguments that are still available and this number drives what is being returned in this
 directive: `~#[...~]`.
+
+Another powerful composite directive is the _iteration directive_ `~{`. With this
+directive it is possible to iterate over all elements of a sequence. The control string
+between `~{` and `~}` gets repeated as long as there are still elements left in the
+sequence which is provided as an argument. For instance, `Numbers:~{ ~A~}` applied to
+argument `["one", "two", "three"]` results in the output `Numbers: one two three`.
+The control string between `~{` and `~}` can also consume more than one element of the
+sequence. Thus, `Numbers:~{ ~A=>~A~}` applied to argument `["one", 1, "two", 2]`
+outputs `Numbers: one=>1 two=>2`.
+
+Of course, it is also possible to nest arbitrary composite directives. Here is an example
+for a control string that uses a combination of iteration and conditional directives to
+output the elements of a sequence separated by a comma: `(~{~#[~;~A~:;~A, ~]~})`. When this
+control string is used with the argument `["one", "two", "three"]`, the following formatted
+output is generated: `(one, two, three)`.
 
 ## Formatting directive reference
 

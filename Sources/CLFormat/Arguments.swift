@@ -202,7 +202,7 @@ public class Arguments: CustomStringConvertible {
         var itercap = maxArgs
         var iterator = seq.makeIterator() as (any IteratorProtocol)
         while itercap > 0, let next = iterator.next() {
-          newargs.append(next)
+          newargs.append(unwrapAny(next))
           itercap -= 1
         }
         return Arguments(locale: self.locale,

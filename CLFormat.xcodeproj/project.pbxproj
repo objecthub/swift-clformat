@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC2FF5FB29D8C8F500AD0BC6 /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2FF5FA29D8C8F500AD0BC6 /* Optional.swift */; };
 		CCB5F0F629C1455B00587140 /* CLFormat.docc in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0F529C1455B00587140 /* CLFormat.docc */; };
 		CCB5F0FC29C1455B00587140 /* CLFormat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB5F0F229C1455B00587140 /* CLFormat.framework */; };
 		CCB5F10129C1455B00587140 /* CLFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F10029C1455B00587140 /* CLFormatTests.swift */; };
@@ -56,6 +57,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CC2FF5FA29D8C8F500AD0BC6 /* Optional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Optional.swift; sourceTree = "<group>"; };
 		CCB5F0D029C1148900587140 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		CCB5F0D229C114D300587140 /* Number.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Number.swift; sourceTree = "<group>"; };
 		CCB5F0D429C114F600587140 /* NumberFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormat.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 		CCB5F0F329C1455B00587140 /* CLFormat */ = {
 			isa = PBXGroup;
 			children = (
+				CC2FF5FA29D8C8F500AD0BC6 /* Optional.swift */,
 				CCB5F0D029C1148900587140 /* Currency.swift */,
 				CCB5F0D229C114D300587140 /* Number.swift */,
 				CCB5F0D429C114F600587140 /* NumberFormat.swift */,
@@ -305,6 +308,7 @@
 				CCB5F11329C1475F00587140 /* Currency.swift in Sources */,
 				CCB5F11429C1475F00587140 /* Arguments.swift in Sources */,
 				CCB5F12329C7974B00587140 /* CLControlParserConfig.swift in Sources */,
+				CC2FF5FB29D8C8F500AD0BC6 /* Optional.swift in Sources */,
 				CCB5F10C29C1475F00587140 /* Parameters.swift in Sources */,
 				CCB5F11029C1475F00587140 /* StandardDirectiveSpecifier.swift in Sources */,
 				CCB5F0F629C1455B00587140 /* CLFormat.docc in Sources */,
