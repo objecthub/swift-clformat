@@ -332,6 +332,9 @@ introduced in a way to not impact backward compatibility.
      using one of the following properties (tried in the order as listed below) into a string that
      is output:</p>
   <ol>
+     <li>If the <tt>:</tt> modifier was provided and <i>arg</i> implements protocol
+         <tt>CustomDebugStringConvertible</tt> then property <tt>debugDescription</tt> will
+         be output.</li>
      <li>If <i>arg</i> implements protocol <tt>CustomStringConvertible</tt> then property
          <tt>description</tt> will be output.</li>
      <li>String interpolation is used to turn <i>arg</i> into a string.
@@ -339,15 +342,8 @@ introduced in a way to not impact backward compatibility.
   <p>Parameters <i>mincol</i> (default: 0), <i>colinc</i> (default: 1), <i>minpad</i> (default: 0),
      <i>padchar</i> (default: ' '), <i>maxcol</i> (default: &infin;), and
      <i>elchar</i> (default: '&hellip;') are used just as described for the <i>ASCII directive</i>
-     <tt>~A</tt>.<p>
-  <p>Modifier <tt>:</tt> enables debugging output, i.e. the following sequence of properties of
-     <i>arg</i> are considered for generating the output:</p>
-  <ol>
-     <li>If <i>arg</i> implements protocol <tt>CustomDebugStringConvertible</tt> then property
-         <tt>debugDescription</tt> will be output.</li>
-     <li>The properties as listed above are tried to generate the output.
-  </ol>
-  <p>Modifier <tt>@</tt> enables padding on the left to right-align the output.</p>
+     <tt>~A</tt>. Modifier <tt>:</tt> enables debugging output. Modifier <tt>@</tt> enables
+     padding on the left to right-align the output.</p>
   </td>
 </tr>
 <tr valign="top">
@@ -376,8 +372,8 @@ introduced in a way to not impact backward compatibility.
   <p>Parameters <i>mincol</i> (default: 0), <i>colinc</i> (default: 1), <i>minpad</i> (default: 0),
      <i>padchar</i> (default: ' '), <i>maxcol</i> (default: &infin;), and
      <i>elchar</i> (default: '&hellip;') are used just as described for the <i>ASCII directive</i>
-     <tt>~A</tt>.<p>
-  <p>Modifier <tt>@</tt> enables padding on the left to right-align the output.</p>
+     <tt>~A</tt>. Modifier <tt>:</tt> enables debugging output. Modifier <tt>@</tt> enables
+     padding on the left to right-align the output.</p>
   </td>
 </tr>
 </tbody>
