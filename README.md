@@ -287,7 +287,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~a</b><br/><b>~A</b></td>
   <td>
-  <p><u>ASCII:</u>&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>A</b></p>
+  <p><i>ASCII:</i>&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>A</b></p>
   <p>The next argument <i>arg</i> is output without escape characters. In particular, if <i>arg</i>
      is a string, its characters will be output verbatim. If <i>arg</i> is nil, it will be output as
      <tt>nil</tt>. If <i>arg</i> is not nil, then the formatter will attempt to convert <i>arg</i>
@@ -325,7 +325,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~w</b><br/><b>~W</b></td>
   <td>
-  <p><u>Write:</u>&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>W</b></p>
+  <p><i>WRITE:</i>&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>W</b></p>
   <p>The next argument <i>arg</i> is output without escape characters just as if it was
      printed via Swift's <tt>print</tt> function. If <i>arg</i> is nil, it will be output as
      <tt>nil</tt>. If <i>arg</i> is not nil, then the formatter will attempt to convert <i>arg</i>
@@ -349,7 +349,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~s</b><br/><b>~S</b></td>
   <td>
-  <p><u>Source:</u>&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>S</b></p>
+  <p><i>SOURCE:</i>&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>S</b></p>
   <p>The next argument <i>arg</i> is output with escape characters. In particular, if <i>arg</i>
      is a string, double-quotes delimit the characters of the string. If <i>arg</i> is a character,
      single-quotes delimit the character. If <i>arg</i> is nil, it will be output as
@@ -379,7 +379,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~d</b><br/><b>~D</b></td>
   <td>
-  <p><u>Decimal:</u>&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>D</b></p>
+  <p><i>DECIMAL:</i>&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>D</b></p>
   <p>The next argument <i>arg</i> is output in decimal radix. <i>arg</i> should be an integer,
      in which case no decimal point is printed. For floating-point numbers which do not represent
      an integer, a decimal point and a fractional part are output.</p>
@@ -387,17 +387,51 @@ introduced in a way to not impact backward compatibility.
      in characters with <i>padchar</i> (default: ' ') defining the character that is used to
      pad the output on the left to make sure it is at least <i>mincol</i> characters long.</p>
   <p>&nbsp;&nbsp;<tt>clformat("Number: ~D", 8273)</tt> &DoubleLongRightArrow; <tt>Number:&nbsp;8273</tt><br />
-     &nbsp;&nbsp;<tt>clformat("Number: ~6D", 8273)</tt> &DoubleLongRightArrow; <tt>Number:&nbsp;&nbsp;&nbsp;8273</tt></p>
+     &nbsp;&nbsp;<tt>clformat("Number: ~6D", 8273)</tt> &DoubleLongRightArrow; <tt>Number:&nbsp;&nbsp;&nbsp;8273</tt><br />
+     &nbsp;&nbsp;<tt>clformat("Number: ~6,'0D", 8273)</tt> &DoubleLongRightArrow; <tt>Number:&nbsp;008273</tt></p>
   <p>By default, the number is output without grouping separators. <i>groupchar</i> specifies
      which character should be used to separate sequences of <i>groupcol</i> digits in the
      output. Grouping of digits gets enabled with the <tt>:</tt> modifier.</p>
   <p>&nbsp;&nbsp;<tt>clformat("|~10:D|", 1734865)</tt> &DoubleLongRightArrow; <tt>|&nbsp;1,734,865|</tt><br />
      &nbsp;&nbsp;<tt>clformat("|~10,,'.:D|", 1734865)</tt> &DoubleLongRightArrow; <tt>|&nbsp;1.734.865|</tt></p>
-  <p>A sign is output only if the number is negative, unless the modifier <tt>@</tt> is being
-     used and also a positive sign is included in the output. To facilitate the localization of
-     output, function <tt>clformat</tt> supports a parameter <tt>locale:</tt>. Locale-specific
+  <p>A sign is output only if the number is negative. With the modifier <tt>@</tt> it is possible
+     to force output also of positive signs. To facilitate the localization of output, function
+     <tt>clformat</tt> supports a parameter <tt>locale:</tt>. Locale-specific
      output can be enabled by using the <tt>+</tt> modifier.</p>
   <p>&nbsp;&nbsp;<tt>clformat("~+D", locale: Locale(identifier: "de_CH"), 14321)</tt> &DoubleLongRightArrow; <tt>14'321</tt></p>
+  </td>
+</tr>
+<tr valign="top">
+  <td><b>~r</b><br/><b>~R</b></td>
+  <td>
+  <p><i>RADIX:</i>&nbsp;&nbsp;<b>~<i>radix,mincol,padchar,groupchar,groupcol</i>D</b></p>
+  <p>The next argument <i>arg</i> is expected to be an integer. It will be output with radix
+     <i>radix</i>. <i>mincol</i> (default: 0) specifies the minimal "width" of
+     the output of the directive in characters with <i>padchar</i> (default: ' ') defining the
+     character that is used to pad the output on the left to make it at least <i>mincol</i>
+     characters long.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("Number: ~10R", 1272)</tt> &DoubleLongRightArrow; <tt>Number:&nbsp;1272</tt><br />
+     &nbsp;&nbsp;<tt>clformat("Number: ~16,8,'0R", 7121972)</tt> &DoubleLongRightArrow; <tt>Number:&nbsp;006cac34</tt><br />
+     &nbsp;&nbsp;<tt>clformat("Number: ~2R", 173)</tt> &DoubleLongRightArrow; <tt>Number:&nbsp;10101101</tt></p>
+  <p>By default, the number is output without grouping separators. <i>groupchar</i> specifies
+     which character should be used to separate sequences of <i>groupcol</i> digits in the
+     output. Grouping of digits gets enabled with the <tt>:</tt> modifier.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("~16,8,,':,2:R", 7121972)</tt> &DoubleLongRightArrow; <tt>6c:ac:34</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~2,14,'0,'.,4:R", 773)</tt> &DoubleLongRightArrow; <tt>0011.0000.0101</tt></p>
+  <p>A sign is output only if the number is negative. With the modifier <tt>@</tt> it is possible
+     to force output also of positive signs. To facilitate the localization of output, function
+     <tt>clformat</tt> supports a parameter <tt>locale:</tt>. Locale-specific
+     output can be enabled by using the <tt>+</tt> modifier.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("~10+R", locale: Locale(identifier: "de_CH"), 14321)</tt> &DoubleLongRightArrow; <tt>14'321</tt></p>
+  <p>If parameter <i>radix</i> is not specified at all, then an entirely different interpretation
+     is given. <tt>~R</tt> outputs <i>arg</i> as a cardinal number in natural language. The form
+     <tt>~:R</tt> outputs <i>arg</i> as an ordinal number in natural language. <tt>~@R</tt>
+     outputs <i>arg</i> as a Roman numeral. By default, the language used is English. By specifying
+     the <tt>+</tt> modifier, it is possible to switch the language to the language of the locale
+     provided to function <tt>clformat</tt>.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("~R", 572)</tt> &DoubleLongRightArrow; <tt>five hundred seventy-two</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~:R", 3)</tt> &DoubleLongRightArrow; <tt>3rd</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~@R", 1272)</tt> &DoubleLongRightArrow; <tt>MCCLXXII</tt></p>
   </td>
 </tr>
 </tbody>

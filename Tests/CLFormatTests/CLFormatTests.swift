@@ -172,7 +172,7 @@ final class CLFormatTests: XCTestCase {
   func testNumbers() throws {
     XCTAssertEqual(try clformat("Num: ~R", args: 17433),
                    "Num: seventeen thousand four hundred thirty-three")
-    XCTAssertEqual(try clformat("Num: ~:R", args: 17433), "Num: 17'433rd")
+    XCTAssertEqual(try clformat("Num: ~:R", args: 17433), "Num: 17,433rd")
     XCTAssertEqual(try clformat("Number ~D~:* as a roman numeral: ~@R", args: 1234),
                    "Number 1234 as a roman numeral: MCCXXXIV")
     XCTAssertEqual(try clformat("Num: ~:B", args: 1234), "Num: 100 1101 0010")

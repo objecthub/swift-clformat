@@ -226,9 +226,9 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
           if !modifiers.contains(.colon) && !modifiers.contains(.at) {
             let formatter = NumberFormatter()
             formatter.numberStyle = .spellOut
-            if let locale = arguments.locale {
-              formatter.locale = locale
-            } else if !modifiers.contains(.plus) {
+            if modifiers.contains(.plus) {
+              formatter.locale = arguments.locale ?? Locale(identifier: "en_US")
+            } else {
               formatter.locale = Locale(identifier: "en_US")
             }
             return .append(formatter.string(from: number.nsnumber) ??
@@ -241,9 +241,10 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                              padchar: " ",
                              groupsep: nil,
                              groupsize: nil,
-                             locale: arguments.locale,
+                             locale: modifiers.contains(.plus) ? arguments.locale
+                                                               : Locale(identifier: "en_US"),
                              usegroup: false,
-                             uselocale: false,
+                             uselocale: modifiers.contains(.plus),
                              forcesign: false))
           } else if !modifiers.contains(.colon) && modifiers.contains(.at) {
             return .append(number.romanNumeral)
