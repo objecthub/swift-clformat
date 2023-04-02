@@ -147,7 +147,7 @@ while true {
   print("─────────┤")
   do {
     let args: [Any?] = try split(argument: arguments).map(parse)
-    let formatted = try clformat(control, locale: Locale(identifier: "de_DE"), arguments: args)
+    let formatted = try clformat(control, arguments: args)
       .replacingOccurrences(of: "\n", with: "\n         │ ")
     print("   RESULT│", formatted)
   } catch let e as ParseError {

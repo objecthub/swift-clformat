@@ -404,7 +404,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~r</b><br/><b>~R</b></td>
   <td>
-  <p><i>RADIX:</i>&nbsp;&nbsp;<b>~<i>radix,mincol,padchar,groupchar,groupcol</i>D</b></p>
+  <p><i>RADIX:</i>&nbsp;&nbsp;<b>~<i>radix,mincol,padchar,groupchar,groupcol</i>R</b></p>
   <p>The next argument <i>arg</i> is expected to be an integer. It will be output with radix
      <i>radix</i>. <i>mincol</i> (default: 0) specifies the minimal "width" of
      the output of the directive in characters with <i>padchar</i> (default: ' ') defining the
@@ -430,6 +430,7 @@ introduced in a way to not impact backward compatibility.
      the <tt>+</tt> modifier, it is possible to switch the language to the language of the locale
      provided to function <tt>clformat</tt>.</p>
   <p>&nbsp;&nbsp;<tt>clformat("~R", 572)</tt> &DoubleLongRightArrow; <tt>five hundred seventy-two</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~+R", locale: Locale(identifier: "de_DE"), 572)</tt> &DoubleLongRightArrow; <tt>fünf­hundert­zwei­und­siebzig</tt><br />
      &nbsp;&nbsp;<tt>clformat("~:R", 3)</tt> &DoubleLongRightArrow; <tt>3rd</tt><br />
      &nbsp;&nbsp;<tt>clformat("~@R", 1272)</tt> &DoubleLongRightArrow; <tt>MCCLXXII</tt></p>
   </td>
