@@ -325,7 +325,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~w</b><br/><b>~W</b></td>
   <td>
-  <p><u>Write:</u>&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>A</b></p>
+  <p><u>Write:</u>&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>W</b></p>
   <p>The next argument <i>arg</i> is output without escape characters just as if it was
      printed via Swift's <tt>print</tt> function. If <i>arg</i> is nil, it will be output as
      <tt>nil</tt>. If <i>arg</i> is not nil, then the formatter will attempt to convert <i>arg</i>
@@ -349,7 +349,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~s</b><br/><b>~S</b></td>
   <td>
-  <p><u>S-Expr:</u>&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>A</b></p>
+  <p><u>Source:</u>&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>S</b></p>
   <p>The next argument <i>arg</i> is output with escape characters. In particular, if <i>arg</i>
      is a string, double-quotes delimit the characters of the string. If <i>arg</i> is a character,
      single-quotes delimit the character. If <i>arg</i> is nil, it will be output as
@@ -374,6 +374,30 @@ introduced in a way to not impact backward compatibility.
      <i>elchar</i> (default: '&hellip;') are used just as described for the <i>ASCII directive</i>
      <tt>~A</tt>. Modifier <tt>:</tt> enables debugging output. Modifier <tt>@</tt> enables
      padding on the left to right-align the output.</p>
+  </td>
+</tr>
+<tr valign="top">
+  <td><b>~d</b><br/><b>~D</b></td>
+  <td>
+  <p><u>Decimal:</u>&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>D</b></p>
+  <p>The next argument <i>arg</i> is output in decimal radix. <i>arg</i> should be an integer,
+     in which case no decimal point is printed. For floating-point numbers which do not represent
+     an integer, a decimal point and a fractional part are output.</p>
+  <p><i>mincol</i> (default: 0) specifies the minimal "width" of the output of the directive
+     in characters with <i>padchar</i> (default: ' ') defining the character that is used to
+     pad the output on the left to make sure it is at least <i>mincol</i> characters long.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("Number: ~D", 8273)</tt> &DoubleLongRightArrow; <tt>Number:&nbsp;8273</tt><br />
+     &nbsp;&nbsp;<tt>clformat("Number: ~6D", 8273)</tt> &DoubleLongRightArrow; <tt>Number:&nbsp;&nbsp;&nbsp;8273</tt></p>
+  <p>By default, the number is output without grouping separators. <i>groupchar</i> specifies
+     which character should be used to separate sequences of <i>groupcol</i> digits in the
+     output. Grouping of digits gets enabled with the <tt>:</tt> modifier.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("|~10:D|", 1734865)</tt> &DoubleLongRightArrow; <tt>|&nbsp;1,734,865|</tt><br />
+     &nbsp;&nbsp;<tt>clformat("|~10,,'.:D|", 1734865)</tt> &DoubleLongRightArrow; <tt>|&nbsp;1.734.865|</tt></p>
+  <p>A sign is output only if the number is negative, unless the modifier <tt>@</tt> is being
+     used and also a positive sign is included in the output. To facilitate the localization of
+     output, function <tt>clformat</tt> supports a parameter <tt>locale:</tt>. Locale-specific
+     output can be enabled by using the <tt>+</tt> modifier.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("~+D", locale: Locale(identifier: "de_CH"), 14321)</tt> &DoubleLongRightArrow; <tt>14'321</tt></p>
   </td>
 </tr>
 </tbody>

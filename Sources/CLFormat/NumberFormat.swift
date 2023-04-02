@@ -236,7 +236,9 @@ public struct NumberFormat {
     if let groupsize = groupsize {
       formatter.groupingSize = groupsize
     }
-    formatter.usesGroupingSeparator = usegroup
+    if !uselocale {
+      formatter.usesGroupingSeparator = usegroup
+    }
     var str = formatter.string(from: number.nsnumber) ?? number.description
     if forcesign && !str.starts(with: "-") {
       str = "+" + str
