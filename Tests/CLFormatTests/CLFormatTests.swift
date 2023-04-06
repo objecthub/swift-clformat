@@ -55,8 +55,8 @@ final class CLFormatTests: XCTestCase {
   }
   
   func testDecimal() throws {
-    XCTAssertEqual(try clformat("~? ~D", args: "<~A ~D>", ["Foo", 5], 7), "<Foo 5> 7")
-    XCTAssertEqual(try clformat("~? ~D", args: "<~A ~D>", ["Foo", 5, 14], 7), "<Foo 5> 7")
+    XCTAssertEqual(try clformat("~? ~D", args: "<~A ~D>", ["Foo", 5] as [Any?], 7), "<Foo 5> 7")
+    XCTAssertEqual(try clformat("~? ~D", args: "<~A ~D>", ["Foo", 5, 14] as [Any?], 7), "<Foo 5> 7")
     XCTAssertEqual(try clformat("~@? ~D", args: "<~A ~D>", "Foo", 5, 7), "<Foo 5> 7")
     XCTAssertEqual(try clformat("~@? ~D", args: "<~A ~D>", "Foo", 5, 14, 7), "<Foo 5> 14")
   }
@@ -264,14 +264,16 @@ final class CLFormatTests: XCTestCase {
     XCTAssertEqual(try clformat(choiceHash, args: "FOO", "BAR"), "Items: FOO and BAR.")
     XCTAssertEqual(try clformat(choiceHash, args: "FOO", "BAR", "BAZ"), "Items: FOO, BAR, and BAZ.")
     XCTAssertEqual(try clformat(choiceHash, args: "FOO", "BAR", "BAZ", "GOO"), "Items: FOO, BAR, BAZ, and GOO.")
-    XCTAssertEqual(try clformat("Pairs:~:@{ <~A,~A>~}.", args: ["A", 1], ["B", 2], ["C", 3]), "Pairs: <A,1> <B,2> <C,3>.")
+    XCTAssertEqual(try clformat("Pairs:~:@{ <~A,~A>~}.",
+                                args: ["A", 1] as [Any], ["B", 2] as [Any], ["C", 3] as [Any]),
+                   "Pairs: <A,1> <B,2> <C,3>.")
     XCTAssertEqual(try clformat("~A and ~A and ~A", args: 1, nil, 3), "1 and nil and 3")
     XCTAssertEqual(try clformat("~:{/~A~^ ...~}", args: [["hot", "dog"], ["hamburger"], ["ice", "cream"], ["french", "fries"]]), "/hot .../hamburger/ice .../french ...")
     XCTAssertEqual(try clformat("~:{/~A~:^ ...~}", args: [["hot", "dog"], ["hamburger"], ["ice", "cream"], ["french", "fries"]]), "/hot .../hamburger .../ice .../french")
     XCTAssertEqual(try clformat("~:{/~A~#:^ ...~}", args: [["hot", "dog"], ["hamburger"], ["ice", "cream"], ["french", "fries"]]), "/hot .../hamburger")
     XCTAssertEqual(try clformat("hello~%~10~~%~2&~:@(world~). Number ~#[Zero~;One~;Two~:;Three~]." +
                                 " This is ~:[False~;True~]. ~@[My name is ~A. ~]! ~3{~A ~}",
-                                args: 2, "unknown", [1, "two", 3, 4]),
+                                args: 2, "unknown", [1, "two", 3, 4] as [Any]),
                    """
                    hello
                    ~~~~~~~~~~
