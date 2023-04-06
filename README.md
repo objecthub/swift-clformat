@@ -430,7 +430,8 @@ introduced in a way to not impact backward compatibility.
      the <tt>+</tt> modifier, it is possible to switch the language to the language of the locale
      provided to function <tt>clformat</tt>.</p>
   <p>&nbsp;&nbsp;<tt>clformat("~R", 572)</tt> &DoubleLongRightArrow; <tt>five hundred seventy-two</tt><br />
-     &nbsp;&nbsp;<tt>clformat("~+R", locale: Locale(identifier: "de_DE"), 572)</tt> &DoubleLongRightArrow; <tt>fünf­hundert­zwei­und­siebzig</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~+R", locale: Locale(identifier: "de_DE"), 572)</tt> <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>fünf­hundert­zwei­und­siebzig</tt><br />
      &nbsp;&nbsp;<tt>clformat("~:R", 3)</tt> &DoubleLongRightArrow; <tt>3rd</tt><br />
      &nbsp;&nbsp;<tt>clformat("~@R", 1272)</tt> &DoubleLongRightArrow; <tt>MCCLXXII</tt></p>
   </td>
