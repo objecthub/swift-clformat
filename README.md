@@ -406,10 +406,39 @@ introduced in a way to not impact backward compatibility.
   <td>
   <p><i>BINARY:</i>&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>B</b></p>
   <p>Binary directive <tt>~B</tt> is just like decimal directive <tt>~D</tt> but it outputs
-     the next argument <i>arg</i> in binary radix instead of decimal.</p>
+     the next argument in binary radix (radix 2) instead of decimal. It uses the space character
+     as the default for <i>groupchar</i> and has a default grouping size of 4 as the default for
+     <i>groupcol</i>.</p>
   <p>&nbsp;&nbsp;<tt>clformat("bin(~D) = ~B", 178, 178)</tt> &DoubleLongRightArrow; <tt>bin(178) = 10110010</tt><br />
      &nbsp;&nbsp;<tt>clformat("~:B", 59701)</tt> &DoubleLongRightArrow; <tt>1110 1001 0011 0101</tt><br />
      &nbsp;&nbsp;<tt>clformat("~19,'0,'.:B", 31912)</tt> &DoubleLongRightArrow; <tt>0111.1100.1010.1000</tt></p>
+  </td>
+</tr>
+<tr valign="top">
+  <td><b>~o</b><br/><b>~O</b></td>
+  <td>
+  <p><i>OCTAL:</i>&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>O</b></p>
+  <p>Octal directive <tt>~O</tt> is just like decimal directive <tt>~D</tt> but it outputs
+     the next argument in octal radix (radix 8) instead of decimal. It uses the space character
+     as the default for <i>groupchar</i> and has a default grouping size of 4 as the default for
+     <i>groupcol</i>.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("bin(~D) = ~O", 178, 178)</tt> &DoubleLongRightArrow; <tt>bin(178) = 262</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~:O", 59701)</tt> &DoubleLongRightArrow; <tt>16 4465</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~9,'0,',:O", 31912)</tt> &DoubleLongRightArrow; <tt>0007,6250</tt></p>
+  </td>
+</tr>
+<tr valign="top">
+  <td><b>~x</b><br/><b>~X</b></td>
+  <td>
+  <p><i>HEXADECIMAL:</i>&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>X</b></p>
+  <p>Hexadecimal directive <tt>~X</tt> is just like decimal directive <tt>~D</tt> but it outputs
+     the next argument in hexadecimal radix (radix 16) instead of decimal. It uses the colon character
+     as the default for <i>groupchar</i> and has a default grouping size of 2 as the default for
+     <i>groupcol</i>. With modifier <tt>+</tt>, upper case characters are used for representing
+     hexadecimal digits.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("bin(~D) = ~X", 9968, 9968)</tt> &DoubleLongRightArrow; <tt>bin(9968) = 26f0</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~:X", 999701)</tt> &DoubleLongRightArrow; <tt>f:41:15</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~+X", 999854)</tt> &DoubleLongRightArrow; <tt>F41AE</tt></p>
   </td>
 </tr>
 <tr valign="top">
@@ -430,10 +459,7 @@ introduced in a way to not impact backward compatibility.
   <p>&nbsp;&nbsp;<tt>clformat("~16,8,,':,2:R", 7121972)</tt> &DoubleLongRightArrow; <tt>6c:ac:34</tt><br />
      &nbsp;&nbsp;<tt>clformat("~2,14,'0,'.,4:R", 773)</tt> &DoubleLongRightArrow; <tt>0011.0000.0101</tt></p>
   <p>A sign is output only if the number is negative. With the modifier <tt>@</tt> it is possible
-     to force output also of positive signs. To facilitate the localization of output, function
-     <tt>clformat</tt> supports a parameter <tt>locale:</tt>. Locale-specific
-     output can be enabled by using the <tt>+</tt> modifier.</p>
-  <p>&nbsp;&nbsp;<tt>clformat("~10+R", locale: Locale(identifier: "de_CH"), 14321)</tt> &DoubleLongRightArrow; <tt>14'321</tt></p>
+     to force output also of positive signs.</p>
   <p>If parameter <i>radix</i> is not specified at all, then an entirely different interpretation
      is given. <tt>~R</tt> outputs <i>arg</i> as a cardinal number in natural language. The form
      <tt>~:R</tt> outputs <i>arg</i> as an ordinal number in natural language. <tt>~@R</tt>
@@ -442,12 +468,20 @@ introduced in a way to not impact backward compatibility.
      provided to function <tt>clformat</tt>.</p>
   <p>&nbsp;&nbsp;<tt>clformat("~R", 572)</tt> <br />
      &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>five hundred seventy-two</tt><br />
-     &nbsp;&nbsp;<tt>clformat("~+R", locale: Locale(identifier: "de_DE"), 572)</tt> <br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>fünf­hundert­zwei­und­siebzig</tt><br />
      &nbsp;&nbsp;<tt>clformat("~:R", 3)</tt> <br />
      &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>3rd</tt><br />
      &nbsp;&nbsp;<tt>clformat("~@R", 1272)</tt> <br />
      &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>MCCLXXII</tt></p>
+  <p>Modifier <tt>+</tt> plays two different roles: If the given radix is greater than 10, upper
+     case characters are used for representing alphabetic digits. If the radix is omitted, 
+     usage of modifier <tt>+</tt> enables locale-specific output defined by the <tt>locale:</tt>
+     parameter of function <tt>clformat</tt>.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("~10+R", locale: Locale(identifier: "de_CH"), 14321)</tt> <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>14'321</tt> <br />
+     &nbsp;&nbsp;<tt>clformat("~+R", locale: Locale(identifier: "de_DE"), 572)</tt> <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>fünf­hundert­zwei­und­siebzig</tt> <br />
+     &nbsp;&nbsp;<tt>clformat("~16R vs ~16+R", 900939, 900939)</tt> <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>dbf4b vs DBF4B</tt></p>
   </td>
 </tr>
 </tbody>
