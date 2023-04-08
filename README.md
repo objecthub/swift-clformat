@@ -466,20 +466,17 @@ introduced in a way to not impact backward compatibility.
      outputs <i>arg</i> as a Roman numeral. By default, the language used is English. By specifying
      the <tt>+</tt> modifier, it is possible to switch the language to the language of the locale
      provided to function <tt>clformat</tt>.</p>
-  <p>&nbsp;&nbsp;<tt>clformat("~R", 572)</tt> <br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>five hundred seventy-two</tt><br />
-     &nbsp;&nbsp;<tt>clformat("~:R", 3)</tt> <br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>3rd</tt><br />
-     &nbsp;&nbsp;<tt>clformat("~@R", 1272)</tt> <br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>MCCLXXII</tt></p>
+  <p>&nbsp;&nbsp;<tt>clformat("~R", 572)</tt> &DoubleLongRightArrow; <tt>five hundred seventy-two</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~:R", 3)</tt> &DoubleLongRightArrow; <tt>3rd</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~@R", 1272)</tt> &DoubleLongRightArrow; <tt>MCCLXXII</tt></p>
   <p>Modifier <tt>+</tt> plays two different roles: If the given radix is greater than 10, upper
      case characters are used for representing alphabetic digits. If the radix is omitted, 
-     usage of modifier <tt>+</tt> enables locale-specific output defined by the <tt>locale:</tt>
+     usage of modifier <tt>+</tt> enables locale-specific output determined by the <tt>locale:</tt>
      parameter of function <tt>clformat</tt>.</p>
-  <p>&nbsp;&nbsp;<tt>clformat("~10+R", locale: Locale(identifier: "de_CH"), 14321)</tt> <br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>14'321</tt> <br />
-     &nbsp;&nbsp;<tt>clformat("~+R", locale: Locale(identifier: "de_DE"), 572)</tt> <br />
+  <p>&nbsp;&nbsp;<tt>clformat("~+R", locale: Locale(identifier: "de_DE"), 572)</tt> <br />
      &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>fünf­hundert­zwei­und­siebzig</tt> <br />
+     &nbsp;&nbsp;<tt>clformat("~10+R", locale: Locale(identifier: "de_CH"), 14321)</tt> <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>14'321</tt> <br />
      &nbsp;&nbsp;<tt>clformat("~16R vs ~16+R", 900939, 900939)</tt> <br />
      &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>dbf4b vs DBF4B</tt></p>
   </td>
