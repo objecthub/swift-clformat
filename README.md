@@ -402,6 +402,17 @@ introduced in a way to not impact backward compatibility.
   </td>
 </tr>
 <tr valign="top">
+  <td><b>~b</b><br/><b>~B</b></td>
+  <td>
+  <p><i>BINARY:</i>&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>B</b></p>
+  <p>Binary directive <tt>~B</tt> is just like decimal directive <tt>~D</tt> but it outputs
+     the next argument <i>arg</i> in binary radix instead of decimal.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("bin(~D) = ~B", 178, 178)</tt> &DoubleLongRightArrow; <tt>bin(178) = 10110010</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~:B", 59701)</tt> &DoubleLongRightArrow; <tt>1110 1001 0011 0101</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~19,'0,'.:B", 31912)</tt> &DoubleLongRightArrow; <tt>0111.1100.1010.1000</tt></p>
+  </td>
+</tr>
+<tr valign="top">
   <td><b>~r</b><br/><b>~R</b></td>
   <td>
   <p><i>RADIX:</i>&nbsp;&nbsp;<b>~<i>radix,mincol,padchar,groupchar,groupcol</i>R</b></p>
@@ -429,11 +440,14 @@ introduced in a way to not impact backward compatibility.
      outputs <i>arg</i> as a Roman numeral. By default, the language used is English. By specifying
      the <tt>+</tt> modifier, it is possible to switch the language to the language of the locale
      provided to function <tt>clformat</tt>.</p>
-  <p>&nbsp;&nbsp;<tt>clformat("~R", 572)</tt> &DoubleLongRightArrow; <tt>five hundred seventy-two</tt><br />
+  <p>&nbsp;&nbsp;<tt>clformat("~R", 572)</tt> <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>five hundred seventy-two</tt><br />
      &nbsp;&nbsp;<tt>clformat("~+R", locale: Locale(identifier: "de_DE"), 572)</tt> <br />
      &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>fünf­hundert­zwei­und­siebzig</tt><br />
-     &nbsp;&nbsp;<tt>clformat("~:R", 3)</tt> &DoubleLongRightArrow; <tt>3rd</tt><br />
-     &nbsp;&nbsp;<tt>clformat("~@R", 1272)</tt> &DoubleLongRightArrow; <tt>MCCLXXII</tt></p>
+     &nbsp;&nbsp;<tt>clformat("~:R", 3)</tt> <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>3rd</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~@R", 1272)</tt> <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>MCCLXXII</tt></p>
   </td>
 </tr>
 </tbody>
