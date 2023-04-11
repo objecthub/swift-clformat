@@ -381,7 +381,7 @@ introduced in a way to not impact backward compatibility.
   <td>
   <p><i>CHARACTER:</i>&nbsp;&nbsp;<b>~C</b></p>
   <p>The next argument <i>arg</i> should be a character. Directive <tt>~C</tt> outputs <i>arg</i>
-     in a form dependent on the modifiers used. Without any modifiers, <i>arg<i> is output as
+     in a form dependent on the modifiers used. Without any modifiers, <i>arg</i> is output as
      if the character was used in a string.<p>     
   <p>If the <tt>@</tt> modifier is provided, a representation based on <i>Unicode scalars</i>
      is chosen. Without further modifiers, 
@@ -400,8 +400,8 @@ introduced in a way to not impact backward compatibility.
      &nbsp;&nbsp;<tt>clformat("~@+C", "A")</tt> &DoubleLongRightArrow; <tt>"\u{41}"</tt><br />
      &nbsp;&nbsp;<tt>clformat("~@:C", "©")</tt> &DoubleLongRightArrow; <tt>U+00A9</tt><br />
      &nbsp;&nbsp;<tt>clformat("~@:+C", "©")</tt> &DoubleLongRightArrow; <tt>COPYRIGHT SIGN</tt><br />
-     &nbsp;&nbsp;<tt>clformat("~:C", "©")</tt> &DoubleLongRightArrow; <tt>&#xA9;</tt><br />
-     &nbsp;&nbsp;<tt>clformat("~:+C", "©")</tt> &DoubleLongRightArrow; <tt>&copy;</tt></p>
+     &nbsp;&nbsp;<tt>clformat("~:C", "©")</tt> &DoubleLongRightArrow; <tt>&#038;#xA9;</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~:+C", "©")</tt> &DoubleLongRightArrow; <tt>&#038;copy;</tt></p>
   </td>
 </tr>
 <tr valign="top">
