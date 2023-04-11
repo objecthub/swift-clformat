@@ -46,12 +46,20 @@ final class CLFormatTests: XCTestCase {
   
   func testCharacters() throws {
     XCTAssertEqual(try clformat("~C", args: "Ü"), "Ü")
-    XCTAssertEqual(try clformat("~@C vs. ~@C", args: "Ü", "A"),
-                   "\"\\N{LATIN CAPITAL LETTER U WITH DIAERESIS}\" vs. \"A\"")
-    XCTAssertEqual(try clformat("~:@C vs. ~:@C", args: "Ü", "A"), "\"\\u00DC\" vs. \"\\u0041\"")
-    XCTAssertEqual(try clformat("~:C", args: "Ü"), "LATIN CAPITAL LETTER U WITH DIAERESIS")
-    XCTAssertEqual(try clformat("~+C", args: "Ü"), "&#xDC;")
-    XCTAssertEqual(try clformat("~:+C", args: "Ü"), "U+00DC")
+    XCTAssertEqual(try clformat("~:C", args: "©"), "&#xA9;")
+    XCTAssertEqual(try clformat("~:+C", args: "©"), "&copy;")
+    XCTAssertEqual(try clformat("~@C", args: "Ü"), "\\u{dc}")
+    XCTAssertEqual(try clformat("~@+C", args: "Ü"), "\"\\u{dc}\"")
+    XCTAssertEqual(try clformat("~@:C", args: "Ü"), "U+00DC")
+    XCTAssertEqual(try clformat("~@:+C", args: "Ü"), "LATIN CAPITAL LETTER U WITH DIAERESIS")
+    XCTAssertEqual(try clformat("~C", args: "🇩🇪"), "🇩🇪")
+    XCTAssertEqual(try clformat("~:C", args: "🇩🇪"), "&#x1F1E9;&#x1F1EA;")
+    XCTAssertEqual(try clformat("~:+C", args: "🇩🇪"), "\u{1f1e9}\u{1f1ea}")
+    XCTAssertEqual(try clformat("~@C", args: "🇩🇪"), "\\u{1f1e9}\\u{1f1ea}")
+    XCTAssertEqual(try clformat("~@+C", args: "🇩🇪"), "\"\\u{1f1e9}\\u{1f1ea}\"")
+    XCTAssertEqual(try clformat("~@:C", args: "🇩🇪"), "U+1F1E9U+1F1EA")
+    XCTAssertEqual(try clformat("~@:+C", args: "🇩🇪"),
+                   "REGIONAL INDICATOR SYMBOL LETTER D, REGIONAL INDICATOR SYMBOL LETTER E")
   }
   
   func testDecimal() throws {

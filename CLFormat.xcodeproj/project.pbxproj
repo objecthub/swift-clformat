@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CC2FF5FB29D8C8F500AD0BC6 /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2FF5FA29D8C8F500AD0BC6 /* Optional.swift */; };
+		CC4CDDE329E47B8300C5E9C6 /* MarkdownKit in Frameworks */ = {isa = PBXBuildFile; productRef = CC4CDDE229E47B8300C5E9C6 /* MarkdownKit */; };
 		CCB5F0F629C1455B00587140 /* CLFormat.docc in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0F529C1455B00587140 /* CLFormat.docc */; };
 		CCB5F0FC29C1455B00587140 /* CLFormat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB5F0F229C1455B00587140 /* CLFormat.framework */; };
 		CCB5F10129C1455B00587140 /* CLFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F10029C1455B00587140 /* CLFormatTests.swift */; };
@@ -88,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC4CDDE329E47B8300C5E9C6 /* MarkdownKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +204,9 @@
 			dependencies = (
 			);
 			name = CLFormat;
+			packageProductDependencies = (
+				CC4CDDE229E47B8300C5E9C6 /* MarkdownKit */,
+			);
 			productName = CLFormat;
 			productReference = CCB5F0F229C1455B00587140 /* CLFormat.framework */;
 			productType = "com.apple.product-type.framework";
@@ -272,6 +277,9 @@
 				Base,
 			);
 			mainGroup = CC063B8129C113190000C520;
+			packageReferences = (
+				CC4CDDE129E47B8300C5E9C6 /* XCRemoteSwiftPackageReference "swift-markdownkit" */,
+			);
 			productRefGroup = CC063B8B29C113190000C520 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -645,6 +653,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CC4CDDE129E47B8300C5E9C6 /* XCRemoteSwiftPackageReference "swift-markdownkit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/objecthub/swift-markdownkit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CC4CDDE229E47B8300C5E9C6 /* MarkdownKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC4CDDE129E47B8300C5E9C6 /* XCRemoteSwiftPackageReference "swift-markdownkit" */;
+			productName = MarkdownKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CC063B8229C113190000C520 /* Project object */;
 }

@@ -1,5 +1,5 @@
 //
-//  Directives.swift
+//  StandardDirectiveSpecifier.swift
 //  CLFormat
 //
 //  Created by Matthias Zenger on 07/03/2023.
@@ -19,6 +19,7 @@
 //
 
 import Foundation
+import MarkdownKit
 
 public enum StandardDirectiveSpecifier: DirectiveSpecifier {
   case ascii
@@ -333,25 +334,39 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
       case .character:
         let char = try arguments.nextAsCharacter()
         let str = String(char)
-        // Print in XML encoding
-        if modifiers.contains(.plus) {
+        // Unicode-based character representation
+        if modifiers.contains(.at) {
           if modifiers.contains(.colon) {
-            return .append(str.applyingTransform(.init("Any-Hex/Unicode"), reverse: false) ?? str)
+            if modifiers.contains(.plus) {
+                // Output unicode scalar names
+              return .append(str.flatMap(\.unicodeScalars)
+                                .compactMap(\.properties.name)
+                                .joined(separator: ", "))
+            } else {
+              // Output unicode scalar codes
+              return .append(str.applyingTransform(.init("Any-Hex/Unicode"), reverse: false) ?? str)
+            }
           } else {
-            return .append(str.applyingTransform(.toXMLHex, reverse: false) ?? str)
+            let res = str.flatMap(\.unicodeScalars)
+                         .compactMap({ sc in
+                           "\\u{\(String(sc.value, radix: 16, uppercase: false))}"
+                         }).joined()
+            if modifiers.contains(.plus) {
+              return .append("\"\(res)\"")
+            } else {
+                // Output unicode scalar codes in Swift syntax
+              return .append(res)
+            }
           }
-        // Swift character literal format
-        } else if modifiers.contains(.at) {
-          if modifiers.contains(.colon) {
-            return .append("\"\(str.applyingTransform(.init("Any-Hex"), reverse: false) ?? str)\"")
-          } else {
-            return .append("\"\(str.applyingTransform(.toUnicodeName, reverse: false) ?? str)\"")
-          }
-        // Pretty print as unicode scalar names
+        // XML-based character representations
         } else if modifiers.contains(.colon) {
-          return .append(str.flatMap(\.unicodeScalars).compactMap(\.properties.name)
-                            .joined(separator: ", "))
-        // Just the character
+          if modifiers.contains(.plus) {
+            // Encode character using XML character names
+            return .append(str.encodingNamedCharacters())
+          } else {
+            // Unicode-based character encoding in XML
+            return .append(str.applyingTransform(.init("Any-Hex/XML"), reverse: false) ?? str)
+          }
         } else {
           return .append("\(char)")
         }
@@ -549,7 +564,19 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         return .append("")
       case .conversion(let control):
         let str = try control.format(with: arguments, in: context).string
-        if !modifiers.contains(.colon) && !modifiers.contains(.at) {
+        if modifiers.contains(.plus) {
+          if modifiers.contains(.colon) {
+            if modifiers.contains(.at) {
+              return .append(str.encodingPredefinedXmlEntities());
+            } else {
+              return .append(str.encodingNamedCharacters());
+            }
+          } else if modifiers.contains(.at) {
+            return .append(str.applyingTransform(.stripDiacritics, reverse: false) ?? str)
+          } else {
+            return .append(StandardDirectiveSpecifier.escapeStr(str))
+          }
+        } else if !modifiers.contains(.colon) && !modifiers.contains(.at) {
           return .append(str.lowercased())
         } else if modifiers.contains(.colon) && !modifiers.contains(.at) {
           return .append(str.capitalized)
@@ -859,3 +886,4 @@ public enum CLFormatError: Error, CustomStringConvertible {
     }
   }
 }
+

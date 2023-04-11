@@ -377,6 +377,34 @@ introduced in a way to not impact backward compatibility.
   </td>
 </tr>
 <tr valign="top">
+  <td><b>~c</b><br/><b>~C</b></td>
+  <td>
+  <p><i>CHARACTER:</i>&nbsp;&nbsp;<b>~C</b></p>
+  <p>The next argument <i>arg</i> should be a character. Directive <tt>~C</tt> outputs <i>arg</i>
+     in a form dependent on the modifiers used. Without any modifiers, <i>arg<i> is output as
+     if the character was used in a string.<p>     
+  <p>If the <tt>@</tt> modifier is provided, a representation based on <i>Unicode scalars</i>
+     is chosen. Without further modifiers, 
+     <i>arg</i> is output using Swift's Unicode scalar escape syntax <tt>\u{...}</tt> so that
+     the result can be used within a Swift string literal. By adding the <tt>+</tt> modifier,
+     the result is automatically surrounded by double-quotes. The modifier combination <tt>@:</tt>
+     will lead to <i>arg</i> being output as Unicode code points. The combination <tt>@:+</tt>
+     will output <i>arg</i> as a sequence of Unicode scalar property names, separated by comma.</p>
+  <p>If the <tt>:</tt> modifier is used (without <tt>@</tt>), a representation of <i>arg</i>
+     for the usage in XML documents is chosen. By default, a Unicode-based XML character encoding
+     is used, unless <tt>:</tt> is combined with <tt>+</tt>, in which case the character is
+     represented as a XML named character entity when possible, otherwise, the character is
+     output in raw form.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("~C", "A")</tt> &DoubleLongRightArrow; <tt>A</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~@C", "A")</tt> &DoubleLongRightArrow; <tt>\u{41}</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~@+C", "A")</tt> &DoubleLongRightArrow; <tt>"\u{41}"</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~@:C", "©")</tt> &DoubleLongRightArrow; <tt>U+00A9</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~@:+C", "©")</tt> &DoubleLongRightArrow; <tt>COPYRIGHT SIGN</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~:C", "©")</tt> &DoubleLongRightArrow; <tt>&#xA9;</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~:+C", "©")</tt> &DoubleLongRightArrow; <tt>&copy;</tt></p>
+  </td>
+</tr>
+<tr valign="top">
   <td><b>~d</b><br/><b>~D</b></td>
   <td>
   <p><i>DECIMAL:</i>&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>D</b></p>
@@ -455,7 +483,7 @@ introduced in a way to not impact backward compatibility.
      &nbsp;&nbsp;<tt>clformat("Number: ~2R", 173)</tt> &DoubleLongRightArrow; <tt>Number:&nbsp;10101101</tt></p>
   <p>By default, the number is output without grouping separators. <i>groupchar</i> specifies
      which character should be used to separate sequences of <i>groupcol</i> digits in the
-     output. Grouping of digits gets enabled with the <tt>:</tt> modifier.</p>
+     output. Grouping of digits is enabled with the <tt>:</tt> modifier.</p>
   <p>&nbsp;&nbsp;<tt>clformat("~16,8,,':,2:R", 7121972)</tt> &DoubleLongRightArrow; <tt>6c:ac:34</tt><br />
      &nbsp;&nbsp;<tt>clformat("~2,14,'0,'.,4:R", 773)</tt> &DoubleLongRightArrow; <tt>0011.0000.0101</tt></p>
   <p>A sign is output only if the number is negative. With the modifier <tt>@</tt> it is possible
@@ -463,14 +491,15 @@ introduced in a way to not impact backward compatibility.
   <p>If parameter <i>radix</i> is not specified at all, then an entirely different interpretation
      is given. <tt>~R</tt> outputs <i>arg</i> as a cardinal number in natural language. The form
      <tt>~:R</tt> outputs <i>arg</i> as an ordinal number in natural language. <tt>~@R</tt>
-     outputs <i>arg</i> as a Roman numeral. By default, the language used is English. By specifying
-     the <tt>+</tt> modifier, it is possible to switch the language to the language of the locale
-     provided to function <tt>clformat</tt>.</p>
+     outputs <i>arg</i> as a Roman numeral.</p>
   <p>&nbsp;&nbsp;<tt>clformat("~R", 572)</tt> &DoubleLongRightArrow; <tt>five hundred seventy-two</tt><br />
      &nbsp;&nbsp;<tt>clformat("~:R", 3)</tt> &DoubleLongRightArrow; <tt>3rd</tt><br />
      &nbsp;&nbsp;<tt>clformat("~@R", 1272)</tt> &DoubleLongRightArrow; <tt>MCCLXXII</tt></p>
-  <p>Modifier <tt>+</tt> plays two different roles: If the given radix is greater than 10, upper
-     case characters are used for representing alphabetic digits. If the radix is omitted, 
+  <p>Whenever output is provided in natural language, English is used as the language by default.
+     By specifying the <tt>+</tt> modifier, it is possible to switch the language to the language
+     of the locale provided to function <tt>clformat</tt>.
+     In fact, modifier <tt>+</tt> plays two different roles: If the given radix is greater than 10,
+     upper case characters are used for representing alphabetic digits. If the radix is omitted, 
      usage of modifier <tt>+</tt> enables locale-specific output determined by the <tt>locale:</tt>
      parameter of function <tt>clformat</tt>.</p>
   <p>&nbsp;&nbsp;<tt>clformat("~+R", locale: Locale(identifier: "de_DE"), 572)</tt> <br />
@@ -496,6 +525,7 @@ and the command-line tool can both be built either using _Xcode_ or the _Swift P
 - [Xcode 14](https://developer.apple.com/xcode/)
 - [Swift 5.7](https://developer.apple.com/swift/)
 - [Swift Package Manager](https://swift.org/package-manager/)
+- [MarkdownKit](http://github.com/objecthub/swift-markdownkit)
 
 ## Copyright
 
