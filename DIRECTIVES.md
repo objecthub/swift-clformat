@@ -5,6 +5,12 @@
   <tr><th>Directive</th><th>Explanation</th></tr>
 </thead>
 <tbody>
+The formatting directives supported by the _CLFormat_ framework are based on the directives
+specified in [Common Lisp the Language, 2nd Edition](https://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node1.html)
+by Guy L. Steele Jr. Some directives have been extended to meet today's formatting requirements
+(e.g. to support localization) and to achieve a natural embedding in Swift. All extensions were
+introduced in a way to not impact backward compatibility. 
+
 <tr valign="top">
   <td><b>~a</b><br/><b>~A</b></td>
   <td>
@@ -261,9 +267,12 @@
      constraint that no trailing zero digits may appear in the fraction, except that if the
      fraction is zero, then a single zero digit should appear after the decimal point if
      permitted by the width constraint.</p>
-  <p>If <i>w is omitted, then if the magnitude of <i>arg</i> is so large (or, if <i>d</i> is
+  <p>If <i>w</i> is omitted, then if the magnitude of <i>arg</i> is so large (or, if <i>d</i> is
      also omitted, so small) that more than 100 digits would have to be printed, then <i>arg</i>
      is output using exponential notation instead.</p>
+  <p>The <tt>~F</tt> directive also supports grouping of the integer part of <i>arg</i>; this can
+     be enabled via the <tt>:</tt> modifier. <i>groupchar</i> specifies which character should be
+     used to separate sequences of <i>groupcol</i> digits in the integer part of the output.</p>
   <p>&nbsp;&nbsp;<tt>clformat("~F", args: 123.1415926)</tt> &DoubleLongRightArrow; <tt>123.1415926</tt><br />
      &nbsp;&nbsp;<tt>clformat("~8F", args: 123.1415926)</tt> &DoubleLongRightArrow; <tt>123.1416</tt><br />
      &nbsp;&nbsp;<tt>clformat("~8,,,'-F", args: 123.1415926)</tt> &DoubleLongRightArrow; <tt>123.1416</tt><br />
