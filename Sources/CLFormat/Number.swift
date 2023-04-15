@@ -98,6 +98,36 @@ public enum Number: Equatable, Codable, CustomStringConvertible {
     }
   }
   
+  /// Returns this number as a Double, if possible
+  public var asDouble: Double {
+    switch (self) {
+      case .int(let num):
+        return Double(num)
+      case .int16(let num):
+        return Double(num)
+      case .int32(let num):
+        return Double(num)
+      case .int64(let num):
+        return Double(num)
+      case .uint(let num):
+        return Double(num)
+      case .uint8(let num):
+        return Double(num)
+      case .uint16(let num):
+        return Double(num)
+      case .uint32(let num):
+        return Double(num)
+      case .uint64(let num):
+        return Double(num)
+      case .float(let num):
+        return Double(num)
+      case .double(let num):
+        return num
+      case .decimal(_):
+        return Double(truncating: self.nsnumber)
+    }
+  }
+  
   /// Returns true if this number is equal to the given integer `i`. For
   /// floating-point numbers, this procedure always returns false.
   public func equals(integer i: Int) -> Bool {

@@ -80,6 +80,18 @@ final class CLFormatTests: XCTestCase {
     XCTAssertEqual(try clformat("|~8,3,0,'-F|", args: 123456.78901), "|--------|")
     XCTAssertEqual(try clformat("|~8,3,-2F|", args: 123456.78901), "|1234.568|")
     XCTAssertEqual(try clformat("Float = <~14,5@F>", args: 12345.6789), "Float = <  +12345.67890>")
+    XCTAssertEqual(try clformat("~F", args: 123.1415926), "123.1415926")
+    XCTAssertEqual(try clformat("~8F", args: 123.1415926), "123.1416")
+    XCTAssertEqual(try clformat("~8,,,'-F", args: 123.1415926), "123.1416")
+    XCTAssertEqual(try clformat("~8,,,'-F", args: 123456789.12), "--------")
+    XCTAssertEqual(try clformat("~8,,,,'0F", args: 123.14), "00123.14")
+    XCTAssertEqual(try clformat("~8,3,,,'0F", args: 123.1415926), "0123.142")
+    XCTAssertEqual(try clformat("~,4F", args: 123.1415926), "123.1416")
+    XCTAssertEqual(try clformat("~,2@F", args: 123.1415926), "+123.14")
+    XCTAssertEqual(try clformat("~,2,-2@F", args: 314.15926), "+3.14")
+    XCTAssertEqual(try clformat("~,2,-2@F", args: 314.15926), "+3.14")
+    XCTAssertEqual(try clformat("~,2:F", args: 1234567.891), "1,234,567.89")
+    XCTAssertEqual(try clformat("~,2,,,,'',3:F", args: 1234567.891), "1'234'567.89")
   }
   
   func testExpoFloat() throws {

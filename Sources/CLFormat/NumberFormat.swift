@@ -166,7 +166,7 @@ public struct NumberFormat {
                             padchar: Character,
                             overflowchar: Character?,
                             fractionDigits: Int?,
-                            exponent: Int,
+                            exp: Int,
                             groupsep: Character?,
                             groupsize: Int?,
                             locale: Locale?,
@@ -175,17 +175,26 @@ public struct NumberFormat {
                             forcesign: Bool) -> String {
     let formatter = NumberFormatter()
     formatter.numberStyle = .decimal
+    formatter.minimumIntegerDigits = 1
     if let fractionDigits = fractionDigits {
       formatter.minimumFractionDigits = fractionDigits
       formatter.maximumFractionDigits = fractionDigits
     } else {
       formatter.minimumFractionDigits = 1
-      formatter.maximumFractionDigits = (width ?? 100) - 3
+      if let width = width, width > 1, exp >= -100, exp <= 100 {
+        let num = number.asDouble
+        let intDigits = num.isZero ? 1.0 : max(ceil(log10(num * pow(10.0, Double(exp)))), 1.0)
+        formatter.maximumFractionDigits = width - Int(intDigits) - 1
+      } else {
+        formatter.maximumFractionDigits = (width ?? 100) - 2
+      }
     }
-    if let locale = locale {
-      formatter.locale = locale
+    if uselocale {
+      formatter.locale = locale ?? NumberFormat.defaultLocale
+      formatter.localizesFormat = true
+    } else if usegroup {
+      formatter.locale = NumberFormat.defaultLocale
     }
-    formatter.localizesFormat = uselocale
     if let groupsep = groupsep {
       formatter.groupingSeparator = String(groupsep)
     }
@@ -196,8 +205,8 @@ public struct NumberFormat {
     if forcesign {
       formatter.positivePrefix = formatter.plusSign
     }
-    if exponent >= -100 && exponent <= 100 {
-      formatter.multiplier = NSNumber(value: pow(10.0, Double(exponent)))
+    if exp >= -100 && exp <= 100 {
+      formatter.multiplier = NSNumber(value: pow(10.0, Double(exp)))
     }
     if let width = width, width > 1 {
       formatter.formatWidth = width

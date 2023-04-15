@@ -371,18 +371,12 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
           return .append("\(char)")
         }
       case .fixedFloat:
-        let w = try parameters.number(0) ?? Int.min
-        let d = try parameters.number(1) ?? Int.min
-        let k = try parameters.number(2, allowNegative: true) ?? 0
-        let oc = try parameters.character(3)
-        let pc = try parameters.character(4) ?? " "
-        let number = try arguments.nextAsNumber()
-        return .append(NumberFormat.format(number,
-                                           width: w == Int.min ? nil : w,
-                                           padchar: pc,
-                                           overflowchar: oc,
-                                           fractionDigits: d == Int.min ? nil : d,
-                                           exponent: k,
+        return .append(NumberFormat.format(try arguments.nextAsNumber(),
+                                           width: try parameters.number(0),
+                                           padchar: try parameters.character(4) ?? " ",
+                                           overflowchar: try parameters.character(3),
+                                           fractionDigits: try parameters.number(1),
+                                           exp: try parameters.number(2, allowNegative: true) ?? 0,
                                            groupsep: try parameters.character(5),
                                            groupsize: try parameters.number(6),
                                            locale: arguments.locale,
@@ -423,11 +417,9 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         let ee = e == Int.min ? 4 : e + 2
         let ww = w == Int.min ? Int.min : w - ee
         let nd = d == Int.min ? max("\(arg)".count, min(n, 7)) : d
-        // print("n = \(n), ee = \(ee), ww = \(ww), nd = \(nd)")
         let dd = {
           if d == Int.min {
             let q = "\(arg)".count
-            // print("q = \(q), n = \(n), str = \"\(arg)\"")
             return max(q, min(n, 7)) - n - 1
           } else {
             return d - n
@@ -439,7 +431,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                                              padchar: pc,
                                              overflowchar: oc,
                                              fractionDigits: dd,
-                                             exponent: 0,
+                                             exp: 0,
                                              groupsep: nil,
                                              groupsize: nil,
                                              locale: arguments.locale,
