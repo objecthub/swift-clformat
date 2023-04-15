@@ -105,7 +105,7 @@ func parse(argument: String) throws -> Any? {
       } else {
         throw ParseError.cannotParseCharacter
       }
-    case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
+    case "-", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
       if let x = Int(argument) {
         return x
       } else if let x = Int64(argument) {

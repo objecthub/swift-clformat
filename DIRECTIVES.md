@@ -14,7 +14,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~a</b><br/><b>~A</b></td>
   <td>
-  <p><i>ASCII:</i>&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>A</b></p>
+  ASCII:&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>A</b>
   <p>The next argument <i>arg</i> is output without escape characters. In particular, if <i>arg</i>
      is a string, its characters will be output verbatim. If <i>arg</i> is nil, it will be output as
      <tt>nil</tt>. If <i>arg</i> is not nil, then the formatter will attempt to convert <i>arg</i>
@@ -52,7 +52,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~w</b><br/><b>~W</b></td>
   <td>
-  <p><i>WRITE:</i>&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>W</b></p>
+  WRITE:&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>W</b>
   <p>The next argument <i>arg</i> is output without escape characters just as if it was
      printed via Swift's <tt>print</tt> function. If <i>arg</i> is nil, it will be output as
      <tt>nil</tt>. If <i>arg</i> is not nil, then the formatter will attempt to convert <i>arg</i>
@@ -76,7 +76,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~s</b><br/><b>~S</b></td>
   <td>
-  <p><i>SOURCE:</i>&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>S</b></p>
+  SOURCE:&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>S</b>
   <p>The next argument <i>arg</i> is output with escape characters. In particular, if <i>arg</i>
      is a string, double-quotes delimit the characters of the string. If <i>arg</i> is a character,
      single-quotes delimit the character. If <i>arg</i> is nil, it will be output as
@@ -106,7 +106,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~c</b><br/><b>~C</b></td>
   <td>
-  <p><i>CHARACTER:</i>&nbsp;&nbsp;<b>~C</b></p>
+  CHARACTER:&nbsp;&nbsp;<b>~C</b>
   <p>The next argument <i>arg</i> should be a character. Directive <tt>~C</tt> outputs <i>arg</i>
      in a form dependent on the modifiers used. Without any modifiers, <i>arg</i> is output as
      if the character was used in a string.<p>     
@@ -134,7 +134,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~d</b><br/><b>~D</b></td>
   <td>
-  <p><i>DECIMAL:</i>&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>D</b></p>
+  DECIMAL:&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>D</b>
   <p>The next argument <i>arg</i> is output in decimal radix. <i>arg</i> should be an integer,
      in which case no decimal point is printed. For floating-point numbers which do not represent
      an integer, a decimal point and a fractional part are output.</p>
@@ -159,7 +159,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~b</b><br/><b>~B</b></td>
   <td>
-  <p><i>BINARY:</i>&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>B</b></p>
+  BINARY:&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>B</b>
   <p>Binary directive <tt>~B</tt> is just like decimal directive <tt>~D</tt> but it outputs
      the next argument in binary radix (radix 2) instead of decimal. It uses the space character
      as the default for <i>groupchar</i> and has a default grouping size of 4 as the default for
@@ -172,7 +172,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~o</b><br/><b>~O</b></td>
   <td>
-  <p><i>OCTAL:</i>&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>O</b></p>
+  OCTAL:&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>O</b>
   <p>Octal directive <tt>~O</tt> is just like decimal directive <tt>~D</tt> but it outputs
      the next argument in octal radix (radix 8) instead of decimal. It uses the space character
      as the default for <i>groupchar</i> and has a default grouping size of 4 as the default for
@@ -185,7 +185,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~x</b><br/><b>~X</b></td>
   <td>
-  <p><i>HEXADECIMAL:</i>&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>X</b></p>
+  HEXADECIMAL:&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>X</b>
   <p>Hexadecimal directive <tt>~X</tt> is just like decimal directive <tt>~D</tt> but it outputs
      the next argument in hexadecimal radix (radix 16) instead of decimal. It uses the colon character
      as the default for <i>groupchar</i> and has a default grouping size of 2 as the default for
@@ -199,7 +199,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~r</b><br/><b>~R</b></td>
   <td>
-  <p><i>RADIX:</i>&nbsp;&nbsp;<b>~<i>radix,mincol,padchar,groupchar,groupcol</i>R</b></p>
+  RADIX:&nbsp;&nbsp;<b>~<i>radix,mincol,padchar,groupchar,groupcol</i>R</b>
   <p>The next argument <i>arg</i> is expected to be an integer. It will be output with radix
      <i>radix</i>. <i>mincol</i> (default: 0) specifies the minimal "width" of
      the output of the directive in characters with <i>padchar</i> (default: ' ') defining the
@@ -240,7 +240,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~f</b><br/><b>~F</b></td>
   <td>
-  <p><i>FIXED-FORMAT FLOAT:</i>&nbsp;&nbsp;<b>~<i>w,d,k,overchar,padchar,groupchar,groupcol</i>F</b></p>
+  FIXED FLOAT:&nbsp;&nbsp;<b>~<i>w,d,k,overchar,padchar,groupchar,groupcol</i>F</b>
   <p>The next argument <i>arg</i> is output as a floating-point number in a fixed format
      (ideally without exponent) of exactly <i>w</i> characters, if <i>w</i> is specified.
      First, leading <i>padchar</i> characters (default: ' ') are output, if necessary, to
@@ -272,7 +272,7 @@ introduced in a way to not impact backward compatibility.
      is output using exponential notation instead.</p>
   <p>The <tt>~F</tt> directive also supports grouping of the integer part of <i>arg</i>; this can
      be enabled via the <tt>:</tt> modifier. <i>groupchar</i> (default: ',') specifies which
-     character should be used to separate sequences of <i>groupcol</i> (default: '3') digits in
+     character should be used to separate sequences of <i>groupcol</i> (default: 3) digits in
      the integer part of the output. If locale-specific settings should be used, the
      <tt>+</tt> modifier needs to be set.</p>
   <p>&nbsp;&nbsp;<tt>clformat("~F", args: 123.1415926)</tt> &DoubleLongRightArrow; <tt>123.1415926</tt><br />
@@ -284,9 +284,50 @@ introduced in a way to not impact backward compatibility.
      &nbsp;&nbsp;<tt>clformat("~,4F", args: 123.1415926)</tt> &DoubleLongRightArrow; <tt>123.1416</tt><br />
      &nbsp;&nbsp;<tt>clformat("~,2@F", args: 123.1415926)</tt> &DoubleLongRightArrow; <tt>+123.14</tt><br />
      &nbsp;&nbsp;<tt>clformat("~,2,-2@F", args: 314.15926)</tt> &DoubleLongRightArrow; <tt>+3.14</tt><br />
-     &nbsp;&nbsp;<tt>clformat("~,2,-2@F", args: 314.15926)</tt> &DoubleLongRightArrow; <tt>+3.14</tt><br />
      &nbsp;&nbsp;<tt>clformat("~,2:F", args: 1234567.891)</tt> &DoubleLongRightArrow; <tt>1,234,567.89</tt><br />
-     &nbsp;&nbsp;<tt>clformat("~,2,,,,'',3:F", args: 1234567.891)</tt> &DoubleLongRightArrow; <tt>1'234'567.89</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~,2,,,,'',3:F", args: 1234567.891)</tt> &DoubleLongRightArrow; <tt>1'234'567.89</tt>
+  </td>
+</tr>
+<tr valign="top">
+  <td><b>~e</b><br/><b>~E</b></td>
+  <td>
+  EXPONENTIAL FLOAT:&nbsp;&nbsp;<b>~<i>w,d,e,k,overchar,padchar,expchar</i>F</b>
+  <p>The next argument <i>arg</i> is output as a floating-point number in an exponential format
+     of exactly <i>w</i> characters, if <i>w</i> is specified. Parameter <i>d</i> is the number
+     of digits to print after the decimal point, <i>e</i> is the number of digits to use when
+     printing the exponent, and <i>k</i> is a scale factor that defaults to 1.</p>
+  <p>First, leading <i>padchar</i> (default: ' ') characters are output, if necessary, to pad
+     the output on the left. If <i>arg</i> is negative, then a minus sign is printed. If <i>arg</i>
+     is not negative, then a plus sign is printed if and only if the <tt>@</tt> modifier was
+     specified. Then a sequence of digits, containing a single embedded decimal point, is output.
+     The form of this sequence of digits depends on the scale factor <i>k</i>. If <i>k</i> is
+     zero, then <i>d</i> digits are printed after the decimal point, and a single zero digit
+     appears before the decimal point. If <i>k</i> is positive, then it must be strictly less
+     than <i>d</i> + 2 and <i>k</i> significant digits are printed before the decimal point,
+     and <i>d − k</i> + 1 digits are printed after the decimal point. If <i>k</i> is negative,
+     then it must be strictly greater than <i>−d</i>. A single zero digit appears before the
+     decimal point and after the decimal point, first <i>−k</i> zeros are output followed
+     by <i>d + k</i> significant digits.</p>
+  <p>Following the digit sequence, the exponent is output following character <i>expchar</i>
+     (default: 'E') and the sign of the exponent, i.e. either the plus or the minus sign.
+     The exponent consists of <i>e</i> digits representing the power of 10 by which the
+     fraction must be multiplied to properly represent the rounded value of <i>arg</i>.</p>
+  <p>If it is impossible to print the value in the required format in a field of width <i>w</i>,
+     then one of two actions is taken: If the parameter <i>overchar</i> is specified, then
+     <i>w</i> copies of this character are printed instead of <i>arg</i>. If <i>overchar</i>
+     is omitted, then <i>arg</i> is printed using more than <i>w</i> characters, as many more
+     as may be needed. If <i>d</i> is too small for the specified <i>k</i> or <i>e</i> is
+     too small, then a larger value is used for <i>d</i> or <i>e</i> as may be needed.<p>
+  <p>If the <i>w</i> parameter is omitted, then the field is of variable width and a value
+     is chosen for <i>w</i> in such a way that no leading padding characters are needed.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("~E", args: 31.415926)</tt> &DoubleLongRightArrow; <tt>3.1415926E+1</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~,5E", args: 0.0003141592)</tt> &DoubleLongRightArrow; <tt>3.14159E-4</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~,4,2E", args: 0.0003141592)</tt> &DoubleLongRightArrow; <tt>3.1416E-04</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~9E", args: 31.415926)</tt> &DoubleLongRightArrow; <tt>3.1416E+1</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~10,3,,,,'#E", args: 31.415926)</tt> &DoubleLongRightArrow; <tt>##3.142E+1</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~10,4,,3,,'#E", args: 31.415926)</tt> &DoubleLongRightArrow; <tt>#314.16E-1</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~7,3,2,,'-E", args: 31.415926)</tt> &DoubleLongRightArrow; <tt>-------</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~10,4,,4,,'#@E", args: 31.415926)</tt> &DoubleLongRightArrow; <tt>+3141.6E-2</tt>
   </td>
 </tr>
 </tbody>

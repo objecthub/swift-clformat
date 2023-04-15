@@ -123,6 +123,14 @@ final class CLFormatTests: XCTestCase {
     XCTAssertEqual(try clformat("|~,,3,1,'%,' ,'e@E|", args: 3.14159), "|+3.14159e+000|")
     XCTAssertEqual(try clformat("|~,,3,2,'%,' ,'e@E|", args: 3.14159), "|+31.4159e-001|")
     XCTAssertEqual(try clformat("|~,,3,3,'%,' ,'e@E|", args: 3.14159), "|+314.159e-002|")
+    XCTAssertEqual(try clformat("~E", args: 31.415926), "3.1415926E+1")
+    XCTAssertEqual(try clformat("~,5E", args: 0.0003141592), "3.14159E-4")
+    XCTAssertEqual(try clformat("~,4,2E", args: 0.0003141592), "3.1416E-04")
+    XCTAssertEqual(try clformat("~9E", args: 31.415926), "3.1416E+1")
+    XCTAssertEqual(try clformat("~10,3,,,,'#E", args: 31.415926), "##3.142E+1")
+    XCTAssertEqual(try clformat("~10,4,,3,,'#E", args: 31.415926), "#314.16E-1")
+    XCTAssertEqual(try clformat("~7,3,2,,'-E", args: 31.415926), "-------")
+    XCTAssertEqual(try clformat("~10,4,,4,,'#@E", args: 31.415926), "+3141.6E-2")
   }
   
   func testMonetaryFloat() throws {

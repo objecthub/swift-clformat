@@ -93,12 +93,17 @@ public struct NumberFormat {
     let formatter = NumberFormatter()
     formatter.numberStyle = .scientific
     formatter.usesSignificantDigits = false
+    let exponent = (number.asDouble.isZero ? 0.0 : floor(log10(abs(number.asDouble)))) +
+                   1.0 - Double(scaleFactor)
+    let eDigits = max(exponentDigits ?? 0,
+                      Int(exponent == 0 ? 0.0 : floor(log10(abs(exponent)))) + 1)
+    let sDigits = forcesign || number.asDouble < 0.0 ? 1 : 0
     if scaleFactor > 0 {
       let fDigits = fractionDigits ?? (scaleFactor - 1)
       let intDigits = min(fDigits + 1, scaleFactor)
       if fractionDigits == nil {
         formatter.minimumFractionDigits = 1
-        formatter.maximumFractionDigits = 100
+        formatter.maximumFractionDigits = max((width ?? 100) - sDigits - intDigits - eDigits - 3, 1)
       } else {
         formatter.minimumFractionDigits = fDigits + 1 - intDigits
         formatter.maximumFractionDigits = fDigits + 1 - intDigits
@@ -113,7 +118,7 @@ public struct NumberFormat {
       let intDigits = -max(1 - fDigits, scaleFactor)
       if fractionDigits == nil {
         formatter.minimumFractionDigits = 1
-        formatter.maximumFractionDigits = 100
+        formatter.maximumFractionDigits = max((width ?? 100) - sDigits - intDigits - eDigits - 4, 1)
       } else {
         formatter.minimumFractionDigits = fDigits - intDigits
         formatter.maximumFractionDigits = fDigits - intDigits

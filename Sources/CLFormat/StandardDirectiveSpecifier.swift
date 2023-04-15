@@ -384,22 +384,15 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                                            uselocale: modifiers.contains(.plus),
                                            forcesign: modifiers.contains(.at)))
       case .exponentFloat:
-        let w = try parameters.number(0) ?? Int.min
-        let d = try parameters.number(1) ?? Int.min
-        let e = try parameters.number(2) ?? Int.min
-        let k = try parameters.number(3, allowNegative: true) ?? 1
-        let oc = try parameters.character(4)
-        let pc = try parameters.character(5) ?? " "
-        let ec = try parameters.character(6) ?? "E"
-        let number = try arguments.nextAsNumber()
-        return .append(NumberFormat.format(number,
-                                           width: w == Int.min ? nil : w,
-                                           padchar: pc,
-                                           overflowchar: oc,
-                                           exponentchar: ec,
-                                           fractionDigits: d == Int.min ? nil : d,
-                                           exponentDigits: e == Int.min ? nil : e,
-                                           scaleFactor: k,
+        return .append(NumberFormat.format(try arguments.nextAsNumber(),
+                                           width: try parameters.number(0),
+                                           padchar: try parameters.character(5) ?? " ",
+                                           overflowchar: try parameters.character(4),
+                                           exponentchar: try parameters.character(6) ?? "E",
+                                           fractionDigits: try parameters.number(1),
+                                           exponentDigits: try parameters.number(2),
+                                           scaleFactor: try parameters.number(
+                                                              3, allowNegative: true) ?? 1,
                                            locale: arguments.locale,
                                            uselocale: modifiers.contains(.plus),
                                            forcesign: modifiers.contains(.at)))
