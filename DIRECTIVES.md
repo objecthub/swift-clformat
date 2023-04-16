@@ -1,7 +1,7 @@
 #  CLFormat Directives
 
-The formatting directives supported by the _CLFormat_ framework are based on the directives specified in
-[Common Lisp the Language, 2nd Edition](https://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node1.html)
+The formatting directives supported by the _CLFormat_ framework are based on the directives
+specified in [Common Lisp the Language, 2nd Edition](https://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node1.html)
 by Guy L. Steele Jr. Some directives have been extended to meet today's formatting requirements
 (e.g. to support localization) and to achieve a natural embedding in Swift. All extensions were
 introduced in a way to not impact backward compatibility. 
@@ -14,7 +14,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~a</b><br/><b>~A</b></td>
   <td>
-  ASCII:&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>A</b>
+  <p>ASCII:&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>A</b></p>
   <p>The next argument <i>arg</i> is output without escape characters. In particular, if <i>arg</i>
      is a string, its characters will be output verbatim. If <i>arg</i> is nil, it will be output as
      <tt>nil</tt>. If <i>arg</i> is not nil, then the formatter will attempt to convert <i>arg</i>
@@ -52,7 +52,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~w</b><br/><b>~W</b></td>
   <td>
-  WRITE:&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>W</b>
+  <p>WRITE:&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>W</b></p>
   <p>The next argument <i>arg</i> is output without escape characters just as if it was
      printed via Swift's <tt>print</tt> function. If <i>arg</i> is nil, it will be output as
      <tt>nil</tt>. If <i>arg</i> is not nil, then the formatter will attempt to convert <i>arg</i>
@@ -76,7 +76,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~s</b><br/><b>~S</b></td>
   <td>
-  SOURCE:&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>S</b>
+  <p>SOURCE:&nbsp;&nbsp;<b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>S</b></p>
   <p>The next argument <i>arg</i> is output with escape characters. In particular, if <i>arg</i>
      is a string, double-quotes delimit the characters of the string. If <i>arg</i> is a character,
      single-quotes delimit the character. If <i>arg</i> is nil, it will be output as
@@ -106,7 +106,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~c</b><br/><b>~C</b></td>
   <td>
-  CHARACTER:&nbsp;&nbsp;<b>~C</b>
+  <p>CHARACTER:&nbsp;&nbsp;<b>~C</b></p>
   <p>The next argument <i>arg</i> should be a character. Directive <tt>~C</tt> outputs <i>arg</i>
      in a form dependent on the modifiers used. Without any modifiers, <i>arg</i> is output as
      if the character was used in a string.<p>     
@@ -134,7 +134,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~d</b><br/><b>~D</b></td>
   <td>
-  DECIMAL:&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>D</b>
+  <p>DECIMAL:&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>D</b></p>
   <p>The next argument <i>arg</i> is output in decimal radix. <i>arg</i> should be an integer,
      in which case no decimal point is printed. For floating-point numbers which do not represent
      an integer, a decimal point and a fractional part are output.</p>
@@ -159,7 +159,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~b</b><br/><b>~B</b></td>
   <td>
-  BINARY:&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>B</b>
+  <p>BINARY:&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>B</b></p>
   <p>Binary directive <tt>~B</tt> is just like decimal directive <tt>~D</tt> but it outputs
      the next argument in binary radix (radix 2) instead of decimal. It uses the space character
      as the default for <i>groupchar</i> and has a default grouping size of 4 as the default for
@@ -172,7 +172,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~o</b><br/><b>~O</b></td>
   <td>
-  OCTAL:&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>O</b>
+  <p>OCTAL:&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>O</b></p>
   <p>Octal directive <tt>~O</tt> is just like decimal directive <tt>~D</tt> but it outputs
      the next argument in octal radix (radix 8) instead of decimal. It uses the space character
      as the default for <i>groupchar</i> and has a default grouping size of 4 as the default for
@@ -185,7 +185,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~x</b><br/><b>~X</b></td>
   <td>
-  HEXADECIMAL:&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>X</b>
+  <p>HEXADECIMAL:&nbsp;&nbsp;<b>~<i>mincol,padchar,groupchar,groupcol</i>X</b></p>
   <p>Hexadecimal directive <tt>~X</tt> is just like decimal directive <tt>~D</tt> but it outputs
      the next argument in hexadecimal radix (radix 16) instead of decimal. It uses the colon character
      as the default for <i>groupchar</i> and has a default grouping size of 2 as the default for
@@ -199,7 +199,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~r</b><br/><b>~R</b></td>
   <td>
-  RADIX:&nbsp;&nbsp;<b>~<i>radix,mincol,padchar,groupchar,groupcol</i>R</b>
+  <p>RADIX:&nbsp;&nbsp;<b>~<i>radix,mincol,padchar,groupchar,groupcol</i>R</b></p>
   <p>The next argument <i>arg</i> is expected to be an integer. It will be output with radix
      <i>radix</i>. <i>mincol</i> (default: 0) specifies the minimal "width" of
      the output of the directive in characters with <i>padchar</i> (default: ' ') defining the
@@ -240,7 +240,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~f</b><br/><b>~F</b></td>
   <td>
-  FIXED FLOAT:&nbsp;&nbsp;<b>~<i>w,d,k,overchar,padchar,groupchar,groupcol</i>F</b>
+  <p>FIXED FLOAT:&nbsp;&nbsp;<b>~<i>w,d,k,overchar,padchar,groupchar,groupcol</i>F</b></p>
   <p>The next argument <i>arg</i> is output as a floating-point number in a fixed format
      (ideally without exponent) of exactly <i>w</i> characters, if <i>w</i> is specified.
      First, leading <i>padchar</i> characters (default: ' ') are output, if necessary, to
@@ -291,7 +291,7 @@ introduced in a way to not impact backward compatibility.
 <tr valign="top">
   <td><b>~e</b><br/><b>~E</b></td>
   <td>
-  EXPONENTIAL FLOAT:&nbsp;&nbsp;<b>~<i>w,d,e,k,overchar,padchar,expchar</i>F</b>
+  <p>EXPONENTIAL FLOAT:&nbsp;&nbsp;<b>~<i>w,d,e,k,overchar,padchar,expchar</i>E</b></p>
   <p>The next argument <i>arg</i> is output as a floating-point number in an exponential format
      of exactly <i>w</i> characters, if <i>w</i> is specified. Parameter <i>d</i> is the number
      of digits to print after the decimal point, <i>e</i> is the number of digits to use when
@@ -318,7 +318,7 @@ introduced in a way to not impact backward compatibility.
      is omitted, then <i>arg</i> is printed using more than <i>w</i> characters, as many more
      as may be needed. If <i>d</i> is too small for the specified <i>k</i> or <i>e</i> is
      too small, then a larger value is used for <i>d</i> or <i>e</i> as may be needed.<p>
-  <p>If the <i>w</i> parameter is omitted, then the field is of variable width and a value
+  <p>If the <i>w</i> parameter is omitted, then the output is of variable width and a value
      is chosen for <i>w</i> in such a way that no leading padding characters are needed.</p>
   <p>&nbsp;&nbsp;<tt>clformat("~E", args: 31.415926)</tt> &DoubleLongRightArrow; <tt>3.1415926E+1</tt><br />
      &nbsp;&nbsp;<tt>clformat("~,5E", args: 0.0003141592)</tt> &DoubleLongRightArrow; <tt>3.14159E-4</tt><br />
@@ -328,6 +328,39 @@ introduced in a way to not impact backward compatibility.
      &nbsp;&nbsp;<tt>clformat("~10,4,,3,,'#E", args: 31.415926)</tt> &DoubleLongRightArrow; <tt>#314.16E-1</tt><br />
      &nbsp;&nbsp;<tt>clformat("~7,3,2,,'-E", args: 31.415926)</tt> &DoubleLongRightArrow; <tt>-------</tt><br />
      &nbsp;&nbsp;<tt>clformat("~10,4,,4,,'#@E", args: 31.415926)</tt> &DoubleLongRightArrow; <tt>+3141.6E-2</tt>
+  </td>
+</tr>
+<tr valign="top">
+  <td><b>~g</b><br/><b>~G</b></td>
+  <td>
+  <p>GENERAL FLOAT:&nbsp;&nbsp;<b>~<i>w,d,e,k,overchar,padchar,expchar</i>G</b></p>
+  <p>The next argument <i>arg</i> is output as a floating-point number in either fixed-format or
+     exponential notation as appropriate. The format in which to print <i>arg</i> depends on the
+     magnitude (absolute value) of <i>arg</i>. Let <i>n</i> be an integer such that 10<sup>n−1</sup>
+     &le; <i>arg</i> &lt; 10<sup>n</sup>. If <i>arg</i> is zero, let <i>n</i> be 0. Let <i>ee</i>
+     equal <i>e</i> + 2, or 4 if <i>e</i> is omitted. Let <i>ww</i> equal <i>w</i> − <i>ee</i>,
+     or nil if <i>w</i> is omitted. If <i>d</i> is omitted, first let <i>q</i> be the number of
+     digits needed to print <i>arg</i> with no loss of information and without leading or trailing
+     zeros; then let <i>d</i> equal <i>max(q, min(n, 7))</i>. Let <i>dd</i> equal <i>d − n</i>.<p>
+  <p>If 0 &le; <i>dd</i> &le; <i>d</i>, then <i>arg</i> is output as if by the format directives:<br />
+     &nbsp;&nbsp;&nbsp;&nbsp;<tt>~ww,dd,,overchar,padcharF~ee@T</tt><br />
+     Note that the scale factor <i>k</i> is not passed to the <tt>~F</tt> directive. For all other
+     values of <i>dd</i>, <i>arg</i> is printed as if by the format directive:<br />
+     &nbsp;&nbsp;&nbsp;&nbsp;<tt>~w,d,e,k,overchar,padchar,expcharE</tt><br />
+     In either case, an <tt>@</tt> modifier is specified to the <tt>~F</tt> or <tt>~E</tt>
+     directive if and only if one was specified to the <tt>~G</tt> directive.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("|~G|", args: 712.72)</tt> &DoubleLongRightArrow; <tt>|712.72&nbsp;&nbsp;&nbsp;&nbsp;|</tt><br />
+     &nbsp;&nbsp;<tt>clformat("|~12G|", args: 712.72)</tt> &DoubleLongRightArrow; <tt>|&nbsp;&nbsp;712.72&nbsp;&nbsp;&nbsp;&nbsp;|</tt><br />
+     &nbsp;&nbsp;<tt>clformat("|~9,2G|~9,3,2,3G|~9,3,2,0G|", args: 0.031415, 0.031415, 0.031415)</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>|&nbsp;&nbsp;3.14E-2|314.2E-04|0.314E-01|</tt><br />
+     &nbsp;&nbsp;<tt>clformat("|~9,2G|~9,3,2,3G|~9,3,2,0G|", args: 0.314159, 0.314159, 0.314159)</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>|&nbsp;0.31&nbsp;&nbsp;&nbsp;&nbsp;|0.314&nbsp;&nbsp;&nbsp;&nbsp;|0.314&nbsp;&nbsp;&nbsp;&nbsp;|</tt><br />
+     &nbsp;&nbsp;<tt>clformat("|~9,2G|~9,3,2,3G|~9,3,2,0G|", args: 3.14159, 3.14159, 3.14159)</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>|&nbsp;&nbsp;3.1&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;3.14&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;3.14&nbsp;&nbsp;&nbsp;&nbsp;|</tt><br />
+     &nbsp;&nbsp;<tt>clformat("|~9,2G|~9,3,2,3G|~9,3,2,0G|", args: 314.159, 314.159, 314.159)</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>|&nbsp;&nbsp;3.14E+2|&nbsp;&nbsp;314&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;314&nbsp;&nbsp;&nbsp;&nbsp;|</tt><br />
+     &nbsp;&nbsp;<tt>clformat("|~9,2G|~9,3,2,3G|~9,3,2,0G|", args: 3141.59, 3141.59, 3141.59)</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>|&nbsp;&nbsp;3.14E+3|314.2E+01|0.314E+04|</tt>
   </td>
 </tr>
 </tbody>

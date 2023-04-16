@@ -397,30 +397,22 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                                            uselocale: modifiers.contains(.plus),
                                            forcesign: modifiers.contains(.at)))
       case .generalFloat:
-        let w = try parameters.number(0) ?? Int.min
-        let d = try parameters.number(1) ?? Int.min
-        let e = try parameters.number(2) ?? Int.min
+        let w = try parameters.number(0)
+        let d = try parameters.number(1)
+        let e = try parameters.number(2)
         let k = try parameters.number(3, allowNegative: true) ?? 1
         let oc = try parameters.character(4)
         let pc = try parameters.character(5) ?? " "
         let ec = try parameters.character(6) ?? "E"
         let number = try arguments.nextAsNumber()
-        let arg = number.nsnumber.doubleValue
-        let n = arg.isZero ? 0 : Int(floor(log10(arg))) + 1
-        let ee = e == Int.min ? 4 : e + 2
-        let ww = w == Int.min ? Int.min : w - ee
-        let nd = d == Int.min ? max("\(arg)".count, min(n, 7)) : d
-        let dd = {
-          if d == Int.min {
-            let q = "\(arg)".count
-            return max(q, min(n, 7)) - n - 1
-          } else {
-            return d - n
-          }
-        }()
+        let arg = number.asDouble
+        let n = arg.isZero ? 0 : Int(floor(log10(abs(arg)))) + 1
+        let ee = e == nil ? 4 : e! + 2
+        let nd = d == nil ? max("\(arg)".count, min(n, 7)) : d!
+        let dd = d == nil ? max("\(arg)".count, min(n, 7)) - n - 1 : d! - n
         if dd >= 0 && dd <= nd {
           return .append(NumberFormat.format(number,
-                                             width: ww == Int.min ? nil : ww,
+                                             width: w == nil ? nil : w! - ee,
                                              padchar: pc,
                                              overflowchar: oc,
                                              fractionDigits: dd,
@@ -434,12 +426,12 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                          String(repeating: " ", count: ee))
         } else {
           return .append(NumberFormat.format(number,
-                                             width: w == Int.min ? nil : w,
+                                             width: w,
                                              padchar: pc,
                                              overflowchar: oc,
                                              exponentchar: ec,
-                                             fractionDigits: d == Int.min ? nil : d,
-                                             exponentDigits: e == Int.min ? nil : e,
+                                             fractionDigits: d,
+                                             exponentDigits: e,
                                              scaleFactor: k,
                                              locale: arguments.locale,
                                              uselocale: modifiers.contains(.plus),
