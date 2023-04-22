@@ -285,7 +285,7 @@ introduced in a way to not impact backward compatibility.
      &nbsp;&nbsp;<tt>clformat("~,2@F", args: 123.1415926)</tt> &DoubleLongRightArrow; <tt>+123.14</tt><br />
      &nbsp;&nbsp;<tt>clformat("~,2,-2@F", args: 314.15926)</tt> &DoubleLongRightArrow; <tt>+3.14</tt><br />
      &nbsp;&nbsp;<tt>clformat("~,2:F", args: 1234567.891)</tt> &DoubleLongRightArrow; <tt>1,234,567.89</tt><br />
-     &nbsp;&nbsp;<tt>clformat("~,2,,,,'',3:F", args: 1234567.891)</tt> &DoubleLongRightArrow; <tt>1'234'567.89</tt>
+     &nbsp;&nbsp;<tt>clformat("~,2,,,,'',3:F", args: 1234567.891)</tt> &DoubleLongRightArrow; <tt>1'234'567.89</tt></p>
   </td>
 </tr>
 <tr valign="top">
@@ -327,7 +327,7 @@ introduced in a way to not impact backward compatibility.
      &nbsp;&nbsp;<tt>clformat("~10,3,,,,'#E", args: 31.415926)</tt> &DoubleLongRightArrow; <tt>##3.142E+1</tt><br />
      &nbsp;&nbsp;<tt>clformat("~10,4,,3,,'#E", args: 31.415926)</tt> &DoubleLongRightArrow; <tt>#314.16E-1</tt><br />
      &nbsp;&nbsp;<tt>clformat("~7,3,2,,'-E", args: 31.415926)</tt> &DoubleLongRightArrow; <tt>-------</tt><br />
-     &nbsp;&nbsp;<tt>clformat("~10,4,,4,,'#@E", args: 31.415926)</tt> &DoubleLongRightArrow; <tt>+3141.6E-2</tt>
+     &nbsp;&nbsp;<tt>clformat("~10,4,,4,,'#@E", args: 31.415926)</tt> &DoubleLongRightArrow; <tt>+3141.6E-2</tt></p>
   </td>
 </tr>
 <tr valign="top">
@@ -360,7 +360,7 @@ introduced in a way to not impact backward compatibility.
      &nbsp;&nbsp;<tt>clformat("|~9,2G|~9,3,2,3G|~9,3,2,0G|", args: 314.159, 314.159, 314.159)</tt><br />
      &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>|&nbsp;&nbsp;3.14E+2|&nbsp;&nbsp;314&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;314&nbsp;&nbsp;&nbsp;&nbsp;|</tt><br />
      &nbsp;&nbsp;<tt>clformat("|~9,2G|~9,3,2,3G|~9,3,2,0G|", args: 3141.59, 3141.59, 3141.59)</tt><br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>|&nbsp;&nbsp;3.14E+3|314.2E+01|0.314E+04|</tt>
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>|&nbsp;&nbsp;3.14E+3|314.2E+01|0.314E+04|</tt></p>
   </td>
 </tr>
 <tr valign="top">
@@ -416,7 +416,7 @@ introduced in a way to not impact backward compatibility.
      &nbsp;&nbsp;<tt>clformat("~,,,,,,3+$", locale: Locale(identifier: "en_US"), args: 4930.351)</tt><br />
      &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>$4,930.35</tt><br />
      &nbsp;&nbsp;<tt>clformat("~,6,14,'&lowbar;,,,3+$", locale: Locale(identifier: "de_DE"), args: 4930.351)</tt><br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>&lowbar;&lowbar;004.930,35&nbsp;€</tt>
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>&lowbar;&lowbar;004.930,35&nbsp;€</tt></p>
   </td>
 </tr>
 <tr valign="top">
@@ -431,12 +431,61 @@ introduced in a way to not impact backward compatibility.
   </td>
 </tr>
 <tr valign="top">
-  <td><b>~%</b></td>
+  <td><b>~&</b></td>
   <td>
   <p>FRESHLINE:&nbsp;&nbsp;<b>~<i>n</i>&</b></p>
   <p>Unless it can be determined that the output is already at the beginning of a line,
      this directive outputs a newline if <i>n</i> > 0. This conditional newline is followed
      by <i>n</i> − 1 newlines, it <i>n</i> > 1. Nothing is output if <i>n</i> = 0.</p>
+  </td>
+</tr>
+<tr valign="top">
+  <td><b>~|</b></td>
+  <td>
+  <p>PAGE SEPARATOR:&nbsp;&nbsp;<b>~<i>n</i>|</b></p>
+  <p>This directive outputs <i>n</i> (default: 1) page separator characters (<tt>"\u{12}"</tt>).</p>
+  </td>
+</tr>
+<tr valign="top">
+  <td><b>~&#126;</b></td>
+  <td>
+  <p>TILDE:&nbsp;&nbsp;<b>~<i>n</i>~</b></p>
+  <p>This directive outputs <i>n</i> (default: 1) tilde characters.</p>
+  </td>
+</tr>
+<tr valign="top">
+  <td><b>~p</b><br/><b>~P</b></td>
+  <td>
+  <p>PLURAL:&nbsp;&nbsp;<b>~P</b></p>
+  <p>Depending on the next argument <i>arg</i>, which is expected to be an integer value, a
+     different string is output. If <i>arg</i> is not equal to 1, a lowercase <tt>s</tt> is
+     output. If <i>arg</i> is equal to 1, nothing is output.</p>
+  <p>If the <tt>:</tt> modifier is provided, the last argument is used instead for <i>arg</i>.
+     This is useful after outputting a number using <tt>~D</tt>. With the <tt>@</tt> modifier,
+     <tt>y</tt> is output if <i>arg</i> is 1, or <tt>ies</tt> if it is not.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("~D tr~:@P/~D win~:P", args: 7, 1)</tt>
+       &DoubleLongRightArrow; <tt>7 tries/1 win</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~D tr~:@P/~D win~:P", args: 1, 0)</tt>
+       &DoubleLongRightArrow; <tt>1 try/0 wins</tt></p>
+  </td>
+</tr>
+<tr valign="top">
+  <td><b>~t</b><br/><b>~T</b></td>
+  <td>
+  <p>TABULATE:&nbsp;&nbsp;<b>~<i>colnum,colinc</i>T</b></p>
+  <p>This directive will output sufficient spaces to move the cursor to column <i>colnum</i>
+     (default: 1). If the cursor is already at or beyond column <i>colnum</i>, the directive
+     will output spaces to move the cursor to column <i>colnum + k &times; colinc</i> for the
+     smallest positive integer <i>k</i> possible, unless <i>colinc</i> (default: 1) is zero,
+     in which case no spaces are output if the cursor is already at or beyond column
+     <i>colnum</i>.</p>
+  <p>If modifier <tt>@</tt> is provided, relative tabulation is performed. In this case, the
+     directive outputs <tt>colrel</tt> spaces and then outputs the smallest non-negative
+     number of additional spaces necessary to move the cursor to a column that is a multiple
+     of <i>colinc</i>. For example, the directive <tt>~3,8@T</tt> outputs three spaces and then
+     moves the cursor to a "standard multiple-of-eight tab stop" if not at one already. If the
+     current output column cannot be determined, however, then <i>colinc</i> is ignored, and
+     exactly <i>colrel</i> spaces are output.</p>
   </td>
 </tr>
 </tbody>
