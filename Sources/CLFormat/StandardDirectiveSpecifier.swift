@@ -439,13 +439,27 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         }
       case .moneyAmount:
         let number = try arguments.nextAsNumber()
+        let curchar: String?
+        if case .some(.number(let num)) = parameters.parameter(4) {
+          if num < 0 {
+            curchar = Currency(numericCode: -num)?.alphabeticCode
+          } else if let locale = arguments.locale {
+            curchar = Currency(numericCode: num)?.currencySymbol(in: locale)
+          } else {
+            curchar = Currency(numericCode: num)?.currencySymbol
+          }
+        } else if let ch = try parameters.character(4) {
+          curchar = String(ch)
+        } else {
+          curchar = nil
+        }
         return .append(NumberFormat.format(
                          number,
                          fractionDigits: try parameters.number(0) ?? 2,
                          minIntegerDigits: try parameters.number(1) ?? 1,
                          minWidth: try parameters.number(2) ?? 0,
                          padchar: try parameters.character(3) ?? " ",
-                         curchar: try parameters.character(4),
+                         curchar: curchar,
                          groupsep: try parameters.character(5),
                          groupsize: try parameters.number(6),
                          locale: arguments.locale,

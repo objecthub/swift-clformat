@@ -363,5 +363,61 @@ introduced in a way to not impact backward compatibility.
      &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>|&nbsp;&nbsp;3.14E+3|314.2E+01|0.314E+04|</tt>
   </td>
 </tr>
+<tr valign="top">
+  <td><b>~$</b></td>
+  <td>
+  <p>DOLLARS FLOAT:&nbsp;&nbsp;<b>~<i>d,n,w,padchar,curchar,groupchar,groupcol</i>$</b></p>
+  <p>The next argument <i>arg</i> is output as a floating-point number in a fixed-format notation
+     that is particularly well suited for outputting monetary values. Parameter <i>d</i>
+     (default: 2) defines the number of digits to print after the decimal point. Parameter
+     <i>n</i> (default: 1) defines the minimum number of digits to print before the decimal
+     point. Parameter <i>w</i> (default: 0) is the minimum total width of the output.</p>
+  <p>First, padding and the sign are output. If <i>arg</i> is negative, then a minus sign is
+     printed. If <i>arg</i> is not negative, then a plus sign is printed if and only if the
+     <tt>@</tt> modifier was specified. If the <tt>:</tt> modifier is used, the sign appears
+     before any padding, and otherwise after the padding. If the number of characters, including
+     the sign and a potential currency symbol is below width <i>w</i>, then character
+     <i>padchar</i> (default: ' ') is used for padding the number in front of the integer
+     part such that the overall output has <i>w</i> characters. After the padding,
+     the currency symbol <i>curchar</i> is inserted, if available, followed by <i>n</i>
+     digits representing the integer part of <i>arg</i>, prefixed by the right amount
+     of '0' characters. If either parameter <i>groupchar</i> or <i>groupcol</i> is provided,
+     the integer part is output in groups of <i>groupcol</i> characters (default: 3) separated by
+     <i>groupchar</i> (default: ','). After the integer part, a decimal point is output
+     followed by <i>d</i> digits of fraction, properly rounded.</p>
+  <p>If the magnitude of <i>arg</i> is so large that the integer part of <i>arg</i> cannot be
+     output with at most <i>n</i> characters, then more characters are generated, as needed,
+     and the total width might overrun as well.</p>
+  <p>For cases where a simple currency symbol is not sufficient, it is possible to use a
+     numeric currency code as defined by ISO 4217 for parameter <i>curchar</i>. For positive
+     codes, the shortest currency symbol is being used. For negative currency codes, the
+     corresponding alphabetic code (ignoring the sign) is being used. Struct
+     <a href="https://github.com/objecthub/swift-clformat/blob/main/Sources/CLFormat/Currency.swift">Currency</a>
+     provides a conventient way to access currency codes.</p>
+  <p>By specifying the <tt>+</tt> modifier, it is possible to enable locale-specific output
+     of the monetary value using the locale provided to function <tt>clformat</tt>. In this
+     case, also the currency associated with this locale is being used.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("~$", args: 4930.351)</tt> &DoubleLongRightArrow; <tt>4930.35</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~3$", args: 4930.351)</tt> &DoubleLongRightArrow; <tt>4930.351</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~,6$", args: 4930.351)</tt> &DoubleLongRightArrow; <tt>004930.35</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~,6,12,'&lowbar;$", args: 4930.351)</tt> &DoubleLongRightArrow; <tt>&lowbar;&lowbar;&lowbar;004930.35</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~,6,12,'&lowbar;@$", args: 4930.351)</tt> &DoubleLongRightArrow; <tt>&lowbar;&lowbar;+004930.35</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~,6,12,'&lowbar;@:$", args: 4930.351)</tt> &DoubleLongRightArrow; <tt>+&lowbar;&lowbar;004930.35</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~,6,12,'&lowbar;,'€$", args: 4930.351)</tt> &DoubleLongRightArrow; <tt>&lowbar;&lowbar;€004930.35</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~,6,12,'&lowbar;,'€@$", args: 4930.351)</tt> &DoubleLongRightArrow; <tt>&lowbar;+€004930.35</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~,,,,,,3$", args: 4930.351)</tt> &DoubleLongRightArrow; <tt>4,930.35</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~,6,,,,,3$", args: 4930.351)</tt> &DoubleLongRightArrow; <tt>004,930.35</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~,,,,208$", args: 1234.567)</tt> &DoubleLongRightArrow;
+       <tt>kr&nbsp;1234.57</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~,,,,-208$", args: 1234.567)</tt> &DoubleLongRightArrow;
+       <tt>DKK&nbsp;1234.57</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~+$", locale: Locale(identifier: "de_CH"), args: 4930.351)</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>CHF&nbsp;4930.35</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~,,,,,,3+$", locale: Locale(identifier: "en_US"), args: 4930.351)</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>$4,930.35</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~,6,14,'&lowbar;,,,3+$", locale: Locale(identifier: "de_DE"), args: 4930.351)</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>&lowbar;&lowbar;004.930,35&nbsp;€</tt>
+  </td>
+</tr>
 </tbody>
 </table>

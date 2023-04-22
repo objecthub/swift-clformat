@@ -33,7 +33,7 @@ public struct NumberFormat {
                             minIntegerDigits: Int,
                             minWidth: Int,
                             padchar: Character,
-                            curchar: Character?,
+                            curchar: String?,
                             groupsep: Character?,
                             groupsize: Int?,
                             locale: Locale?,
@@ -52,7 +52,11 @@ public struct NumberFormat {
       formatter.locale = NumberFormat.defaultLocale
     }
     if let curchar = curchar {
-      formatter.currencySymbol = String(curchar)
+      if curchar.count > 1 {
+        formatter.currencySymbol = curchar
+      } else {
+        formatter.currencySymbol = " "
+      }
     }
     if let groupsep = groupsep {
       formatter.groupingSeparator = String(groupsep)
@@ -67,7 +71,11 @@ public struct NumberFormat {
     }
     formatter.usesGroupingSeparator = usegroup
     if forcesign {
-      formatter.positivePrefix = formatter.plusSign
+      if curchar != nil {
+        formatter.positivePrefix = formatter.plusSign + " "
+      } else {
+        formatter.positivePrefix = formatter.plusSign
+      }
     }
     if minWidth > 1 {
       formatter.formatWidth = minWidth
@@ -75,7 +83,11 @@ public struct NumberFormat {
       formatter.paddingPosition = signBeforePad ? .afterPrefix : .beforePrefix
     }
     let str = formatter.string(from: number.nsnumber) ?? number.description
-    return str
+    if let curchar = curchar {
+      return str.replacingOccurrences(of: " ", with: curchar)
+    } else {
+      return str
+    }
   }
   
   /// Format floating-point numbers in scientific style.

@@ -141,13 +141,27 @@ while true {
     break
   }
   print("ARGUMENTS│ ", terminator: "")
-  guard let arguments = readLine()?.trimmingCharacters(in: .whitespaces) else {
+  guard let argline = readLine()?.trimmingCharacters(in: .whitespaces) else {
     break
+  }
+  let arguments: String
+  let locale: Locale?
+  if argline.starts(with: "*") {
+    print("   LOCALE│ ", terminator: "")
+    guard let identifier = readLine()?.trimmingCharacters(in: .whitespaces) else {
+      break
+    }
+    arguments = argline[argline.index(after: argline.startIndex)...]
+                  .trimmingCharacters(in: .whitespaces)
+    locale = Locale(identifier: identifier)
+  } else {
+    arguments = argline
+    locale = nil
   }
   print("─────────┤")
   do {
     let args: [Any?] = try split(argument: arguments).map(parse)
-    let formatted = try clformat(control, arguments: args)
+    let formatted = try clformat(control, locale: locale, arguments: args)
       .replacingOccurrences(of: "\n", with: "\n         │ ")
     print("   RESULT│", formatted)
   } catch let e as ParseError {
