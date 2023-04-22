@@ -419,5 +419,25 @@ introduced in a way to not impact backward compatibility.
      &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>&lowbar;&lowbar;004.930,35&nbsp;€</tt>
   </td>
 </tr>
+<tr valign="top">
+  <td><b>~%</b></td>
+  <td>
+  <p>NEWLINE:&nbsp;&nbsp;<b>~<i>n</i>%</b></p>
+  <p>This directive outputs <i>n</i> (default: 1) newline characters, thereby
+     terminating the current output line and beginning a new one. No arguments are being
+     consumed. Simply putting <i>n</i> newline escape characters <tt>\n</tt> into the control
+     string would also work, but <tt>~%</tt> is often used because it makes the control string
+     look nicer and more consistent.</p>
+  </td>
+</tr>
+<tr valign="top">
+  <td><b>~%</b></td>
+  <td>
+  <p>FRESHLINE:&nbsp;&nbsp;<b>~<i>n</i>&</b></p>
+  <p>Unless it can be determined that the output is already at the beginning of a line,
+     this directive outputs a newline if <i>n</i> > 0. This conditional newline is followed
+     by <i>n</i> − 1 newlines, it <i>n</i> > 1. Nothing is output if <i>n</i> = 0.</p>
+  </td>
+</tr>
 </tbody>
 </table>

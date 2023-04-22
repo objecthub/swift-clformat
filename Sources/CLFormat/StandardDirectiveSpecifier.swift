@@ -472,7 +472,11 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         return .append(String(repeating: "\n", count: try parameters.number(0) ?? 1))
       case .ampersand:
         var n = try parameters.number(0) ?? 1
-        if let last = context.current.last, last == "\n" {
+        if let last = context.current.last {
+          if last == "\n" {
+            n -= 1
+          }
+        } else {
           n -= 1
         }
         return .append(n > 0 ? String(repeating: "\n", count: n) : "")
