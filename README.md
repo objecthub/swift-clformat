@@ -10,8 +10,8 @@ significantly more expressive compared to what `printf` has to offer. It allows 
 to display numbers in various formats (e.g. hex, binary, octal, roman numerals, natural
 language), apply conditional formatting, output text in a tabular format, iterate over
 data structures, and even apply `format` recursively to handle data that includes their
-own preferred formatting strings. An overview of the [supported formatting directives](DIRECTIVES.md)
-is provided here.
+own preferred formatting strings. An comprehensive list of the
+[supported formatting directives](DIRECTIVES.md) is available.
 
 ## API
 

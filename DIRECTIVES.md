@@ -505,5 +505,63 @@ introduced in a way to not impact backward compatibility.
      iteration.</p>
   </td>
 </tr>
+<tr valign="top">
+  <td><b>~?</b></td>
+  <td>
+  <p>INDIRECTION:&nbsp;&nbsp;<b>~?</b></p>
+  <p>The next argument <i>arg</i> must be a string, and the one after it <i>lst</i> must be
+     a sequence (e.g. an array). Both arguments are consumed by the directive. <i>arg</i>
+     is processed as a format control string, with the elements of the list <i>lst</i> as the
+     arguments. Once the recursive processing of the control string has been finished, then
+     processing of the control string containing the <tt>~?</tt> directive is resumed.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("~? ~D", args: "(~A ~D)", ["Foo", 5], 7)</tt>
+       &DoubleLongRightArrow; <tt>(Foo 5) 7</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~? ~D", args: "(~A ~D)", ["Foo", 5, 14], 7)</tt>
+       &DoubleLongRightArrow; <tt>(Foo 5) 7</tt></p>
+  <p>Note that in the second example, three arguments are supplied to the control string
+    <tt>"(~A ~D)"</tt>, but only two are processed and the third is therefore ignored.</p>
+  <p>With the <tt>@</tt> modifier, only one argument is directly consumed. The argument must
+     be a string. It is processed as part of the control string as if it had appeared in place
+     of the <tt>~@?</tt> directive, and any directives in the recursively processed control
+     string may consume arguments of the control string containing the <tt>~@?</tt> directive.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("~@? ~D", args: "(~A ~D)", "Foo", 5, 7)</tt>
+       &DoubleLongRightArrow; <tt>(Foo 5) 7</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~@? ~D", args: "(~A ~D)", "Foo", 5, 14, 7)</tt>
+       &DoubleLongRightArrow; <tt>(Foo 5) 14</tt></p>
+  </td>
+</tr>
+<tr valign="top">
+  <td><b>~(&mldr;~)</b></td>
+  <td>
+  <p>CONVERSION:&nbsp;&nbsp;<b>~(<i>str</i>~)</b></p>
+  <p>The contained control string <i>str</i> is processed, and what it produces is subject to
+     a conversion. Without the <tt>+</tt> modifier, a <i>case conversion</i> is performed.
+     <tt>~(</tt> converts every uppercase character to the corresponding lowercase character,
+     <tt>~:(</tt> capitalizes all words, <tt>~@(</tt> capitalizes just the first word and
+    forces the rest to lowercase, and <tt>~:@(</tt> converts every lowercase character to the
+    corresponding uppercase character. In the following example, <tt>~@(</tt> is used to cause
+    the first word produced by <tt>~R</tt> to be capitalized:</p>
+  <p>&nbsp;&nbsp;<tt>clformat("~@(~R~) error~:P", args: 0)</tt>
+       &DoubleLongRightArrow; <tt>Zero errors</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~@(~R~) error~:P", args: 1)</tt>
+       &DoubleLongRightArrow; <tt>One error</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~@(~R~) error~:P", args: 23)</tt>
+       &DoubleLongRightArrow; <tt>Twenty-three errors</tt></p>
+  <p>If the <tt>+</tt> modifier is provided together with the <tt>:</tt> modifier,
+     all characters corresponding to named XML entities are being converted into
+     names XML entities. If modifier <tt>@</tt> is added, then only those characters
+     are converted which conflict with XML syntax. The modifier combination <tt>+@</tt>
+     converts the output by stripping off all diacritics. Modifier <tt>+</tt> only will
+     escape characters such that the result can be used as a Swift string literal.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("~+:(~A~)", args: "© 2021–2023 TÜV")</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>&amp;copy; 2021&amp;ndash;2023 T&amp;Uuml;V</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~+:@(~A~)", "&lt;a href=&quot;t.html&quot;&gt;© TÜV&lt;/a&gt;")</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>&amp;lt;a href=&amp;quot;t.html&amp;quot;&amp;gt;© TÜV&amp;lt;/a&amp;gt;</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~+@(~A~)", "épistèmê")</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>episteme</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~+(~A~)", "Hello \"World\"\n")</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Hello \"World\"\n</tt></p>
+  </td>
+</tr>
 </tbody>
 </table>
