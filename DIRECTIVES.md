@@ -488,5 +488,22 @@ introduced in a way to not impact backward compatibility.
      exactly <i>colrel</i> spaces are output.</p>
   </td>
 </tr>
+<tr valign="top">
+  <td><b>~&#42;</b></td>
+  <td>
+  <p>IGNORE ARGUMENT:&nbsp;&nbsp;<b>~<i>n</i>&#42;</b></p>
+  <p>The next <i>n</i> (default: 1) arguments are ignored. If the <tt>:</tt> modifier is provided,
+     arguments are "ignored backwards", i.e. <tt>~:&#42;</tt> backs up in the list of arguments
+     so that the argument last processed will be processed again. <tt>~n:&#42;</tt> backs up
+     <i>n</i> arguments. When within a <tt>~{</tt> construct, the ignoring (in either direction)
+     is relative to the list of arguments being processed by the iteration.</p>
+  <p>The form <tt>~n@&#42;</tt> is an "absolute goto" rather than a "relative goto": the directive
+     goes to the <i>n</i>-th argument, where 0 means the first one. <i>n</i> defaults to 0 for this
+     form, so <tt>~@&#42;</tt> goes back to the first argument. Directives after a <tt>~n@&#42;</tt>
+     will take arguments in sequence beginning with the one gone to. When within a <tt>~{</tt>
+     construct, the "goto" is relative to the list of arguments being processed by the
+     iteration.</p>
+  </td>
+</tr>
 </tbody>
 </table>

@@ -10,7 +10,8 @@ significantly more expressive compared to what `printf` has to offer. It allows 
 to display numbers in various formats (e.g. hex, binary, octal, roman numerals, natural
 language), apply conditional formatting, output text in a tabular format, iterate over
 data structures, and even apply `format` recursively to handle data that includes their
-own preferred formatting strings.
+own preferred formatting strings. An overview of the [supported formatting directives](DIRECTIVES.md)
+is provided here.
 
 ## API
 
@@ -29,18 +30,27 @@ func clformat(_ control: String,
 ```
 
 `control` is the formatting string. It is using the formatting language described in the
-next section to define how the output will be formatted. `config` refers to the control
-parser configuration which determines how the control string gets parsed. This parameter
-is omitted usually, unless a user wants to define its own control formatting
-language. `locale` refers to a `Locale` object which is used for rendering 
+next section to define how the output will be formatted. `config` refers to the
+[control parser configuration](https://github.com/objecthub/swift-clformat/blob/main/Sources/CLFormat/CLControlParserConfig.swift)
+which determines how the control string gets parsed. This parameter
+gets usually omitted, unless a user wants to define their own control formatting
+language. `locale` refers to a `Locale` object which is used for executing
 locale-specific directives. `tabsize` defines the maximum number of space characters that
 correspond to a single tab character. `linewidth` specifies the number of characters per
 line (this is used by the justification directive only). Finally, `args` refers to the
 sequence of arguments provided for inclusion in the formatting procedure. The control
 string determines how these arguments will be injected into the final output that
-function `clformat` returns.
+function `clformat` returns. Here is an example:
 
-There is also an overloaded variant of `clformat` which supports arguments provided as
+```swift
+try clformat("~A is ~D year~:P old.", args: "John", 32)
+⇒ "John is 32 years old."
+try clformat("~A is ~D year~:P old.", args: "Vicky", 1)
+⇒ "Vicky is 1 year old."
+```
+
+There is also an [overloaded variant](https://github.com/objecthub/swift-clformat/blob/7b1b0ab894180449101330c867e740463e5e38d5/Sources/CLFormat/CLFormat.swift#L131)
+of `clformat` which supports arguments provided as
 an array. It is otherwise equivalent to the first variant.
 
 ```swift
@@ -52,7 +62,8 @@ func clformat(_ control: String,
               arguments: [Any?]) throws -> String
 ```
 
-Finally, there are is an overloaded function `clprintf` which prints out the formatted
+Finally, there are is an [overloaded function](https://github.com/objecthub/swift-clformat/blob/7b1b0ab894180449101330c867e740463e5e38d5/Sources/CLFormat/CLFormat.swift#L157)
+`clprintf` which prints out the formatted
 string directly to the standard output port. Via the `terminator` argument it is possible
 to control whether a newline character is added automatically.
 
@@ -74,14 +85,16 @@ func clprintf(_ control: String,
 ```
 
 Note that, by default, both `clformat` and `clprintf` use the formatting directives as
-specified by `CLControlParserConfig.default`. This is a mutable parser configuration that
+specified by [`CLControlParserConfig.default`](https://github.com/objecthub/swift-clformat/blob/7b1b0ab894180449101330c867e740463e5e38d5/Sources/CLFormat/CLControlParserConfig.swift#L239).
+This is a mutable parser configuration that
 can be used to influence all invocations of `clformat` and `clprintf` which don't provide
 their own parser configuration.
 
 ### String extensions
 
 Similar to how `printf` is integrated into Swift's `String` API, framework _CLFormat_
-provides two new `String` initializers which make use of the _CLFormat_ formatting mechanism.
+provides two new [`String` initializers](https://github.com/objecthub/swift-clformat/blob/7b1b0ab894180449101330c867e740463e5e38d5/Sources/CLFormat/CLFormat.swift#L87)
+which make use of the _CLFormat_ formatting mechanism.
 They can be used interchangably with `clformat` to allow for a more object-oriented style as
 opposed to the procedural nature of `clformat`.
 
@@ -147,7 +160,7 @@ where m = (potentially empty) sequence of modifier characters ":", "@", and "+"
       X = character identifying the directive type
 ```
 
-This grammar describes the syntax of directives formally:
+This grammar describes the syntax of directives formally in BNF:
 
 ```ebnf
 <directive>  ::= "~" <modifiers> <char>
