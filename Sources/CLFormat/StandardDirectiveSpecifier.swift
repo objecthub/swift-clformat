@@ -589,6 +589,16 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
           }
           return .append(try controls[arguments.next() == nil ? 0 : 1]
                                .format(with: arguments, in: context).string)
+        } else if modifiers.contains(.plus) {
+          guard controls.count == 2, !defaultCase, parameters.parameterCount == 0 else {
+            throw CLFormatError.malformedDirective("~+[")
+          }
+          if let arg = try arguments.next(), let bool = arg as? Bool {
+            return .append(try controls[bool ? 1 : 0]
+                                 .format(with: arguments, in: context).string)
+          } else {
+            return .append(try controls[1].format(with: arguments, in: context).string)
+          }
         } else if modifiers.contains(.at) {
           guard controls.count == 1, parameters.parameterCount == 0 else {
             throw CLFormatError.malformedDirective("~@[")

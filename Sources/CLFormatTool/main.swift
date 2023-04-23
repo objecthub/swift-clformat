@@ -90,6 +90,11 @@ func parse(argument: String) throws -> Any? {
   guard !argument.isEmpty && argument != "nil" else {
     return nil
   }
+  if argument == "true" {
+    return true
+  } else if argument == "false" {
+    return false
+  }
   switch argument.first! {
     case "\"":
       if argument.count >= 2 && argument.last! == "\"" {

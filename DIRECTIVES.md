@@ -563,5 +563,39 @@ introduced in a way to not impact backward compatibility.
      &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Hello \"World\"\n</tt></p>
   </td>
 </tr>
+<tr valign="top">
+  <td><b>~[&mldr;~]</b></td>
+  <td>
+  <p>CONDITIONAL:&nbsp;&nbsp;<b>~&#91;<i>str<sub>0</sub></i>~;<i>str<sub>1</sub></i>~;&mldr;~;<i>str<sub>n</sub></i>~&#93;</b></p>
+  <p>This is a set of control strings, called clauses, one of which is chosen and used. The
+     clauses are separated by <tt>~;</tt> and the construct is terminated by <tt>~]</tt>.</p>
+  <p><i>Without default:</i> From a conditional directive ~&#91;<i>str<sub>0</sub></i>~;<i>str<sub>1</sub></i>~;&mldr;~;<i>str<sub>n</sub></i>~&#93;,
+     the <i>arg</i>-th clause is selected,
+     where the first clause is number 0. If a prefix parameter is given as <tt>~n&#91;</tt>,
+     then the parameter <i>n</i> is used instead of an argument. This is useful only if the
+     parameter is specified by <tt>#</tt>, to dispatch on the number of arguments remaining
+     to be processed. If <i>arg</i> or <i>n</i> is out of range, then no clause is selected
+     and no error is signaled. After the selected alternative has been processed, the control
+     string continues after the <tt>~</tt>.</p>
+  <p><i>With default:</i> Whenever the directive has the form
+     ~&#91;<i>str<sub>0</sub></i>~;<i>str<sub>1</sub></i>~;&mldr;~:;<i>default</i>~&#93;, i.e.
+     the last clause is separated via <tt>~:;</tt>, then the conditional directive has a
+     default clause which gets performed whenever no other clause could be selected.</p>
+  <p><i>Optional selector:</i> Whenever the directive has the form
+     ~:&#91;<i>none</i>~;<i>some</i>~&#93; the <i>none</i> control string is chosen if
+     <i>arg</i> is <tt>nil</tt>, otherwise the <i>some</i> control string is chosen.</p>
+  <p><i>Boolean selector:</i> Whenever the directive has the form
+     ~+&#91;<i>false</i>~;<i>true</i>~&#93; the <i>false</i> control string is chosen if
+     <i>arg</i> is the boolean value <tt>false</tt>, otherwise the <i>some</i> control
+     string is chosen.</p>
+  <p><i>Selector test:</i> Whenever the directive has the form
+     ~@&#91;<i>true</i>~&#93;, the next argument <i>arg</i> is tested for being
+     non-<tt>nil</tt>. If <i>arg</i> is not <tt>nil</tt>, then the argument is not used up
+     by the <tt>~@&#91;</tt> directive but remains as the next one to be processed, and the one
+     clause <i>true</i> is processed. If <i>arg</i> is <tt>nil</tt>, then the argument is
+     used up, and the clause is not processed. The clause therefore should normally use
+     exactly one argument, and may expect it to be non-<tt>nil</tt>.</p>
+  </td>
+</tr>
 </tbody>
 </table>
