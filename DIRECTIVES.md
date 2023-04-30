@@ -569,7 +569,7 @@ introduced in a way to not impact backward compatibility.
   <p>CONDITIONAL:&nbsp;&nbsp;<b>~&#91;<i>str<sub>0</sub></i>~;<i>str<sub>1</sub></i>~;&mldr;~;<i>str<sub>n</sub></i>~&#93;</b></p>
   <p>This is a set of control strings, called clauses, one of which is chosen and used. The
      clauses are separated by <tt>~;</tt> and the construct is terminated by <tt>~]</tt>.</p>
-  <p><i>Without default:</i> From a conditional directive ~&#91;<i>str<sub>0</sub></i>~;<i>str<sub>1</sub></i>~;&mldr;~;<i>str<sub>n</sub></i>~&#93;,
+  <p><i>Without default:</i>&nbsp; From a conditional directive ~&#91;<i>str<sub>0</sub></i>~;<i>str<sub>1</sub></i>~;&mldr;~;<i>str<sub>n</sub></i>~&#93;,
      the <i>arg</i>-th clause is selected,
      where the first clause is number 0. If a prefix parameter is given as <tt>~n&#91;</tt>,
      then the parameter <i>n</i> is used instead of an argument. This is useful only if the
@@ -577,18 +577,18 @@ introduced in a way to not impact backward compatibility.
      to be processed. If <i>arg</i> or <i>n</i> is out of range, then no clause is selected
      and no error is signaled. After the selected alternative has been processed, the control
      string continues after the <tt>~&#93;</tt>.</p>
-  <p><i>With default:</i> Whenever the directive has the form
+  <p><i>With default:</i>&nbsp; Whenever the directive has the form
      ~&#91;<i>str<sub>0</sub></i>~;<i>str<sub>1</sub></i>~;&mldr;~:;<i>default</i>~&#93;, i.e.
      the last clause is separated via <tt>~:;</tt>, then the conditional directive has a
      default clause which gets performed whenever no other clause could be selected.</p>
-  <p><i>Optional selector:</i> Whenever the directive has the form
+  <p><i>Optional selector:</i>&nbsp; Whenever the directive has the form
      ~:&#91;<i>none</i>~;<i>some</i>~&#93; the <i>none</i> control string is chosen if
      <i>arg</i> is <tt>nil</tt>, otherwise the <i>some</i> control string is chosen.</p>
-  <p><i>Boolean selector:</i> Whenever the directive has the form
+  <p><i>Boolean selector:</i>&nbsp; Whenever the directive has the form
      ~+&#91;<i>false</i>~;<i>true</i>~&#93; the <i>false</i> control string is chosen if
      <i>arg</i> is the boolean value <tt>false</tt>, otherwise the <i>some</i> control
      string is chosen.</p>
-  <p><i>Selector test:</i> Whenever the directive has the form
+  <p><i>Selector test:</i>&nbsp; Whenever the directive has the form
      ~@&#91;<i>true</i>~&#93;, the next argument <i>arg</i> is tested for being
      non-<tt>nil</tt>. If <i>arg</i> is not <tt>nil</tt>, then the argument is not used up
      by the <tt>~@&#91;</tt> directive but remains as the next one to be processed, and the one
@@ -648,7 +648,7 @@ introduced in a way to not impact backward compatibility.
   <td><b>~^</b></td>
   <td>
   <p>UP AND OUT:&nbsp;&nbsp;<b>~^</b></p>
-  <p><i>Continue:</i> The <tt>~^</tt> directive is an escape construct. If there are no more
+  <p><i>Continue:</i>&nbsp; The <tt>~^</tt> directive is an escape construct. If there are no more
      arguments remaining to be processed, then the immediately enclosing <tt>~{</tt> or
      <tt>~&lt;</tt> directive is terminated. If there is no such enclosing directive, then
      the entire formatting operation is terminated. In the case of <tt>~&lt;</tt>, the
@@ -668,7 +668,7 @@ introduced in a way to not impact backward compatibility.
      <tt>~<i>n,m,o</i>^</tt>, termination occurs if <i>n</i> &le; <i>m</i> &le; <i>o</i>.
      Of course, this is useless if all the prefix parameters are literals. At least one of
      them should be a <tt>#</tt> or a <tt>v</tt> parameter.</p>
-  <p><i>Break:</i> If <tt>~^</tt> is used within a <tt>~:{</tt> directive, then it merely
+  <p><i>Break:</i>&nbsp; If <tt>~^</tt> is used within a <tt>~:{</tt> directive, then it merely
      terminates the current iteration step because in the standard case, it tests for
      remaining arguments of the current step only and the next iteration step commences
      immediately. To terminate the entire iteration process, use <tt>~:^</tt>.
@@ -683,9 +683,10 @@ introduced in a way to not impact backward compatibility.
      to no arguments remaining for the entire iteration process.</p>
   <p>&nbsp;&nbsp;<tt>clformat("~:{/~A~^ &mldr;~}",</tt><br />
      &nbsp;&nbsp;<tt>&nbsp;&nbsp;args: [["hot", "dog"], ["hamburger"], ["ice", "cream"], ["french", "fries"]])</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>/hot &mldr;/hamburger/ice &mldr;/french &mldr;</tt><br />
      &nbsp;&nbsp;<tt>clformat("~:{/~A~:^ &mldr;~}",</tt><br />
      &nbsp;&nbsp;<tt>&nbsp;&nbsp;args: [["hot", "dog"], ["hamburger"], ["ice", "cream"], ["french", "fries"]])</tt><br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>/"hot" &mldr;/"hamburger" &mldr;/"ice" &mldr;/"french"</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>/hot &mldr;/hamburger &mldr;/ice &mldr;/french</tt><br />
      &nbsp;&nbsp;<tt>clformat("~:{/~A~#:^ &mldr;~}",</tt><br />
      &nbsp;&nbsp;<tt>&nbsp;&nbsp;args: [["hot", "dog"], ["hamburger"], ["ice", "cream"], ["french", "fries"]])</tt><br />
      &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>/hot &mldr;/hamburger</tt></p>
