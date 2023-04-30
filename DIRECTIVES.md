@@ -644,5 +644,52 @@ introduced in a way to not impact backward compatibility.
   </p>
   </td>
 </tr>
+<tr valign="top">
+  <td><b>~^</b></td>
+  <td>
+  <p>UP AND OUT:&nbsp;&nbsp;<b>~^</b></p>
+  <p><i>Continue:</i> The <tt>~^</tt> directive is an escape construct. If there are no more
+     arguments remaining to be processed, then the immediately enclosing <tt>~{</tt> or
+     <tt>~&lt;</tt> directive is terminated. If there is no such enclosing directive, then
+     the entire formatting operation is terminated. In the case of <tt>~&lt;</tt>, the
+     formatting is performed, but no more segments are processed before doing the justification.
+     The <tt>~^</tt> directive should appear only at the beginning of a <tt>~&lt;</tt> clause,
+     because it aborts the entire clause it appears in, as well as all following clauses.
+     <tt>~^</tt> may appear anywhere in a <tt>~{</tt> construct.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("Done.~^ ~D warning~:P.~^ ~D error~:P.")</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Done.</tt><br />
+     &nbsp;&nbsp;<tt>clformat("Done.~^ ~D warning~:P.~^ ~D error~:P.", args: 3)</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Done. 3 warnings.</tt><br />
+     &nbsp;&nbsp;<tt>clformat("Done.~^ ~D warning~:P.~^ ~D error~:P.", args: 1, 5)</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Done. 1 warning. 5 errors.</tt></p>
+  <p>If the directive has the form <tt>~<i>n</i>^</tt>, then termination occurs if <i>n</i>
+     is zero. If the directive has the form <tt>~<i>n,m</i>^</tt>, termination occurs if the
+     value of <i>n</i> equals the value of <i>m</i>. If the directive has the form
+     <tt>~<i>n,m,o</i>^</tt>, termination occurs if <i>n</i> &le; <i>m</i> &le; <i>o</i>.
+     Of course, this is useless if all the prefix parameters are literals. At least one of
+     them should be a <tt>#</tt> or a <tt>v</tt> parameter.</p>
+  <p><i>Break:</i> If <tt>~^</tt> is used within a <tt>~:{</tt> directive, then it merely
+     terminates the current iteration step because in the standard case, it tests for
+     remaining arguments of the current step only and the next iteration step commences
+     immediately. To terminate the entire iteration process, use <tt>~:^</tt>.
+     <tt>~:^</tt> may only be used if the directive it would terminate is <tt>~:{</tt> or
+     <tt>~:@{</tt>. The entire iteration process is terminated if and only if the sublist
+     that is supplying the arguments for the current iteration step is the last sublist (in
+     the case of terminating a <tt>~:{</tt> directive) or the last argument to that call to
+     format (in the case of terminating a <tt>~:@{</tt> directive).</p>
+  <p>Note that while <tt>~^</tt> is equivalent to <tt>~#^</tt> in all circumstances,
+     <tt>~:^</tt> is not equivalent to <tt>~#:^</tt> because the latter terminates the entire
+     iteration if and only if no arguments remain for the current iteration step, as opposed
+     to no arguments remaining for the entire iteration process.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("~:{/~A~^ &mldr;~}",</tt><br />
+     &nbsp;&nbsp;<tt>&nbsp;&nbsp;args: [["hot", "dog"], ["hamburger"], ["ice", "cream"], ["french", "fries"]])</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~:{/~A~:^ &mldr;~}",</tt><br />
+     &nbsp;&nbsp;<tt>&nbsp;&nbsp;args: [["hot", "dog"], ["hamburger"], ["ice", "cream"], ["french", "fries"]])</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>/"hot" &mldr;/"hamburger" &mldr;/"ice" &mldr;/"french"</tt><br />
+     &nbsp;&nbsp;<tt>clformat("~:{/~A~#:^ &mldr;~}",</tt><br />
+     &nbsp;&nbsp;<tt>&nbsp;&nbsp;args: [["hot", "dog"], ["hamburger"], ["ice", "cream"], ["french", "fries"]])</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>/hot &mldr;/hamburger</tt></p>
+  </td>
+</tr>
 </tbody>
 </table>
