@@ -564,7 +564,7 @@ introduced in a way to not impact backward compatibility.
   </td>
 </tr>
 <tr valign="top">
-  <td><b>~[&mldr;~]</b></td>
+  <td><b>~&#91;&mldr;~&#93;</b></td>
   <td>
   <p>CONDITIONAL:&nbsp;&nbsp;<b>~&#91;<i>str<sub>0</sub></i>~;<i>str<sub>1</sub></i>~;&mldr;~;<i>str<sub>n</sub></i>~&#93;</b></p>
   <p>This is a set of control strings, called clauses, one of which is chosen and used. The
@@ -576,7 +576,7 @@ introduced in a way to not impact backward compatibility.
      parameter is specified by <tt>#</tt>, to dispatch on the number of arguments remaining
      to be processed. If <i>arg</i> or <i>n</i> is out of range, then no clause is selected
      and no error is signaled. After the selected alternative has been processed, the control
-     string continues after the <tt>~</tt>.</p>
+     string continues after the <tt>~&#93;</tt>.</p>
   <p><i>With default:</i> Whenever the directive has the form
      ~&#91;<i>str<sub>0</sub></i>~;<i>str<sub>1</sub></i>~;&mldr;~:;<i>default</i>~&#93;, i.e.
      the last clause is separated via <tt>~:;</tt>, then the conditional directive has a
@@ -595,6 +595,53 @@ introduced in a way to not impact backward compatibility.
      clause <i>true</i> is processed. If <i>arg</i> is <tt>nil</tt>, then the argument is
      used up, and the clause is not processed. The clause therefore should normally use
      exactly one argument, and may expect it to be non-<tt>nil</tt>.</p>
+  </td>
+</tr>
+<tr valign="top">
+  <td><b>~{&mldr;~}</b></td>
+  <td>
+  <p>ITERATION:&nbsp;&nbsp;<b>~<i>n</i>{<i>str</i>~}</b></p>
+  <p>The iteration directive is used to control how a sequence is output. Thus, the next
+     argument <i>arg</i> should be a sequence which is used as a list of arguments as if for
+     a recursive call to <tt>clformat</tt>. The string <i>str</i> is used repeatedly as
+     the control string until all elements from <i>arg</i> are consumed. Each iteration
+     can absorb as many elements of <i>arg</i> as it needs. For instance, if <i>str</i>
+     uses up two arguments by itself, then two elements of <i>arg</i> will get used up
+     each time around the loop. If before any iteration step the sequence is empty, then the
+     iteration is terminated. Also, if a prefix parameter <i>n</i> is given, then there
+     will be at most <i>n</i> repetitions of processing of <i>str</i>. Finally, the
+     <tt>~^</tt> directive can be used to terminate the iteration prematurely. If the
+     iteration is terminated before all the remaining arguments are consumed, then any
+     arguments not processed by the iteration remain to be processed by any directives following
+     the iteration construct.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("Winners:~{ ~A~}.", args: ["Fred", "Harry", "Jill"])</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Winners: Fred Harry Jill.</tt><br />
+     &nbsp;&nbsp;<tt>clformat("Winners: ~{~#[~;~A~:;~A, ~]~}.", args: ["Fred", "Harry", "Jill"])</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Winners: Fred, Harry, Jill.</tt><br />
+     &nbsp;&nbsp;<tt>clformat("Pairs:~{ &lt;~A,~S&gt;~}.", args: ["A", 1, "B", 2, "C", 3])</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Pairs: &lt;A, 1&gt; &lt;B, 2&gt; &lt;C, 3&gt;.</tt></p>
+  <p><tt>~:<i>n,m</i>{<i>str</i>~}</tt> is similar, but the argument should be a list of sublists.
+     At each repetition step (capped by <i>n</i>), one sublist is used as the list of arguments
+     for processing <i>str</i> with an iteration cap of <i>m</i>. On the next repetition, a new
+     sublist is used, whether or not all elements of the last sublist had been processed.<p>
+  <p>&nbsp;&nbsp;<tt>clformat("Pairs:~:{ &lt;~A,~S&gt;~}.", args: [["A", 1], ["B", 2], ["C", 3]])</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Pairs: &lt;A, 1&gt; &lt;B, 2&gt; &lt;C, 3&gt;.</tt></p>
+  <p><tt>~@{<i>str</i>~}</tt> is similar to <tt>~{<i>str</i>~}</tt>, but instead of using
+     one argument that is a sequence, all the remaining arguments are used as the list
+     of arguments for the iteration.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("Pairs:~@{ &lt;~A,~S&gt;~}.", args: "A", 1, "B", 2, "C", 3)</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Pairs: &lt;A, 1&gt; &lt;B, 2&gt; &lt;C, 3&gt;.</tt></p>
+  <p><tt>~:@{<i>str</i>~}</tt> combines the features of <tt>~:{<i>str</i>~}</tt> and
+     <tt>~@{<i>str</i>~}</tt>. All the remaining arguments are used, and each one must be a
+     sequence. On each iteration, the next argument is used as a list of arguments to <i>str</i>.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("Pairs:~:@{ &lt;~A,~S&gt;~}.", args: ["A", 1], ["B", 2], ["C", 3])</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Pairs: &lt;A, 1&gt; &lt;B, 2&gt; &lt;C, 3&gt;.</tt></p>
+  <p>Terminating the repetition directive with <tt>~:}</tt> instead of <tt>~}</tt> forces
+     <i>str</i> to be processed at least once, even if the initial sequence is empty. However,
+     it will not override an explicit prefix parameter of zero. If <i>str</i> is empty, then an
+     argument is used as <i>str</i>. It must be a string and precede any arguments
+     processed by the iteration.</p>
+  </p>
   </td>
 </tr>
 </tbody>

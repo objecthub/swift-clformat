@@ -67,6 +67,11 @@ public struct CLControl: CustomStringConvertible {
                              config: config ?? CLControlParserConfig.standard).parse()
   }
   
+  /// Returns true if the control string was empty.
+  public var isEmpty: Bool {
+    return self.components.isEmpty
+  }
+  
   /// Main format function. Creates an `Argument` object from the given parameters
   /// and invokes the driver of the formatting logic.
   public func format(locale: Locale? = nil,

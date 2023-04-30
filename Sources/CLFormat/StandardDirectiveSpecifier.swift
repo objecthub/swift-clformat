@@ -48,7 +48,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
   case conditional([CLControl], Bool)
   case conditionalEnd
   case separator
-  case iteration(CLControl)
+  case iteration(CLControl, Bool)
   case iterationEnd
   case justification([CLControl], Int?, Int?)
   case justificationEnd
@@ -108,7 +108,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         return "]"
       case .separator:
         return ";"
-      case .iteration(_):
+      case .iteration(_, _):
         return "{"
       case .iterationEnd:
         return "}"
@@ -128,7 +128,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
     switch self {
       case .ascii:
         let str: String
-        if let arg = try arguments.next() {
+        if let arg = try arguments.next().unwrapAll() {
           if modifiers.contains(.colon), let x = arg as? DebugCLFormatConvertible {
             str = x.clformatDebugDescription
           } else if modifiers.contains(.colon), let x = arg as? CustomDebugStringConvertible {
@@ -619,21 +619,26 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
             return .append("")
           }
         }
-      case .iteration(let control):
+      case .iteration(let control, let force):
         var res = ""
-        let itercap = try parameters.number(0) ?? Int.max
+        let control = control.isEmpty ? try CLControl(string: try arguments.nextAsString(),
+                                                      config: context.parserConfig) : control
+        var itercap = try parameters.number(0) ?? Int.max
+        var force = force
         if modifiers.contains(.colon) {
           let iterargs = modifiers.contains(.at) ? arguments
                                                  : try arguments.nextAsArguments(maxArgs: itercap)
-          while iterargs.left > 0 {
+          while (iterargs.left > 0 || (iterargs.left == 0 && force)) && itercap > 0 {
+            force = false
+            itercap -= 1
             let arg = try iterargs.next()
-            var itercap = try parameters.number(1) ?? Int.max
+            var subitercap = try parameters.number(1) ?? Int.max
             if let seq = arg as? any Sequence {
               var newargs = [Any?]()
               var iterator = seq.makeIterator() as (any IteratorProtocol)
-              while itercap > 0, let next = iterator.next() {
+              while subitercap > 0, let next = iterator.next() {
                 newargs.append(next)
-                itercap -= 1
+                subitercap -= 1
               }
               let formatted = try control.format(with: Arguments(locale: arguments.locale,
                                                                  tabsize: arguments.tabsize,
@@ -644,7 +649,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
               if case .break = formatted {
                 break
               }
-            } else if itercap > 0 {
+            } else if subitercap > 0 {
               var newargs = [Any?]()
               newargs.append(arg)
               let formatted = try control.format(with: Arguments(locale: arguments.locale,
@@ -662,7 +667,9 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
           let iterargs = modifiers.contains(.at) ? arguments
                                                  : try arguments.nextAsArguments(maxArgs: itercap)
           let firstArg = iterargs.setFirstArg()
-          while iterargs.left > 0 {
+          while (iterargs.left > 0 || (iterargs.left == 0 && force)) && itercap > 0 {
+            force = false
+            itercap -= 1
             res += try control.format(with: iterargs, in: .frame(res, context)).string
           }
           _ = iterargs.setFirstArg(to: firstArg)
@@ -818,8 +825,8 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
           sep = "| "
         }
         return res + (defaultCase ? ":]" : "]")
-      case .iteration(let control):
-        return "{" + control.description + "}"
+      case .iteration(let control, let force):
+        return "{" + control.description + (force ? ":}" : "}")
       default:
         return String(self.identifier)
     }
@@ -832,6 +839,7 @@ public enum CLFormatError: Error, CustomStringConvertible {
   case argumentOutOfRange(Int, Int)
   case missingArgument
   case expectedNumberArgument(Int, Any)
+  case expectedSequenceArgument(Int, Any)
   case cannotUseArgumentAsParameter(Int, Any)
   case missingNumberParameter(Int)
   case expectedNumberParameter(Int, Any?)
@@ -854,6 +862,8 @@ public enum CLFormatError: Error, CustomStringConvertible {
         return "missing argument"
       case .expectedNumberArgument(let n, let arg):
         return "expected argument \(n) to be a number; instead it is \(arg)"
+      case .expectedSequenceArgument(let n, let arg):
+        return "expected argument \(n) to be a sequence; instead it is \(arg)"
       case .cannotUseArgumentAsParameter(let n, let arg):
         return "cannot use argument \(n) as parameter: \(arg)"
       case .missingNumberParameter(let n):

@@ -25,7 +25,7 @@ protocol Unwrappable {
 }
 
 extension Optional: Unwrappable {
-  func unwrap() -> Any? {
+  public func unwrap() -> Any? {
     switch self {
       case .none:
         return nil
@@ -33,9 +33,16 @@ extension Optional: Unwrappable {
         return value
     }
   }
+  public func unwrapAll() -> Any? {
+    var res: Any? = self
+    while let opt = res, let unwrapped = opt as? Unwrappable {
+      res = unwrapped.unwrap()
+    }
+    return res
+  }
 }
 
-func unwrapAny(_ value: Any) -> Any? {
+public func unwrapAny(_ value: Any) -> Any? {
   guard let optional = value as? Unwrappable else {
     return value
   }

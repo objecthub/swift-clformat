@@ -209,7 +209,7 @@ public class Arguments: CustomStringConvertible {
                          tabsize: self.tabsize,
                          args: newargs)
       } else {
-        throw CLFormatError.expectedNumberArgument(self.index - 1, arg)
+        throw CLFormatError.expectedSequenceArgument(self.index - 1, arg)
       }
     } else {
       throw CLFormatError.missingArgument

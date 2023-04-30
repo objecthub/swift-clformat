@@ -181,11 +181,13 @@ public struct CLControlParserConfig {
               StandardDirectiveSpecifier.iterationEnd.identifier else {
         throw CLControlError.malformedDirectiveSyntax("iteration", "~{...~}")
       }
-      return .append(parameters, modifiers, StandardDirectiveSpecifier.iteration(control))
+      return .append(parameters,
+                     modifiers,
+                     StandardDirectiveSpecifier.iteration(control,
+                                                          directive.modifiers.contains(.colon)))
     }
     config.parse("}") { parser, parameters, modifiers in
-      guard parameters.parameterCount == 0,
-            !modifiers.contains(.at), !modifiers.contains(.colon) else {
+      guard parameters.parameterCount == 0, !modifiers.contains(.at) else {
         throw CLControlError.malformedDirective("~\(modifiers)}")
       }
       return .exit(parameters, modifiers, StandardDirectiveSpecifier.iterationEnd)
