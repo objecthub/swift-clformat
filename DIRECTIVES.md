@@ -641,7 +641,76 @@ introduced in a way to not impact backward compatibility.
      it will not override an explicit prefix parameter of zero. If <i>str</i> is empty, then an
      argument is used as <i>str</i>. It must be a string and precede any arguments
      processed by the iteration.</p>
-  </p>
+  </td>
+</tr>
+<tr valign="top">
+  <td><b>~&lt;&mldr;~&gt;</b></td>
+  <td>
+  <p>JUSTIFICATION:&nbsp;&nbsp;
+     <b>~<i>mincol,colinc,minpad,padchar,maxcol,elchar</i>&lt;<i>str</i>~&gt;</b></p>
+  <p>This directive justifies the text produced by processing control string <i>str</i> within
+     a field which is at least <i>mincol</i> columns wide (default: 0). <i>str</i> may be
+     divided up into segments via directive <tt>~;</tt>, in which case the spacing is evenly
+     divided between the text segments.</p>
+  <p>With no modifiers, the leftmost text segment is left-justified in the field and the
+     rightmost text segment is right-justified. If there is only one text element, it is
+     right-justified. The <tt>:</tt> modifier causes spacing to be introduced before the
+     first text segment. The <tt>@</tt> modifier causes spacing to be added after the last
+     text segment. The <i>minpad</i> parameter (default: 0) is the minimum number of padding
+     characters to be output between each segment. Whenever padding is needed, the padding
+     character <i>padchar</i> (default: ' ') is used. If the total width needed to satisfy the
+     constraints is greater than <i>mincol</i>, then the width used is
+     <i>mincol + k &times; colinc</i> for the smallest possible non-negative integer <i>k</i>
+     with <i>colinc</i> defaulting to 1.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("|~10,,,'.&lt;foo~;bar~&gt;|")</tt>
+       &DoubleLongRightArrow; <tt>|foo....bar|</tt><br />
+     &nbsp;&nbsp;<tt>clformat("|~10,,,'.:&lt;foo~;bar~&gt;|")</tt>
+       &DoubleLongRightArrow; <tt>|..foo..bar|</tt><br />
+     &nbsp;&nbsp;<tt>clformat("|~10,,,'.:@&lt;foo~;bar~&gt;|")</tt>
+       &DoubleLongRightArrow; <tt>|..foo.bar.|</tt><br />
+     &nbsp;&nbsp;<tt>clformat("|~10,,,'.&lt;foobar~&gt;|")</tt>
+       &DoubleLongRightArrow; <tt>|....foobar|</tt><br />
+     &nbsp;&nbsp;<tt>clformat("|~10,,,'.:&lt;foobar~&gt;|")</tt>
+       &DoubleLongRightArrow; <tt>|....foobar|</tt><br />
+     &nbsp;&nbsp;<tt>clformat("|~10,,,'.@&lt;foobar~&gt;|")</tt>
+       &DoubleLongRightArrow; <tt>|foobar....|</tt><br />
+     &nbsp;&nbsp;<tt>clformat("|~10,,,'.:@&lt;foobar~&gt;|")</tt>
+       &DoubleLongRightArrow; <tt>|..foobar..|</tt></p>
+  <p>Note that <i>str</i> may include format directives. All the clauses in <i>str</i> are
+     processed in order. It is the resulting pieces of text that are justified. The <tt>~^</tt>
+     directive may be used to terminate processing of the clauses prematurely, in which case
+     only the completely processed clauses are justified.</p>
+  <p>If the first clause of a <tt>~&lt;</tt> directive is terminated with <tt>~:;</tt> instead
+     of <tt>~;</tt>, then it is used in a special way. All of the clauses are processed, but
+     the first one is not used in performing the spacing and padding. When the padded result
+     has been determined, then, if it fits on the current line of output, it is output, and
+     the text for the first clause is discarded. If, however, the padded text does not fit
+     on the current line, then the text segment for the first clause is output before the
+     padded text. The first clause ought to contain a newline (such as a <tt>~%</tt> directive).
+     The first clause is always processed, and so any arguments it refers to will be used.
+     The decision is whether to use the resulting segment of text, not whether to process the
+     first clause. If the <tt>~:;</tt> has a prefix parameter <i>n</i>, then the padded text
+     must fit on the current line with <i>n</i> character positions to spare to avoid
+     outputting the first clause’s text.</p>
+  <p>For example, the control string in the following example can be used to print a list
+     of items separated by comma without breaking items over line boundaries, beginning
+     each line with <tt>;;</tt>. The prefix parameter 1 in <tt>~1:;</tt> accounts for the width
+     of the comma that will follow the justified item if it is not the last element in the list,
+     or the period if it is. If <tt>~:;</tt> has a second prefix parameter, like below, then it
+     is used as the width of the line, overriding the line width as specified by
+     <tt>clformat</tt>'s <tt>linewidth:</tt> parameter (default: 80).</p>
+  <p>&nbsp;&nbsp;<tt>clformat("~%;; ~{~&lt;~%;; ~1,30:; ~S~&gt;~^,~}.~%",</tt><br />
+     &nbsp;&nbsp;<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;args: ["first line", "second", "a long third line",</tt><br />
+     &nbsp;&nbsp;<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"fourth", "fifth"])</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow;&nbsp;<tt> </tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>;;  "first line", "second",</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>;;  "a long third line",</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt>;;  "fourth", "fifth".</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt> </tt></p>
+  <p>If there is only one text segment <i>str</i> and parameter <i>maxcol</i> is provided and
+     the length of the output of <i>str</i> is exceeding <i>maxcol</i>, then the output is
+     truncated at width <i>maxcol - 1</i> and the ellipsis character <i>elchar</i>
+     (default: '&hellip;') is inserted at the end.<p>
   </td>
 </tr>
 <tr valign="top">
