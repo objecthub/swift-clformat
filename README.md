@@ -4,14 +4,30 @@
 
 This framework implements
 [Common Lisp's `format` procedure](https://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node200.html#SECTION002633000000000000000)
-from scratch in Swift. `format` is a procedure that can produce formatted text using a
+from scratch in Swift. `format` is a procedure that produces formatted text using a
 format string similar to the `printf` format string. The formatting formalism is
 significantly more expressive compared to what `printf` has to offer. It allows users
 to display numbers in various formats (e.g. hex, binary, octal, roman numerals, natural
 language), apply conditional formatting, output text in a tabular format, iterate over
 data structures, and even apply `format` recursively to handle data that includes their
-own preferred formatting strings. An comprehensive list of the
-[supported formatting directives](DIRECTIVES.md) is available.
+own preferred formatting strings.
+
+The documentation of this framework includes:
+
+  - The [<tt>clformat</tt> API](#API),
+  - A description of the [formatting language](#formatting-language),
+  - A comprehensive list of the [supported formatting directives](DIRECTIVES.md),
+  - A short introduction of the [command-line tool](#command-line-tool), and
+  - [Technical requirements](#requirements) for using this framework.
+
+Here are a few examples to get a quick impression of the usage of <tt>clformat</tt>:
+
+```swift
+clformat("~D message~:P received. Average latency: ~,2Fms.", args: 17, 4.2567)
+⇒ "17 messages received. Average latency: 4.26ms."
+clformat("~D file~:P ~A. Average latency: ~,2Fms.", args: 1, "stored", 68.1)
+⇒ "1 file stored. Average latency: 68.10ms."
+```
 
 ## API
 
@@ -296,7 +312,34 @@ introduced in a way to not impact backward compatibility.
 
 ## Command-line tool
 
-TODO
+The <tt>swift-clformat</tt> framework also includes a command-line tool for experimenting
+with <tt>clformat</tt> control strings. It prompts users to first enter a control string
+followed by a list of arguments. The syntax of control strings is described above. The
+argument list is entered in a syntax that is close to the syntax literals have in Swift.
+Here is an example for an interaction with the command-line tool:
+
+```swift
+═════════╪═══════════════════════════
+  CONTROL│ Done.~^ ~D warning~:P.~^ ~D error~:P.
+ARGUMENTS│ 1, 5
+─────────┤
+   RESULT│ Done. 1 warning. 5 errors.
+═════════╪═══════════════════════════
+  CONTROL│ ~%;; ~{~<~%;; ~1,30:; ~S~>~^,~}.~%
+ARGUMENTS│ ["first line", "second", "a long third line", "fourth"]
+─────────┤
+   RESULT│ 
+         │ ;;  "first line", "second",
+         │ ;;  "a long third line",
+         │ ;;  "fourth".
+         │ 
+═════════╪═══════════════════════════
+  CONTROL│ ~:{/~S~^ ...~}
+ARGUMENTS│ [["hot", "dog"], ["hamburger"], ["ice", "cream"]]
+─────────┤
+   RESULT│ /"hot" .../"hamburger"/"ice" ...
+═════════╪═══════════════════════════
+```
 
 ## Requirements
 

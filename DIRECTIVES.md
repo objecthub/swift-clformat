@@ -247,7 +247,8 @@ introduced in a way to not impact backward compatibility.
      pad the field on the left. If <i>arg</i> is negative, then a minus sign is printed.
      If <i>arg</i> is not negative, then a plus sign is printed if and only if the <tt>@</tt>
      modifier was specified. Then a sequence of digits, containing a single embedded decimal
-     point, is printed. This represents the magnitude of the value of <i>arg</i> times
+     point, is printed. If parameter <i>d</i> is provided, then exactly <i>d</i> decimal places
+     are output. This represents the magnitude of the value of <i>arg</i> times
      10<sup><i>k</i></sup>, rounded to <i>d</i> fractional digits. There are no leading
      zeros, except that a single zero digit is output before the decimal point if the
      printed value is less than 1.0, and this single zero digit is not output after all
