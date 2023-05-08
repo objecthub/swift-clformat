@@ -34,6 +34,7 @@ let package = Package(
   // Dependencies declare other packages that this package depends on.
   // e.g. `.package(url: /* package url */, from: "1.0.0"),`
   dependencies: [
+    .package(url: "https://github.com/objecthub/swift-markdownkit.git", from: "1.1.7")
   ],
   
   // Targets are the basic building blocks of a package. A target can define a module or
@@ -41,14 +42,22 @@ let package = Package(
   // in packages which this package depends on.
   targets: [
     .target(name: "CLFormat",
-            dependencies: [],
-            exclude: ["CLFormat.h",
-                      "CLFormat.docc"]),
+            dependencies: [
+              .product(name: "MarkdownKit", package: "swift-markdownkit")
+            ],
+            exclude: [
+              "CLFormat.h",
+              "CLFormat.docc"
+            ]),
     .executableTarget(name: "CLFormatTool",
-                      dependencies: ["CLFormat"],
+                      dependencies: [
+                        .target(name: "CLFormat")
+                      ],
                       exclude: []),
     .testTarget(name: "CLFormatTests",
-                dependencies: [.target(name: "CLFormat")]),
+                dependencies: [
+                  .target(name: "CLFormat")
+                ]),
   ],
   
   // Required Swift language version.
