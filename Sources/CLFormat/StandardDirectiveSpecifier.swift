@@ -632,19 +632,14 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
             force = false
             itercap -= 1
             let arg = try iterargs.next()
-            var subitercap = try parameters.number(1) ?? Int.max
-            if let seq = arg as? any Sequence {
-              var newargs = [Any?]()
-              var iterator = seq.makeIterator() as (any IteratorProtocol)
-              while subitercap > 0, let next = iterator.next() {
-                newargs.append(next)
-                subitercap -= 1
-              }
-              let formatted = try control.format(with: Arguments(locale: arguments.locale,
-                                                                 tabsize: arguments.tabsize,
-                                                                 args: newargs,
-                                                                 numArgumentsLeft: iterargs.left),
-                                                 in: .frame(res, context))
+            let subitercap = try parameters.number(1) ?? Int.max
+            if let obj = arg, let arr = arguments.coerceToArray(obj, capAt: subitercap) {
+              let formatted = try control.format(with:
+                                    context.parserConfig.makeArguments(
+                                      locale: arguments.locale,
+                                      tabsize: arguments.tabsize,
+                                      args: arr,
+                                      numArgumentsLeft: iterargs.left), in: .frame(res, context))
               res += formatted.string
               if case .break = formatted {
                 break
@@ -652,11 +647,12 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
             } else if subitercap > 0 {
               var newargs = [Any?]()
               newargs.append(arg)
-              let formatted = try control.format(with: Arguments(locale: arguments.locale,
-                                                                 tabsize: arguments.tabsize,
-                                                                 args: newargs,
-                                                                 numArgumentsLeft: iterargs.left),
-                                                 in: .frame(res, context))
+              let formatted = try control.format(with:
+                                    context.parserConfig.makeArguments(
+                                      locale: arguments.locale,
+                                      tabsize: arguments.tabsize,
+                                      args: newargs,
+                                      numArgumentsLeft: iterargs.left), in: .frame(res, context))
               res += formatted.string
               if case .break = formatted {
                 break
@@ -744,7 +740,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         }
       case .indirection:
         let control = try CLControl(string: try arguments.nextAsString(),
-                                  config: context.parserConfig)
+                                    config: context.parserConfig)
         if modifiers.contains(.at) {
           return .append(try control.format(with: arguments, in: context).string)
         } else {

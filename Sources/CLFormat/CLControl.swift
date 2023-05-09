@@ -78,10 +78,10 @@ public struct CLControl: CustomStringConvertible {
                      tabsize: Int = 4,
                      linewidth: Int = 80,
                      args: Any?...) throws -> String {
-    return try self.format(with: Arguments(locale: locale,
-                                           tabsize: tabsize,
-                                           linewidth: linewidth,
-                                           args: args),
+    return try self.format(with: self.config.makeArguments(locale: locale,
+                                                           tabsize: tabsize,
+                                                           linewidth: linewidth,
+                                                           args: args),
                            in: .root(self.config)).string
   }
   
@@ -91,10 +91,10 @@ public struct CLControl: CustomStringConvertible {
                      tabsize: Int = 4,
                      linewidth: Int = 80,
                      arguments: [Any?]) throws -> String {
-    return try self.format(with: Arguments(locale: locale,
-                                           tabsize: tabsize,
-                                           linewidth: linewidth,
-                                           args: arguments),
+    return try self.format(with: self.config.makeArguments(locale: locale,
+                                                           tabsize: tabsize,
+                                                           linewidth: linewidth,
+                                                           args: arguments),
                            in: .root(self.config)).string
   }
   

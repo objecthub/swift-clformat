@@ -29,7 +29,23 @@ import Foundation
 /// logic.
 /// 
 public struct CLControlParserConfig {
-  private var directiveParsers: [Character : DirectiveParser] = [:]
+  private let makeArguments: (Locale?, Int, Int, [Any?], Int?) -> Arguments
+  private var directiveParsers: [Character : DirectiveParser]
+  
+  public init(makeArguments: @escaping (Locale?, Int, Int, [Any?], Int?) -> Arguments =
+                               Arguments.init) {
+    self.makeArguments = makeArguments
+    self.directiveParsers = [:]
+  }
+  
+  /// Return a new arguments object.
+  public func makeArguments(locale: Locale? = nil,
+                            tabsize: Int = 8,
+                            linewidth: Int = 80,
+                            args: [Any?],
+                            numArgumentsLeft: Int? = nil) -> Arguments {
+    return self.makeArguments(locale, tabsize, linewidth, args, numArgumentsLeft)
+  }
   
   /// Add a new directive parser to this control parser configuration for the given
   /// array of characters.
