@@ -87,7 +87,7 @@ extension Optional: CLFormatConvertible, DebugCLFormatConvertible {
 extension String {
   
   public init(control: String,
-              config: CLControlParserConfig? = nil,
+              config: CLFormatConfig? = nil,
               locale: Locale? = nil,
               tabsize: Int = 4,
               linewidth: Int = 80,
@@ -100,7 +100,7 @@ extension String {
   }
   
   public init(control: String,
-              config: CLControlParserConfig? = nil,
+              config: CLFormatConfig? = nil,
               locale: Locale? = nil,
               tabsize: Int = 4,
               linewidth: Int = 80,
@@ -129,7 +129,7 @@ extension String {
 }
 
 public func clformat(_ control: String,
-                     config: CLControlParserConfig? = CLControlParserConfig.default,
+                     config: CLFormatConfig? = CLFormatConfig.default,
                      locale: Locale? = nil,
                      tabsize: Int = 4,
                      linewidth: Int = 80,
@@ -142,7 +142,7 @@ public func clformat(_ control: String,
 }
 
 public func clformat(_ control: String,
-                     config: CLControlParserConfig? = CLControlParserConfig.default,
+                     config: CLFormatConfig? = CLFormatConfig.default,
                      locale: Locale? = nil,
                      tabsize: Int = 4,
                      linewidth: Int = 80,
@@ -155,7 +155,7 @@ public func clformat(_ control: String,
 }
 
 public func clprintf(_ control: String,
-                     config: CLControlParserConfig? = CLControlParserConfig.default,
+                     config: CLFormatConfig? = CLFormatConfig.default,
                      locale: Locale? = nil,
                      tabsize: Int = 4,
                      linewidth: Int = 80,
@@ -171,7 +171,7 @@ public func clprintf(_ control: String,
 }
 
 public func clprintf(_ control: String,
-                     config: CLControlParserConfig? = CLControlParserConfig.default,
+                     config: CLFormatConfig? = CLFormatConfig.default,
                      locale: Locale? = nil,
                      tabsize: Int = 4,
                      linewidth: Int = 80,

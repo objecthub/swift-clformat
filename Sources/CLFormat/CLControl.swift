@@ -25,7 +25,7 @@ import Foundation
 /// format function is provided by this struct. The format function can be
 /// called arbitrary many times for a given struct (it is reentrant as well).
 /// 
-/// A `Control` value consists of a control parser configuration as well as
+/// A `Control` value consists of a format configuration as well as
 /// a sequence of "components". A component is either a text fragment or a
 /// formatting directive.
 /// 
@@ -47,24 +47,24 @@ public struct CLControl: CustomStringConvertible {
     }
   }
   
-  /// The control parser configuration. This value needs to be preserved
+  /// The format configuration. This value needs to be preserved
   /// because there is the need to potentially parse arguments as control
   /// strings, e.g. via the ~?/indirection directive.
-  public let config: CLControlParserConfig
+  public let config: CLFormatConfig
   
   /// The parsed control components.
   public let components: [Component]
   
   /// Constructor for manually creating control values.
-  public init(components: [Component], config: CLControlParserConfig? = nil) {
-    self.config = config ?? CLControlParserConfig.standard
+  public init(components: [Component], config: CLFormatConfig? = nil) {
+    self.config = config ?? CLFormatConfig.standard
     self.components = components
   }
   
   /// Constructor for parsing a control string into a control value.
-  public init(string: String, config: CLControlParserConfig? = nil) throws {
+  public init(string: String, config: CLFormatConfig? = nil) throws {
     self = try CLControlParser(control: string,
-                             config: config ?? CLControlParserConfig.standard).parse()
+                             config: config ?? CLFormatConfig.standard).parse()
   }
   
   /// Returns true if the control string was empty.
@@ -137,11 +137,11 @@ public struct CLControl: CustomStringConvertible {
 
 ///
 /// A `Context` value represents a formatting context (i.e. a linked list of
-/// context values. The root refers to the control parser configuration (to make
+/// context values. The root refers to the format configuration (to make
 /// it accessible from the formatting logic).
 /// 
 public enum Context {
-  case root(CLControlParserConfig)
+  case root(CLFormatConfig)
   indirect case frame(String, Context)
   
   public var current: String {
@@ -153,12 +153,12 @@ public enum Context {
     }
   }
   
-  public var parserConfig: CLControlParserConfig {
+  public var config: CLFormatConfig {
     switch self {
       case .root(let config):
         return config
       case .frame(_, let context):
-        return context.parserConfig
+        return context.config
     }
   }
 }

@@ -21,15 +21,15 @@
 import Foundation
 
 ///
-/// A control parser config value contains a mapping from directive identifiers
-/// (characters) to directive parsers which parse the directive. Most directive
-/// are atomic (i.e. they are not composite) and parsing for those is trivial:
-/// they just package up the generically parsed parameters and modifiers in a
-/// new directive specifier value. Composite directives have more complex parsing
-/// logic.
+/// A format configuration value contains an argument factory as well as a mapping
+/// from directive identifiers (characters) to directive parsers which parse the
+/// directive. Most directives are atomic (i.e. they are not composite) and parsing
+/// for those is trivial: they just package up the generically parsed parameters and
+/// modifiers in a new directive specifier value. Composite directives have more
+/// complex parsing logic.
 /// 
-public struct CLControlParserConfig {
-  private let makeArguments: (Locale?, Int, Int, [Any?], Int?) -> Arguments
+public struct CLFormatConfig {
+  public var makeArguments: (Locale?, Int, Int, [Any?], Int?) -> Arguments
   private var directiveParsers: [Character : DirectiveParser]
   
   public init(makeArguments: @escaping (Locale?, Int, Int, [Any?], Int?) -> Arguments =
@@ -47,7 +47,7 @@ public struct CLControlParserConfig {
     return self.makeArguments(locale, tabsize, linewidth, args, numArgumentsLeft)
   }
   
-  /// Add a new directive parser to this control parser configuration for the given
+  /// Add a new directive parser to this format configuration for the given
   /// array of characters.
   public mutating func parse(_ chars: [Character], with parser: @escaping DirectiveParser) {
     for char in chars {
@@ -55,8 +55,7 @@ public struct CLControlParserConfig {
     }
   }
   
-  /// Add a new directive parser to this control parser configuration for the given
-  /// characters.
+  /// Add a new directive parser to this format configuration for the given characters.
   public mutating func parse(_ chars: Character..., with parser: @escaping DirectiveParser) {
     for char in chars {
       self.directiveParsers[char] = parser
@@ -64,8 +63,7 @@ public struct CLControlParserConfig {
   }
   
   /// Add a new default directive parser which simply appends the directive to the list of
-  /// control components to this control parser configuration for the given
-  /// characters.
+  /// control components to this format configuration for the given characters.
   public mutating func parse(_ chars: Character..., appending specifier: DirectiveSpecifier) {
     self.parse(chars) { parser, parameters, modifiers in
       return .append(Directive(parameters: parameters,
@@ -87,11 +85,10 @@ public struct CLControlParserConfig {
     return self.directiveParsers[ch]
   }
   
-  /// The standard control parser configuration. Whenever `nil` is specified as a
-  /// control parser config, this struct is used. The `String` initializers use this
-  /// configuration as a default.
-  public static let standard: CLControlParserConfig = {
-    var config = CLControlParserConfig()
+  /// The standard format configuration. Whenever `nil` is specified as a format configuration,
+  /// this struct is used. The `String` initializers use this configuration as a default.
+  public static let standard: CLFormatConfig = {
+    var config = CLFormatConfig()
     config.parse("a", "A", appending: StandardDirectiveSpecifier.ascii)
     config.parse("w", "W", appending: StandardDirectiveSpecifier.write)
     config.parse("s", "S", appending: StandardDirectiveSpecifier.sexpr)
@@ -250,9 +247,8 @@ public struct CLControlParserConfig {
     return config
   }()
   
-  /// The default control parser configuration for the functions `clformat` and
-  /// `clprintf`. This parser configuation is mutable so that the behavior can be
-  /// changed globally. Please note that the `String` initializers do not rely on
-  /// this mutable config as a default.
-  public static var `default`: CLControlParserConfig = CLControlParserConfig.standard
+  /// The default format configuration for the functions `clformat` and `clprintf`. This
+  /// configuation is mutable so that the behavior can be changed globally. Please note
+  /// that the `String` initializers do not rely on this mutable config as a default.
+  public static var `default`: CLFormatConfig = CLFormatConfig.standard
 }

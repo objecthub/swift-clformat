@@ -622,7 +622,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
       case .iteration(let control, let force):
         var res = ""
         let control = control.isEmpty ? try CLControl(string: try arguments.nextAsString(),
-                                                      config: context.parserConfig) : control
+                                                      config: context.config) : control
         var itercap = try parameters.number(0) ?? Int.max
         var force = force
         if modifiers.contains(.colon) {
@@ -635,7 +635,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
             let subitercap = try parameters.number(1) ?? Int.max
             if let obj = arg, let arr = arguments.coerceToArray(obj, capAt: subitercap) {
               let formatted = try control.format(with:
-                                    context.parserConfig.makeArguments(
+                                    context.config.makeArguments(
                                       locale: arguments.locale,
                                       tabsize: arguments.tabsize,
                                       args: arr,
@@ -648,7 +648,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
               var newargs = [Any?]()
               newargs.append(arg)
               let formatted = try control.format(with:
-                                    context.parserConfig.makeArguments(
+                                    context.config.makeArguments(
                                       locale: arguments.locale,
                                       tabsize: arguments.tabsize,
                                       args: newargs,
@@ -740,7 +740,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         }
       case .indirection:
         let control = try CLControl(string: try arguments.nextAsString(),
-                                    config: context.parserConfig)
+                                    config: context.config)
         if modifiers.contains(.at) {
           return .append(try control.format(with: arguments, in: context).string)
         } else {

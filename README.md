@@ -5,12 +5,11 @@
 This framework implements
 [Common Lisp's `format` procedure](https://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node200.html#SECTION002633000000000000000)
 from scratch in Swift. `format` is a procedure that produces formatted text using a
-format string similar to the `printf` format string. The formatting formalism is
-significantly more expressive compared to what `printf` has to offer. It allows users
-to display numbers in various formats (e.g. hex, binary, octal, roman numerals, natural
-language), apply conditional formatting, output text in a tabular format, iterate over
-data structures, and even apply `format` recursively to handle data that includes their
-own preferred formatting strings.
+format string similar to `printf`. The formatting formalism is significantly more expressive
+compared to `printf`. It allows users to display numbers in various formats (e.g. hex, binary,
+octal, roman numerals, natural language), apply conditional formatting, output text in a
+tabular format, iterate over data structures, and even apply `format` recursively to handle
+data that includes their own preferred formatting strings.
 
 The documentation of this framework includes:
 
@@ -47,9 +46,9 @@ func clformat(_ control: String,
 
 `control` is the formatting string. It is using the formatting language described in the
 next section to define how the output will be formatted. `config` refers to the
-[control parser configuration](https://github.com/objecthub/swift-clformat/blob/main/Sources/CLFormat/CLControlParserConfig.swift)
-which determines how the control string gets parsed. This parameter
-gets usually omitted, unless a user wants to define their own control formatting
+[format configuration](https://github.com/objecthub/swift-clformat/blob/main/Sources/CLFormat/CLFormatConfig.swift)
+which determines how the control string and the arguments get parsed and interpreted. This
+parameter gets usually omitted, unless a user wants to define their own control formatting
 language. `locale` refers to a `Locale` object which is used for executing
 locale-specific directives. `tabsize` defines the maximum number of space characters that
 correspond to a single tab character. `linewidth` specifies the number of characters per

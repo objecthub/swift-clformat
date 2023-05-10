@@ -27,11 +27,11 @@ import Foundation
 /// conditional directives).
 /// 
 public class CLControlParser {
-  internal let config: CLControlParserConfig
+  internal let config: CLFormatConfig
   internal let control: String
   internal var i: String.Index
   
-  public init(control: String, config: CLControlParserConfig) {
+  public init(control: String, config: CLFormatConfig) {
     self.config = config
     self.control = control
     self.i = control.startIndex
