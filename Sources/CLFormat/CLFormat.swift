@@ -20,16 +20,16 @@
 
 import Foundation
 
-protocol CLFormatConvertible {
+public protocol CLFormatConvertible {
   var clformatDescription: String { get }
 }
 
-protocol DebugCLFormatConvertible {
+public protocol DebugCLFormatConvertible {
   var clformatDebugDescription: String { get }
 }
 
 extension Array: CLFormatConvertible where Element: CLFormatConvertible {
-  var clformatDescription: String {
+  public var clformatDescription: String {
     var res = "["
     var sep = ""
     for element in self {
@@ -41,7 +41,7 @@ extension Array: CLFormatConvertible where Element: CLFormatConvertible {
 }
 
 extension Array: DebugCLFormatConvertible where Element: DebugCLFormatConvertible {
-  var clformatDebugDescription: String {
+  public var clformatDebugDescription: String {
     var res = "["
     var sep = ""
     for element in self {
@@ -53,7 +53,7 @@ extension Array: DebugCLFormatConvertible where Element: DebugCLFormatConvertibl
 }
 
 extension Optional: CLFormatConvertible, DebugCLFormatConvertible {
-  var clformatDescription: String {
+  public var clformatDescription: String {
     switch self {
       case .none:
         return "nil"
@@ -68,7 +68,7 @@ extension Optional: CLFormatConvertible, DebugCLFormatConvertible {
     }
   }
   
-  var clformatDebugDescription: String {
+  public var clformatDebugDescription: String {
     switch self {
       case .none:
         return "nil"

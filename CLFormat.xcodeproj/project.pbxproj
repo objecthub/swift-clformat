@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		CC2FF5FB29D8C8F500AD0BC6 /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2FF5FA29D8C8F500AD0BC6 /* Optional.swift */; };
 		CC4CDDE329E47B8300C5E9C6 /* MarkdownKit in Frameworks */ = {isa = PBXBuildFile; productRef = CC4CDDE229E47B8300C5E9C6 /* MarkdownKit */; };
+		CC7D4B722A0EE9BB0066BA94 /* CLControlError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7D4B712A0EE9BB0066BA94 /* CLControlError.swift */; };
+		CC7D4B742A0EEB010066BA94 /* CLFormatError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7D4B732A0EEB010066BA94 /* CLFormatError.swift */; };
 		CCB5F0F629C1455B00587140 /* CLFormat.docc in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0F529C1455B00587140 /* CLFormat.docc */; };
 		CCB5F0FC29C1455B00587140 /* CLFormat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB5F0F229C1455B00587140 /* CLFormat.framework */; };
 		CCB5F10129C1455B00587140 /* CLFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F10029C1455B00587140 /* CLFormatTests.swift */; };
@@ -61,6 +63,8 @@
 		CC2FF5FA29D8C8F500AD0BC6 /* Optional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Optional.swift; sourceTree = "<group>"; };
 		CC7D4AF129E9E5980066BA94 /* DIRECTIVES.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = DIRECTIVES.md; sourceTree = "<group>"; };
 		CC7D4B6A2A0B73880066BA94 /* CLFormatTool.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CLFormatTool.entitlements; sourceTree = SOURCE_ROOT; };
+		CC7D4B712A0EE9BB0066BA94 /* CLControlError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLControlError.swift; sourceTree = "<group>"; };
+		CC7D4B732A0EEB010066BA94 /* CLFormatError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLFormatError.swift; sourceTree = "<group>"; };
 		CCB5F0D029C1148900587140 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		CCB5F0D229C114D300587140 /* Number.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Number.swift; sourceTree = "<group>"; };
 		CCB5F0D429C114F600587140 /* NumberFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormat.swift; sourceTree = "<group>"; };
@@ -150,8 +154,10 @@
 				CCB5F0DA29C1156400587140 /* Modifiers.swift */,
 				CCB5F0DC29C1157C00587140 /* Arguments.swift */,
 				CCB5F0DE29C115A500587140 /* CLControl.swift */,
+				CC7D4B712A0EE9BB0066BA94 /* CLControlError.swift */,
 				CCB5F0E029C115C400587140 /* CLControlParser.swift */,
 				CCB5F12229C7974B00587140 /* CLFormatConfig.swift */,
+				CC7D4B732A0EEB010066BA94 /* CLFormatError.swift */,
 				CCB5F0E229C115E600587140 /* StandardDirectiveSpecifier.swift */,
 				CCB5F0E429C1160700587140 /* CLFormat.swift */,
 				CCB5F0F429C1455B00587140 /* CLFormat.h */,
@@ -317,11 +323,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC7D4B742A0EEB010066BA94 /* CLFormatError.swift in Sources */,
 				CCB5F11329C1475F00587140 /* Currency.swift in Sources */,
 				CCB5F11429C1475F00587140 /* Arguments.swift in Sources */,
 				CCB5F12329C7974B00587140 /* CLFormatConfig.swift in Sources */,
 				CC2FF5FB29D8C8F500AD0BC6 /* Optional.swift in Sources */,
 				CCB5F10C29C1475F00587140 /* Parameters.swift in Sources */,
+				CC7D4B722A0EE9BB0066BA94 /* CLControlError.swift in Sources */,
 				CCB5F11029C1475F00587140 /* StandardDirectiveSpecifier.swift in Sources */,
 				CCB5F0F629C1455B00587140 /* CLFormat.docc in Sources */,
 				CCB5F10E29C1475F00587140 /* CLControl.swift in Sources */,
@@ -417,7 +425,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -472,7 +481,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -497,7 +507,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
@@ -539,7 +549,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
