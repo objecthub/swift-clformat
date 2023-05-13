@@ -141,7 +141,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
             str = "\(arg)"
           }
         } else {
-          str = "nil"
+          str = context.config.nilRepresentation
         }
         return .append(StandardDirectiveSpecifier.pad(string: str,
                                                       left: modifiers.contains(.at),
@@ -163,7 +163,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
             str = "\(arg)"
           }
         } else {
-          str = "nil"
+          str = context.config.nilRepresentation
         }
         return .append(StandardDirectiveSpecifier.pad(string: str,
                                                       left: modifiers.contains(.at),
@@ -177,13 +177,9 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
       case .sexpr:
         let str: String
         if let arg = try arguments.next() {
-          if let x = arg as? String {
+          if let x = arguments.coerceToString(arg) {
             str = "\"\(StandardDirectiveSpecifier.escapeStr(x))\""
-          } else if let x = arg as? NSMutableString {
-            str = "\"\(StandardDirectiveSpecifier.escapeStr(x as String))\""
-          } else if let x = arg as? NSString {
-            str = "\"\(StandardDirectiveSpecifier.escapeStr(x as String))\""
-          } else if let x = arg as? Character {
+          } else if let x = arguments.coerceToCharacter(arg) {
             str = "'\(StandardDirectiveSpecifier.escapeStr(String(x)))'"
           } else if modifiers.contains(.colon), let x = arg as? DebugCLFormatConvertible {
             str = x.clformatDebugDescription
@@ -197,7 +193,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
             str = "\(arg)"
           }
         } else {
-          str = "nil"
+          str = context.config.nilRepresentation
         }
         return .append(StandardDirectiveSpecifier.pad(string: str,
                                                       left: modifiers.contains(.at),
@@ -752,7 +748,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
     }
   }
   
-  internal static func escapeStr(_ str: String) -> String {
+  public static func escapeStr(_ str: String) -> String {
     var res = ""
     for c in str {
       switch c {
@@ -771,7 +767,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
     return res
   }
   
-  internal static func pad(string: String,
+  public static func pad(string: String,
                            left: Bool,
                            right: Bool,
                            padchar: Character,

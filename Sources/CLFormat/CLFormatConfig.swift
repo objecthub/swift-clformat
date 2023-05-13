@@ -21,20 +21,23 @@
 import Foundation
 
 ///
-/// A format configuration value contains an argument factory as well as a mapping
-/// from directive identifiers (characters) to directive parsers which parse the
-/// directive. Most directives are atomic (i.e. they are not composite) and parsing
-/// for those is trivial: they just package up the generically parsed parameters and
-/// modifiers in a new directive specifier value. Composite directives have more
-/// complex parsing logic.
+/// A format configuration value contains an argument factory, a default representation
+/// of `nil`, as well as a mapping from directive identifiers (characters) to directive
+/// parsers which parse the directive. Most directives are atomic (i.e. they are not
+/// composite) and parsing for those is trivial: they just package up the generically
+/// parsed parameters and modifiers in a new directive specifier value. Composite
+/// directives have more complex parsing logic.
 /// 
 public struct CLFormatConfig {
   public var makeArguments: (Locale?, Int, Int, [Any?], Int?) -> Arguments
+  public var nilRepresentation: String
   private var directiveParsers: [Character : DirectiveParser]
   
   public init(makeArguments: @escaping (Locale?, Int, Int, [Any?], Int?) -> Arguments =
-                               Arguments.init) {
+                               Arguments.init,
+              nilRepresentation: String = "nil") {
     self.makeArguments = makeArguments
+    self.nilRepresentation = nilRepresentation
     self.directiveParsers = [:]
   }
   
