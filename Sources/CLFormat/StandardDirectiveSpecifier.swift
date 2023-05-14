@@ -390,6 +390,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                                            scaleFactor: try parameters.number(
                                                               3, allowNegative: true) ?? 1,
                                            locale: arguments.locale,
+                                           usegroup: modifiers.contains(.colon),
                                            uselocale: modifiers.contains(.plus),
                                            forcesign: modifiers.contains(.at)))
       case .generalFloat:
@@ -430,6 +431,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                                              exponentDigits: e,
                                              scaleFactor: k,
                                              locale: arguments.locale,
+                                             usegroup: modifiers.contains(.colon),
                                              uselocale: modifiers.contains(.plus),
                                              forcesign: modifiers.contains(.at)))
         }

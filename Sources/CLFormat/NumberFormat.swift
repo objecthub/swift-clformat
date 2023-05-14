@@ -100,6 +100,7 @@ public struct NumberFormat {
                             exponentDigits: Int?,
                             scaleFactor: Int,
                             locale: Locale?,
+                            usegroup: Bool,
                             uselocale: Bool,
                             forcesign: Bool) -> String {
     let formatter = NumberFormatter()
@@ -148,11 +149,13 @@ public struct NumberFormat {
       }
     }
     formatter.exponentSymbol = "|"
-    if let locale = locale {
-      formatter.locale = locale
+    if uselocale {
+      formatter.locale = locale ?? NumberFormat.currentLocale
+    } else if usegroup {
+      formatter.locale = NumberFormat.defaultLocale
+      formatter.localizesFormat = false
     }
-    formatter.localizesFormat = uselocale
-    formatter.usesGroupingSeparator = false
+    formatter.usesGroupingSeparator = usegroup
     var str = formatter.string(from: number.nsnumber) ?? number.description
     let comp = str.split(separator: "|", maxSplits: 1, omittingEmptySubsequences: true)
     if let exponentDigits = exponentDigits {
@@ -207,10 +210,10 @@ public struct NumberFormat {
       }
     }
     if uselocale {
-      formatter.locale = locale ?? NumberFormat.defaultLocale
-      formatter.localizesFormat = true
+      formatter.locale = locale ?? NumberFormat.currentLocale
     } else if usegroup {
       formatter.locale = NumberFormat.defaultLocale
+      formatter.localizesFormat = false
     }
     if let groupsep = groupsep {
       formatter.groupingSeparator = String(groupsep)
@@ -250,11 +253,12 @@ public struct NumberFormat {
                             forcesign: Bool) -> String {
     let formatter = NumberFormatter()
     formatter.numberStyle = style
-    if let locale = locale {
-      formatter.locale = locale
-    }
-    if style == .decimal {
-      formatter.localizesFormat = uselocale
+    if uselocale {
+      formatter.locale = locale ?? NumberFormat.currentLocale
+    } else if usegroup {
+      formatter.localizesFormat = false
+    } else if style == .ordinal {
+      formatter.locale = locale ?? NumberFormat.defaultLocale
     }
     if let groupsep = groupsep {
       formatter.groupingSeparator = String(groupsep)
@@ -262,9 +266,7 @@ public struct NumberFormat {
     if let groupsize = groupsize {
       formatter.groupingSize = groupsize
     }
-    if !uselocale {
-      formatter.usesGroupingSeparator = usegroup
-    }
+    formatter.usesGroupingSeparator = usegroup
     var str = formatter.string(from: number.nsnumber) ?? number.description
     if forcesign && !str.starts(with: "-") {
       str = "+" + str
