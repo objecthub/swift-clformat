@@ -32,7 +32,7 @@ public struct CLFormatConfig {
   private var makeArguments: (Locale?, Int, Int, [Any?], Int?) -> Arguments
   private var directiveParsers: [Character : DirectiveParser]
   public var nilRepresentation: String
-  public var environment: [String : AnyClass]
+  public var environment: [String : Any]
   
   public init(makeArguments: @escaping (Locale?, Int, Int, [Any?], Int?) -> Arguments =
                                Arguments.init,
