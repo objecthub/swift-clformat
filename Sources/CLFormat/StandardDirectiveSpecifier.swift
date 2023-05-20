@@ -632,25 +632,19 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
             let arg = try iterargs.next()
             let subitercap = try parameters.number(1) ?? Int.max
             if let obj = arg, let arr = arguments.coerceToArray(obj, capAt: subitercap) {
-              let formatted = try control.format(with:
-                                    context.config.makeArguments(
-                                      locale: arguments.locale,
-                                      tabsize: arguments.tabsize,
-                                      args: arr,
-                                      numArgumentsLeft: iterargs.left), in: .frame(res, context))
+              let formatted =
+                try control.format(with: arguments.new(args: arr, numArgumentsLeft: iterargs.left),
+                                   in: .frame(res, context))
               res += formatted.string
               if case .break = formatted {
                 break
               }
             } else if subitercap > 0 {
-              var newargs = [Any?]()
-              newargs.append(arg)
-              let formatted = try control.format(with:
-                                    context.config.makeArguments(
-                                      locale: arguments.locale,
-                                      tabsize: arguments.tabsize,
-                                      args: newargs,
-                                      numArgumentsLeft: iterargs.left), in: .frame(res, context))
+              var nas = [Any?]()
+              nas.append(arg)
+              let formatted =
+                try control.format(with: arguments.new(args: nas, numArgumentsLeft: iterargs.left),
+                                   in: .frame(res, context))
               res += formatted.string
               if case .break = formatted {
                 break

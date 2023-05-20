@@ -46,7 +46,7 @@ open class Arguments: CustomStringConvertible {
   
   /// If this instance isn't referring to all arguments (at formatting time,
   /// nested arguments might be created, e.g. to implement the ~?/indirection
-  /// directive.
+  /// directive.)
   internal let numArgumentsLeft: Int?
   
   /// The first argument to consume.
@@ -75,6 +75,15 @@ open class Arguments: CustomStringConvertible {
   /// Returns the number of arguments that are still available for consumption.
   public var left: Int {
     return self.args.count - self.index
+  }
+  
+  /// Returns new arguments inheriting all settings from the current `Arguments` object.
+  public func new(args: [Any?], numArgumentsLeft: Int? = nil) -> Self {
+    return Self(locale: self.locale,
+                tabsize: self.tabsize,
+                linewidth: self.linewidth,
+                args: args,
+                numArgumentsLeft: numArgumentsLeft)
   }
   
   /// Returns the current first argument and sets a new first argument.
@@ -188,7 +197,7 @@ open class Arguments: CustomStringConvertible {
   public func nextAsArguments(maxArgs: Int = Int.max) throws -> Self {
     if let arg = try self.next() {
       if let arr = self.coerceToArray(arg, capAt: maxArgs) {
-        return Self(locale: self.locale, tabsize: self.tabsize, args: arr)
+        return self.new(args: arr)
       } else {
         throw CLFormatError.expectedSequenceArgument(self.index - 1, arg)
       }

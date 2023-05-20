@@ -29,15 +29,17 @@ import Foundation
 /// directives have more complex parsing logic.
 /// 
 public struct CLFormatConfig {
-  public var makeArguments: (Locale?, Int, Int, [Any?], Int?) -> Arguments
-  public var nilRepresentation: String
+  private var makeArguments: (Locale?, Int, Int, [Any?], Int?) -> Arguments
   private var directiveParsers: [Character : DirectiveParser]
+  public var nilRepresentation: String
+  public var environment: [String : AnyClass]
   
   public init(makeArguments: @escaping (Locale?, Int, Int, [Any?], Int?) -> Arguments =
                                Arguments.init,
               nilRepresentation: String = "nil") {
     self.makeArguments = makeArguments
     self.nilRepresentation = nilRepresentation
+    self.environment = [:]
     self.directiveParsers = [:]
   }
   
@@ -48,6 +50,12 @@ public struct CLFormatConfig {
                             args: [Any?],
                             numArgumentsLeft: Int? = nil) -> Arguments {
     return self.makeArguments(locale, tabsize, linewidth, args, numArgumentsLeft)
+  }
+  
+  /// Determines what `makeArguments` is eventually invoking.
+  public mutating func setArgumentFactory(makeArguments:
+                                        @escaping (Locale?, Int, Int, [Any?], Int?) -> Arguments) {
+    self.makeArguments = makeArguments
   }
   
   /// Add a new directive parser to this format configuration for the given
