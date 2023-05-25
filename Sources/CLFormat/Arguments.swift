@@ -244,6 +244,24 @@ open class Arguments: CustomStringConvertible {
     return res + "]>"
   }
   
+  /// Is this object nil?
+  open func isNil(_ obj: Any?) -> Bool {
+    return obj == nil
+  }
+  
+  /// Is this object a value?
+  open func isValue(_ obj: Any?) -> Bool {
+    return obj != nil
+  }
+  
+  /// Coerce object to a boolean value, if possible.
+  open func coerceToBool(_ obj: Any) -> Bool? {
+    if let bool = obj as? Bool {
+      return bool
+    }
+    return nil
+  }
+  
   /// Coerce object to a Number value, if possible.
   open func coerceToNumber(_ obj: Any) -> Number? {
     return Number(obj)
