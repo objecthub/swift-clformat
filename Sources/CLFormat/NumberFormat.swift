@@ -153,7 +153,9 @@ public struct NumberFormat {
       formatter.locale = locale ?? NumberFormat.currentLocale
     } else if usegroup {
       formatter.locale = NumberFormat.defaultLocale
+      #if os(macOS)
       formatter.localizesFormat = false
+      #endif
     }
     formatter.usesGroupingSeparator = usegroup
     var str = formatter.string(from: number.nsnumber) ?? number.description
@@ -213,7 +215,9 @@ public struct NumberFormat {
       formatter.locale = locale ?? NumberFormat.currentLocale
     } else if usegroup {
       formatter.locale = NumberFormat.defaultLocale
+      #if os(macOS)
       formatter.localizesFormat = false
+      #endif
     }
     if let groupsep = groupsep {
       formatter.groupingSeparator = String(groupsep)
@@ -256,7 +260,9 @@ public struct NumberFormat {
     if uselocale {
       formatter.locale = locale ?? NumberFormat.currentLocale
     } else if usegroup {
+      #if os(macOS)
       formatter.localizesFormat = false
+      #endif
     } else if style == .ordinal {
       formatter.locale = locale ?? NumberFormat.defaultLocale
     }
