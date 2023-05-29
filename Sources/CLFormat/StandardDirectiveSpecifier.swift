@@ -634,7 +634,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
             if let obj = arg, let arr = arguments.coerceToArray(obj, capAt: subitercap) {
               let formatted =
                 try control.format(with: arguments.new(args: arr, numArgumentsLeft: iterargs.left),
-                                   in: .frame(res, context))
+                                   in: context.drop(res))
               res += formatted.string
               if case .break = formatted {
                 break
@@ -644,7 +644,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
               nas.append(arg)
               let formatted =
                 try control.format(with: arguments.new(args: nas, numArgumentsLeft: iterargs.left),
-                                   in: .frame(res, context))
+                                   in: context.drop(res))
               res += formatted.string
               if case .break = formatted {
                 break
@@ -658,7 +658,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
           while (iterargs.left > 0 || (iterargs.left == 0 && force)) && itercap > 0 {
             force = false
             itercap -= 1
-            res += try control.format(with: iterargs, in: .frame(res, context)).string
+            res += try control.format(with: iterargs, in: context.drop(res)).string
           }
           _ = iterargs.setFirstArg(to: firstArg)
         }

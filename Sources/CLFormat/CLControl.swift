@@ -82,7 +82,7 @@ public struct CLControl: CustomStringConvertible {
                                                            tabsize: tabsize,
                                                            linewidth: linewidth,
                                                            args: args),
-                           in: .root(self.config)).string
+                           in: Context(config: self.config)).string
   }
   
   /// Main format function. Creates an `Argument` object from the given parameters
@@ -95,7 +95,7 @@ public struct CLControl: CustomStringConvertible {
                                                            tabsize: tabsize,
                                                            linewidth: linewidth,
                                                            args: arguments),
-                           in: .root(self.config)).string
+                           in: Context(config: self.config)).string
   }
   
   /// Driver of the formatting logic. Can be called directly for low-level applications.
@@ -107,7 +107,7 @@ public struct CLControl: CustomStringConvertible {
         case .text(let str):
           res += str
         case .directive(let dir):
-          switch try dir.specifier.apply(context: .frame(res, context),
+          switch try dir.specifier.apply(context: context.drop(res),
                                          parameters: dir.parameters.process(arguments: args),
                                          modifiers: dir.modifiers,
                                          arguments: args) {
@@ -136,29 +136,42 @@ public struct CLControl: CustomStringConvertible {
 }
 
 ///
-/// A `Context` value represents a formatting context (i.e. a linked list of
-/// context values. The root refers to the format configuration (to make
-/// it accessible from the formatting logic).
-/// 
-public enum Context {
-  case root(CLFormatConfig)
-  indirect case frame(String, Context)
+/// A `Context` value represents a formatting context, i.e. a linked list of
+/// `History` values and a format configuration.
+///
+public struct Context {
   
-  public var current: String {
-    switch self {
-      case .root(_):
-        return ""
-      case .frame(let str, let context):
-        return context.current + str
+  public enum History {
+    case root
+    indirect case frame(String, History)
+    
+    public var string: String {
+      switch self {
+        case .root:
+          return ""
+        case .frame(let str, let history):
+          return history.string + str
+      }
     }
   }
   
-  public var config: CLFormatConfig {
-    switch self {
-      case .root(let config):
-        return config
-      case .frame(_, let context):
-        return context.config
-    }
+  let config: CLFormatConfig
+  let output: History
+  
+  init(config: CLFormatConfig, output: History = .root) {
+    self.config = config
+    self.output = output
+  }
+  
+  public func reconfig(_ config: CLFormatConfig) -> Context {
+    return Context(config: config, output: self.output)
+  }
+  
+  public func drop(_ str: String) -> Context {
+    return Context(config: self.config, output: .frame(str, self.output))
+  }
+  
+  public var current: String {
+    return self.output.string
   }
 }
