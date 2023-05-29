@@ -155,10 +155,10 @@ public struct Context {
     }
   }
   
-  let config: CLFormatConfig
-  let output: History
+  public let config: CLFormatConfig
+  public let output: History
   
-  init(config: CLFormatConfig, output: History = .root) {
+  public init(config: CLFormatConfig, output: History = .root) {
     self.config = config
     self.output = output
   }
