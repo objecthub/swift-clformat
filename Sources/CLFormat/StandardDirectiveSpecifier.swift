@@ -441,7 +441,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         if case .some(.number(let num)) = parameters.parameter(4) {
           if num < 0 {
             curchar = Currency(numericCode: -num)?.alphabeticCode
-          } else if let locale = arguments.locale {
+          } else if modifiers.contains(.plus), let locale = arguments.locale {
             curchar = Currency(numericCode: num)?.currencySymbol(in: locale)
           } else {
             curchar = Currency(numericCode: num)?.currencySymbol
