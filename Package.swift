@@ -4,7 +4,7 @@
 //  CLFormat
 //
 //  Created by Matthias Zenger on 15/03/2023.
-//  Copyright © 2023 Matthias Zenger. All rights reserved.
+//  Copyright © 2023-2024 Matthias Zenger. All rights reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -26,7 +26,9 @@ let package = Package(
   
   platforms: [
     .macOS(.v11),
-    .iOS(.v14)
+    .iOS(.v14),
+    .tvOS(.v14),
+    .watchOS(.v7)
   ],
   
   // Products define the executables and libraries produced by a package, and make them visible
@@ -39,7 +41,7 @@ let package = Package(
   // Dependencies declare other packages that this package depends on.
   // e.g. `.package(url: /* package url */, from: "1.0.0"),`
   dependencies: [
-    .package(url: "https://github.com/objecthub/swift-markdownkit.git", from: "1.1.7")
+    .package(url: "https://github.com/objecthub/swift-markdownkit.git", from: "1.1.8")
   ],
   
   // Targets are the basic building blocks of a package. A target can define a module or
