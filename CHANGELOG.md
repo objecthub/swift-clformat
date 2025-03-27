@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1 (2025-03-28)
+- Migrate to Xcode 16
+- Require latest version of MarkdownKit
+
 ## 1.1 (2024-05-12)
 - Force grouping if locale is supposed to be used for decimal directive
 - Use the locale only if the `+` modifier is provided for directive `~$`

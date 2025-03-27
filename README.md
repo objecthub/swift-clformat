@@ -1,6 +1,6 @@
 # Swift CLFormat
 
-[![Platforms: macOS, iOS, Linux](https://img.shields.io/badge/Platforms-macOS,%20iOS,%20Linux-blue.svg?style=flat)](https://developer.apple.com/osx/) [![Language: Swift 5.7](https://img.shields.io/badge/Language-Swift%205.7-green.svg?style=flat)](https://developer.apple.com/swift/) [![IDE: Xcode 14](https://img.shields.io/badge/IDE-Xcode%2014-orange.svg?style=flat)](https://developer.apple.com/xcode/) [![Package managers: SwiftPM, Carthage](https://img.shields.io/badge/Package%20managers-SwiftPM,%20Carthage-8E64B0.svg?style=flat)](https://github.com/Carthage/Carthage) [![License: Apache](http://img.shields.io/badge/License-Apache-lightgrey.svg?style=flat)](https://raw.githubusercontent.com/objecthub/swift-numberkit/master/LICENSE)
+[![Platforms: macOS, iOS, Linux](https://img.shields.io/badge/Platforms-macOS,%20iOS,%20Linux-blue.svg?style=flat)](https://developer.apple.com/osx/) [![Language: Swift 6](https://img.shields.io/badge/Language-Swift%206-green.svg?style=flat)](https://developer.apple.com/swift/) [![IDE: Xcode 16](https://img.shields.io/badge/IDE-Xcode%2014-orange.svg?style=flat)](https://developer.apple.com/xcode/) [![Package managers: SwiftPM, Carthage](https://img.shields.io/badge/Package%20managers-SwiftPM,%20Carthage-8E64B0.svg?style=flat)](https://github.com/Carthage/Carthage) [![License: Apache](http://img.shields.io/badge/License-Apache-lightgrey.svg?style=flat)](https://raw.githubusercontent.com/objecthub/swift-numberkit/master/LICENSE)
 
 This framework implements
 [Common Lisp's `format` procedure](https://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node200.html#SECTION002633000000000000000)
@@ -345,12 +345,12 @@ ARGUMENTS│ [["hot", "dog"], ["hamburger"], ["ice", "cream"]]
 The following technologies are needed to build the _CLFormat_ framework. The library
 and the command-line tool can both be built either using _Xcode_ or the _Swift Package Manager_.
 
-- [Xcode 14](https://developer.apple.com/xcode/)
-- [Swift 5.7](https://developer.apple.com/swift/)
+- [Xcode 16](https://developer.apple.com/xcode/)
+- [Swift 6](https://developer.apple.com/swift/)
 - [Swift Package Manager](https://swift.org/package-manager/)
 - [MarkdownKit](http://github.com/objecthub/swift-markdownkit)
 
 ## Copyright
 
 Author: Matthias Zenger (<matthias@objecthub.com>)  
-Copyright © 2023 Matthias Zenger. All rights reserved.
+Copyright © 2023-2025 Matthias Zenger. All rights reserved.

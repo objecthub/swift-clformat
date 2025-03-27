@@ -41,7 +41,7 @@ let package = Package(
   // Dependencies declare other packages that this package depends on.
   // e.g. `.package(url: /* package url */, from: "1.0.0"),`
   dependencies: [
-    .package(url: "https://github.com/objecthub/swift-markdownkit.git", from: "1.1.8")
+    .package(url: "https://github.com/objecthub/swift-markdownkit.git", from: "1.2.0")
   ],
   
   // Targets are the basic building blocks of a package. A target can define a module or
