@@ -692,7 +692,7 @@
 			repositoryURL = "https://github.com/objecthub/swift-markdownkit";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.8;
+				minimumVersion = 1.4.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

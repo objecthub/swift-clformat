@@ -764,14 +764,14 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
   }
   
   public static func pad(string: String,
-                           left: Bool,
-                           right: Bool,
-                           padchar: Character,
-                           ellipsis: Character,
-                           mincol: Int,
-                           colinc: Int,
-                           minpad: Int,
-                           maxcol: Int?) -> String {
+                         left: Bool,
+                         right: Bool,
+                         padchar: Character,
+                         ellipsis: Character,
+                         mincol: Int,
+                         colinc: Int,
+                         minpad: Int,
+                         maxcol: Int?) -> String {
     var str = string
     let count = string.count
     if let maxcol = maxcol, count > maxcol {
