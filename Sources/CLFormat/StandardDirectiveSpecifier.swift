@@ -3,7 +3,7 @@
 //  CLFormat
 //
 //  Created by Matthias Zenger on 07/03/2023.
-//  Copyright © 2023 Matthias Zenger. All rights reserved.
+//  Copyright © 2023-2026 Matthias Zenger. All rights reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@
 
 import Foundation
 import MarkdownKit
+import CommandLineKit
 
 public enum StandardDirectiveSpecifier: DirectiveSpecifier {
   case ascii
@@ -151,7 +152,8 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                                                       mincol: try parameters.number(0) ?? 0,
                                                       colinc: try parameters.number(1) ?? 1,
                                                       minpad: try parameters.number(2) ?? 0,
-                                                      maxcol: try parameters.number(4)))
+                                                      maxcol: try parameters.number(4),
+                                                      displayWidth: arguments.displayWidth))
       case .write:
         let str: String
         if let arg = try arguments.next() {
@@ -173,7 +175,8 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                                                       mincol: try parameters.number(0) ?? 0,
                                                       colinc: try parameters.number(1) ?? 1,
                                                       minpad: try parameters.number(2) ?? 0,
-                                                      maxcol: try parameters.number(4)))
+                                                      maxcol: try parameters.number(4),
+                                                      displayWidth: arguments.displayWidth))
       case .sexpr:
         let str: String
         if let arg = try arguments.next() {
@@ -203,7 +206,8 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                                                       mincol: try parameters.number(0) ?? 0,
                                                       colinc: try parameters.number(1) ?? 1,
                                                       minpad: try parameters.number(2) ?? 0,
-                                                      maxcol: try parameters.number(4)))
+                                                      maxcol: try parameters.number(4),
+                                                      displayWidth: arguments.displayWidth))
       case .decimal:
         return .append(NumberFormat.format(
                          try arguments.nextAsNumber(),
@@ -677,7 +681,11 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
           switch try section.format(with: arguments, in: context) {
             case .append(let str):
               strs.append(str)
-              len += str.count + minpad
+              if arguments.displayWidth {
+                len += str.terminalDisplayWidth + minpad
+              } else {
+                len += str.count + minpad
+              }
             case .continue(_):
               break loop
             case .break(_):
@@ -705,7 +713,8 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                                                      mincol: width,
                                                      colinc: 1,
                                                      minpad: 0,
-                                                     maxcol: maxcol)
+                                                     maxcol: maxcol,
+                                                     displayWidth: arguments.displayWidth)
         } else if gaps == 0 {
           justified = String(repeating: padchar, count: width - len) + strs[ignore]
         } else {
@@ -771,17 +780,33 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
                          mincol: Int,
                          colinc: Int,
                          minpad: Int,
-                         maxcol: Int?) -> String {
+                         maxcol: Int?,
+                         displayWidth: Bool = false) -> String {
     var str = string
-    let count = string.count
-    if let maxcol = maxcol, count > maxcol {
-      str.removeLast(count - maxcol)
-      if str.count > 1 {
-        str.removeLast()
+    let count = displayWidth ? string.terminalDisplayWidth : string.count
+    if let mc = maxcol, count > max(mc, 1) {
+      let maxcol = max(mc, 1)
+      if displayWidth {
+        while str.terminalDisplayWidth > maxcol {
+          str.removeLast()
+        }
         str.append(ellipsis)
+        if str.terminalDisplayWidth > maxcol, str.count > 1 {
+          str.removeLast(2)
+          str.append(ellipsis)
+          if str.terminalDisplayWidth < maxcol {
+            str.append(ellipsis)
+          }
+        }
+      } else {
+        str.removeLast(count - maxcol)
+        if str.count > 0 {
+          str.removeLast()
+          str.append(ellipsis)
+        }
       }
     } else if count < mincol || minpad > 0 {
-      var padcount = max(((mincol - str.count - minpad + colinc - 1) / colinc)
+      var padcount = max(((mincol - count - minpad + colinc - 1) / colinc)
                          * colinc + minpad, minpad)
       if let maxcol = maxcol, padcount + count > maxcol {
         padcount = maxcol - count

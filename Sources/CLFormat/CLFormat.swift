@@ -91,11 +91,13 @@ extension String {
               locale: Locale? = nil,
               tabsize: Int = 4,
               linewidth: Int = 80,
+              displayWidth: Bool = false,
               args: Any?...) throws {
     let control = try CLControl(string: control, config: config)
     try self.init(control.format(locale: locale,
                                  tabsize: tabsize,
                                  linewidth: linewidth,
+                                 displayWidth: displayWidth,
                                  args: args))
   }
   
@@ -104,11 +106,13 @@ extension String {
               locale: Locale? = nil,
               tabsize: Int = 4,
               linewidth: Int = 80,
+              displayWidth: Bool = false,
               arguments: [Any?]) throws {
     let control = try CLControl(string: control, config: config)
     try self.init(control.format(locale: locale,
                                  tabsize: tabsize,
                                  linewidth: linewidth,
+                                 displayWidth: displayWidth,
                                  args: arguments))
   }
   
@@ -133,11 +137,13 @@ public func clformat(_ control: String,
                      locale: Locale? = nil,
                      tabsize: Int = 4,
                      linewidth: Int = 80,
+                     displayWidth: Bool = false,
                      args: Any?...) throws -> String {
   let control = try CLControl(string: control, config: config)
   return try control.format(locale: locale,
                             tabsize: tabsize,
                             linewidth: linewidth,
+                            displayWidth: displayWidth,
                             args: args)
 }
 
@@ -146,11 +152,13 @@ public func clformat(_ control: String,
                      locale: Locale? = nil,
                      tabsize: Int = 4,
                      linewidth: Int = 80,
+                     displayWidth: Bool = false,
                      arguments: [Any?]) throws -> String {
   let control = try CLControl(string: control, config: config)
   return try control.format(locale: locale,
                             tabsize: tabsize,
                             linewidth: linewidth,
+                            displayWidth: displayWidth,
                             args: arguments)
 }
 
@@ -159,6 +167,7 @@ public func clprintf(_ control: String,
                      locale: Locale? = nil,
                      tabsize: Int = 4,
                      linewidth: Int = 80,
+                     displayWidth: Bool = false,
                      args: Any?...,
                      terminator: String = "\n") throws {
   print(try clformat(control,
@@ -166,6 +175,7 @@ public func clprintf(_ control: String,
                      locale: locale,
                      tabsize: tabsize,
                      linewidth: linewidth,
+                     displayWidth: displayWidth,
                      arguments: args),
         terminator: terminator)
 }
@@ -175,6 +185,7 @@ public func clprintf(_ control: String,
                      locale: Locale? = nil,
                      tabsize: Int = 4,
                      linewidth: Int = 80,
+                     displayWidth: Bool = false,
                      arguments: [Any?],
                      terminator: String = "\n") throws {
   print(try clformat(control,
@@ -182,6 +193,7 @@ public func clprintf(_ control: String,
                      locale: locale,
                      tabsize: tabsize,
                      linewidth: linewidth,
+                     displayWidth: displayWidth,
                      arguments: arguments),
         terminator: terminator)
 }

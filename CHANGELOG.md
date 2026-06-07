@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2 (2026-06-07)
+
+- Support a new boolean `displayWidth` parameter (for all `clformat`-related functions) which uses the terminal width of characters to implement justification and padding-related directives (vs. the number of characters). This makes it possible to align output containing emojies.
+- Migrate to Xcode 26
+- Now dependent also on `swift-commandlinekit` 
+
 ## 1.1.1 (2025-03-28)
 - Migrate to Xcode 16
 - Require latest version of MarkdownKit

@@ -77,10 +77,12 @@ public struct CLControl: CustomStringConvertible {
   public func format(locale: Locale? = nil,
                      tabsize: Int = 4,
                      linewidth: Int = 80,
+                     displayWidth: Bool = false,
                      args: Any?...) throws -> String {
     return try self.format(with: self.config.makeArguments(locale: locale,
                                                            tabsize: tabsize,
                                                            linewidth: linewidth,
+                                                           displayWidth: displayWidth,
                                                            args: args),
                            in: Context(config: self.config)).string
   }
@@ -90,10 +92,12 @@ public struct CLControl: CustomStringConvertible {
   public func format(locale: Locale? = nil,
                      tabsize: Int = 4,
                      linewidth: Int = 80,
+                     displayWidth: Bool = false,
                      arguments: [Any?]) throws -> String {
     return try self.format(with: self.config.makeArguments(locale: locale,
                                                            tabsize: tabsize,
                                                            linewidth: linewidth,
+                                                           displayWidth: displayWidth,
                                                            args: arguments),
                            in: Context(config: self.config)).string
   }

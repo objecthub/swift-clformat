@@ -24,6 +24,7 @@ import XCTest
 final class CLFormatTests: XCTestCase {
   
   func testAscii() throws {
+    XCTAssertEqual(try clformat("|~1,1,0A|", args: 7), "|7|")
     XCTAssertEqual(try clformat("|~1,2,1A|", args: 7), "|7 |")
     XCTAssertEqual(try clformat("|~2,2,1A|", args: 7), "|7 |")
     XCTAssertEqual(try clformat("|~3,2,1A|", args: 7), "|7   |")
@@ -32,6 +33,42 @@ final class CLFormatTests: XCTestCase {
     XCTAssertEqual(try clformat("|~3,2,1@A|", args: 17), "| 17|")
     XCTAssertEqual(try clformat("|~4,2,1@A|", args: 17), "|   17|")
     XCTAssertEqual(try clformat("~33,,,'0A", args: 27), "270000000000000000000000000000000")
+  }
+  
+  func testAsciiDisplayWidth() throws {
+    XCTAssertEqual(try clformat("|~1,1,0,,1A|", displayWidth: true, args: "✅"), "|…|")
+    XCTAssertEqual(try clformat("|~2,1,0A|", displayWidth: true, args: "7"), "|7 |")
+    XCTAssertEqual(try clformat("|~2,1,0A|", displayWidth: true, args: "✅"), "|✅|")
+    XCTAssertEqual(try clformat("|~3,1,0A|", displayWidth: true, args: "7"), "|7  |")
+    XCTAssertEqual(try clformat("|~3,1,0A|", displayWidth: true, args: "✅"), "|✅ |")
+    XCTAssertEqual(try clformat("|~1,1,0,,1A|", displayWidth: false, args: "777"), "|…|")
+    XCTAssertEqual(try clformat("|~1,1,0,,1A|", displayWidth: false, args: "✅✅"), "|…|")
+    XCTAssertEqual(try clformat("|~2,1,0,,2A|", displayWidth: true, args: "777"), "|7…|")
+    XCTAssertEqual(try clformat("|~2,1,0,,2A|", displayWidth: true, args: "✅✅"), "|……|")
+    XCTAssertEqual(try clformat("|~3,1,0,,3A|", displayWidth: true, args: "777"), "|777|")
+    XCTAssertEqual(try clformat("|~3,1,0,,3A|", displayWidth: true, args: "✅✅"), "|✅…|")
+    XCTAssertEqual(try clformat("|~4,1,0,,4A|", displayWidth: true, args: "777"), "|777 |")
+    XCTAssertEqual(try clformat("|~4,1,0,,4A|", displayWidth: true, args: "✅✅"), "|✅✅|")
+    XCTAssertEqual(try clformat("|~5,1,0,,5A|", displayWidth: true, args: "777"), "|777  |")
+    XCTAssertEqual(try clformat("|~5,1,0,,5A|", displayWidth: true, args: "✅✅"), "|✅✅ |")
+  }
+  
+  func testAsciiRegular() throws {
+    XCTAssertEqual(try clformat("|~1,1,0,,1A|", displayWidth: false, args: "✅"), "|✅|")
+    XCTAssertEqual(try clformat("|~2,1,0A|", displayWidth: false, args: "7"), "|7 |")
+    XCTAssertEqual(try clformat("|~2,1,0A|", displayWidth: false, args: "✅"), "|✅ |")
+    XCTAssertEqual(try clformat("|~3,1,0A|", displayWidth: false, args: "7"), "|7  |")
+    XCTAssertEqual(try clformat("|~3,1,0A|", displayWidth: false, args: "✅"), "|✅  |")
+    XCTAssertEqual(try clformat("|~1,1,0,,1A|", displayWidth: false, args: "777"), "|…|")
+    XCTAssertEqual(try clformat("|~1,1,0,,1A|", displayWidth: false, args: "✅✅"), "|…|")
+    XCTAssertEqual(try clformat("|~2,1,0,,2A|", displayWidth: false, args: "777"), "|7…|")
+    XCTAssertEqual(try clformat("|~2,1,0,,2A|", displayWidth: false, args: "✅✅"), "|✅✅|")
+    XCTAssertEqual(try clformat("|~3,1,0,,3A|", displayWidth: false, args: "777"), "|777|")
+    XCTAssertEqual(try clformat("|~3,1,0,,3A|", displayWidth: false, args: "✅✅"), "|✅✅ |")
+    XCTAssertEqual(try clformat("|~4,1,0,,4A|", displayWidth: false, args: "777"), "|777 |")
+    XCTAssertEqual(try clformat("|~4,1,0,,4A|", displayWidth: false, args: "✅✅"), "|✅✅  |")
+    XCTAssertEqual(try clformat("|~5,1,0,,5A|", displayWidth: false, args: "777"), "|777  |")
+    XCTAssertEqual(try clformat("|~5,1,0,,5A|", displayWidth: false, args: "✅✅"), "|✅✅   |")
   }
   
   func testSexpr() throws {
@@ -263,6 +300,36 @@ final class CLFormatTests: XCTestCase {
     XCTAssertEqual(try clformat("|~19@<one~;two~;three~>|"), "|one   two   three  |")
     XCTAssertEqual(try clformat("|~19:@<one~;two~;three~>|"), "|  one  two  three  |")
     XCTAssertEqual(try clformat("|~19:@<one~;two~^ four~;three~>|"), "|        one        |")
+  }
+  
+  func testSimpleJustificationDisplayWidth() throws {
+    XCTAssertEqual(try clformat("|~16<foo~>|", displayWidth: true), "|             foo|")
+    XCTAssertEqual(try clformat("|~16:<foo~>|", displayWidth: true), "|             foo|")
+    XCTAssertEqual(try clformat("|~16@<✅1~>|", displayWidth: true), "|✅1             |")
+    XCTAssertEqual(try clformat("|~16:@<✅1~>|", displayWidth: true), "|       ✅1      |")
+    XCTAssertEqual(try clformat("|~16<✅1~;2✅✅~>|", displayWidth: true), "|✅1        2✅✅|")
+    XCTAssertEqual(try clformat("|~16:<✅1~;2✅✅~>|", displayWidth: true), "|    ✅1    2✅✅|")
+    XCTAssertEqual(try clformat("|~16@<✅1~;2✅✅~>|", displayWidth: true), "|✅1    2✅✅    |")
+    XCTAssertEqual(try clformat("|~16:@<✅1~;2✅✅~>|", displayWidth: true), "|   ✅1   2✅✅  |")
+    XCTAssertEqual(try clformat("|~19<✅1~;two~;✅✅~>|", displayWidth: true), "|✅1     two    ✅✅|")
+    XCTAssertEqual(try clformat("|~19:<✅1~;two~;2✅✅~>|", displayWidth: true), "|   ✅1   two  2✅✅|")
+    XCTAssertEqual(try clformat("|~19@<✅1~;two~;2✅✅~>|", displayWidth: true), "|✅1   two   2✅✅  |")
+    XCTAssertEqual(try clformat("|~19:@<✅1~;two~;2✅✅~>|", displayWidth: true), "|  ✅1  two  2✅✅  |")
+    XCTAssertEqual(try clformat("|~19:@<✅1~;two~^ four~;three~>|", displayWidth: true), "|        ✅1        |")
+  }
+  
+  func testSimpleJustificationRegular() throws {
+    XCTAssertEqual(try clformat("|~16@<✅1~>|", displayWidth: false), "|✅1              |")
+    XCTAssertEqual(try clformat("|~16:@<✅1~>|", displayWidth: false), "|       ✅1       |")
+    XCTAssertEqual(try clformat("|~16<✅1~;2✅✅~>|", displayWidth: false), "|✅1           2✅✅|")
+    XCTAssertEqual(try clformat("|~16:<✅1~;2✅✅~>|", displayWidth: false), "|      ✅1     2✅✅|")
+    XCTAssertNotEqual(try clformat("|~16@<✅1~;2✅✅~>|", displayWidth: false), "|✅1    2✅✅    |")
+    XCTAssertNotEqual(try clformat("|~16:@<✅1~;2✅✅~>|", displayWidth: false), "|   ✅1   2✅✅  |")
+    XCTAssertNotEqual(try clformat("|~19<✅1~;two~;✅✅~>|", displayWidth: false), "|✅1     two    ✅✅|")
+    XCTAssertNotEqual(try clformat("|~19:<✅1~;two~;2✅✅~>|", displayWidth: false), "|   ✅1   two  2✅✅|")
+    XCTAssertNotEqual(try clformat("|~19@<✅1~;two~;2✅✅~>|", displayWidth: false), "|✅1   two   2✅✅  |")
+    XCTAssertNotEqual(try clformat("|~19:@<✅1~;two~;2✅✅~>|", displayWidth: false), "|  ✅1  two  2✅✅  |")
+    XCTAssertNotEqual(try clformat("|~19:@<✅1~;two~^ four~;three~>|", displayWidth: false), "|        ✅1        |")
   }
   
   func testMaxcolJustification() throws {

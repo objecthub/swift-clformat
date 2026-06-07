@@ -38,6 +38,9 @@ open class Arguments: CustomStringConvertible {
   /// The maximum length of a line.
   public let linewidth: Int
   
+  /// Should the display width be used for padding vs. the string character count?
+  public let displayWidth: Bool
+  
   /// The arguments used to format a string.
   private let args: [Any?]
   
@@ -56,11 +59,13 @@ open class Arguments: CustomStringConvertible {
   public required init(locale: Locale? = nil,
                        tabsize: Int = 8,
                        linewidth: Int = 80,
+                       displayWidth: Bool = false,
                        args: [Any?],
                        numArgumentsLeft: Int? = nil) {
     self.locale = locale
     self.tabsize = tabsize
     self.linewidth = linewidth
+    self.displayWidth = displayWidth
     self.args = args
     self.index = 0
     self.numArgumentsLeft = numArgumentsLeft

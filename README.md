@@ -41,6 +41,7 @@ func clformat(_ control: String,
               locale: Locale? = nil,
               tabsize: Int = 4,
               linewidth: Int = 80,
+              displayWidth: Bool = false,
               args: Any?...) throws -> String
 ```
 
@@ -52,7 +53,14 @@ parameter gets usually omitted, unless a user wants to define their own control 
 language. `locale` refers to a `Locale` object which is used for executing
 locale-specific directives. `tabsize` defines the maximum number of space characters that
 correspond to a single tab character. `linewidth` specifies the number of characters per
-line (this is used by the justification directive only). Finally, `args` refers to the
+line (this is used by the justification directive only). If `displayWidth` is set to true,
+then the justification, write, and ascii directives will use the terminal display width of
+a string provided as an argument to `clformat` to pad and justify this argument. This makes
+it possible to include characters such as emojies where one character often occupies multiple
+characters when output. Characters provided in directives need to always be of width 1,
+otherwise the output is undefined.
+
+Finally, `args` refers to the
 sequence of arguments provided for inclusion in the formatting procedure. The control
 string determines how these arguments will be injected into the final output that
 function `clformat` returns. Here is an example:
@@ -74,6 +82,7 @@ func clformat(_ control: String,
               locale: Locale? = nil,
               tabsize: Int = 4,
               linewidth: Int = 80,
+              displayWidth: Bool = false,
               arguments: [Any?]) throws -> String
 ```
 
@@ -88,6 +97,7 @@ func clprintf(_ control: String,
               locale: Locale? = nil,
               tabsize: Int = 4,
               linewidth: Int = 80,
+              displayWidth: Bool = false,
               args: Any?...,
               terminator: String = "\n") throws
 func clprintf(_ control: String,
@@ -95,6 +105,7 @@ func clprintf(_ control: String,
               locale: Locale? = nil,
               tabsize: Int = 4,
               linewidth: Int = 80,
+              displayWidth: Bool = false,
               arguments: [Any?],
               terminator: String = "\n") throws
 ```
@@ -120,12 +131,14 @@ extension String {
        locale: Locale? = nil,
        tabsize: Int = 4,
        linewidth: Int = 80,
+       displayWidth: Bool = false,
        args: Any?...) throws
   init(control: String,
        config: CLControlParserConfig? = nil,
        locale: Locale? = nil,
        tabsize: Int = 4,
        linewidth: Int = 80,
+       displayWidth: Bool = false,
        arguments: [Any?]) throws
 }
 ```
@@ -345,12 +358,13 @@ ARGUMENTS│ [["hot", "dog"], ["hamburger"], ["ice", "cream"]]
 The following technologies are needed to build the _CLFormat_ framework. The library
 and the command-line tool can both be built either using _Xcode_ or the _Swift Package Manager_.
 
-- [Xcode 16](https://developer.apple.com/xcode/)
+- [Xcode 26](https://developer.apple.com/xcode/)
 - [Swift 6](https://developer.apple.com/swift/)
 - [Swift Package Manager](https://swift.org/package-manager/)
 - [MarkdownKit](http://github.com/objecthub/swift-markdownkit)
+- [CommandLineKit](http://github.com/objecthub/swift-commandlinekit)
 
 ## Copyright
 
 Author: Matthias Zenger (<matthias@objecthub.com>)  
-Copyright © 2023-2025 Matthias Zenger. All rights reserved.
+Copyright © 2023-2026 Matthias Zenger. All rights reserved.
