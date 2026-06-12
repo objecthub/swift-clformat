@@ -59,7 +59,7 @@ let package = Package(
       name: "CLFormat",
       dependencies: [
         .product(name: "MarkdownKit", package: "swift-markdownkit"),
-        .product(name: "MarkdownKit", package: "swift-commandlinekit")
+        .product(name: "CommandLineKit", package: "swift-commandlinekit")
       ],
       exclude: [
         "CLFormat.h",
