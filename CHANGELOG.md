@@ -1,7 +1,6 @@
 # Changelog
 
-## 1.2 (2026-06-07)
-
+## 1.2 (2026-06-12)
 - Support a new boolean `displayWidth` parameter (for all `clformat`-related functions) which uses the terminal width of characters to implement justification and padding-related directives (vs. the number of characters). This makes it possible to align output containing emojies.
 - Migrate to Xcode 26
 - Now dependent also on `swift-commandlinekit` 
