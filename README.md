@@ -17,8 +17,11 @@ The documentation of this framework includes:
   - The [<tt>clformat</tt> API](#API),
   - A description of the [formatting language](#formatting-language),
   - A comprehensive list of the [supported formatting directives](DIRECTIVES.md),
-  - A short introduction of the [command-line tool](#command-line-tool), and
-  - [Technical requirements](#requirements) for using this framework.
+  - A short introduction of the [command-line tool](#command-line-tool),
+  - [Technical requirements](#requirements) for using this framework, and
+  - The [online documentation](https://objecthub.github.io/swift-clformat/documentation/clformat/)
+    (generated with Swift-DocC), which includes a
+    [directive reference](https://objecthub.github.io/swift-clformat/documentation/clformat/directives/).
 
 Here are a few examples to get a quick impression of the usage of <tt>clformat</tt>:
 
@@ -348,7 +351,8 @@ output is generated: `(one, two, three)`.
 ## Formatting directive reference
 
 The [formatting directives supported by the _CLFormat_ framework](DIRECTIVES.md)
-are based on the directives specified in
+(also available as a [directive reference](https://objecthub.github.io/swift-clformat/documentation/clformat/directives/)
+in the online documentation) are based on the directives specified in
 [Common Lisp the Language, 2nd Edition](https://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node1.html)
 by Guy L. Steele Jr. Some directives have been extended to meet today's formatting requirements
 (e.g. to support localization) and to achieve a natural embedding in Swift. All extensions were

@@ -19,6 +19,7 @@
 //  limitations under the License.
 //
 
+import Foundation
 import PackageDescription
 
 let package = Package(
@@ -84,3 +85,10 @@ let package = Package(
   // Required Swift language mode.
   swiftLanguageModes: [.v5, .v6]
 )
+
+// The Swift-DocC plugin is only needed for generating the documentation (Scripts/generate-docs.sh).
+// It is added conditionally to keep it out of the dependency graph of packages that use CLFormat.
+if ProcessInfo.processInfo.environment["CLFORMAT_GENERATE_DOCS"] != nil {
+  package.dependencies.append(
+    .package(url: "https://github.com/swiftlang/swift-docc-plugin.git", from: "1.4.0"))
+}
