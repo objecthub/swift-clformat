@@ -1,4 +1,4 @@
-// swift-tools-version:5.6
+// swift-tools-version:6.0
 //
 //  Package.swift
 //  CLFormat
@@ -25,10 +25,11 @@ let package = Package(
   name: "CLFormat",
   
   platforms: [
-    .macOS(.v11),
+    .macOS(.v12),
     .iOS(.v15),
     .tvOS(.v15),
-    .watchOS(.v8)
+    .watchOS(.v9),
+    .visionOS(.v1)
   ],
   
   // Products define the executables and libraries produced by a package, and make them visible
@@ -47,8 +48,8 @@ let package = Package(
   // Dependencies declare other packages that this package depends on.
   // e.g. `.package(url: /* package url */, from: "1.0.0"),`
   dependencies: [
-    .package(url: "https://github.com/objecthub/swift-markdownkit.git", from: "1.4.1"),
-    .package(url: "https://github.com/objecthub/swift-commandlinekit.git", from: "1.1.1")
+    .package(url: "https://github.com/objecthub/swift-markdownkit.git", from: "2.0.0"),
+    .package(url: "https://github.com/objecthub/swift-commandlinekit.git", from: "1.1.2")
   ],
   
   // Targets are the basic building blocks of a package. A target can define a module or
@@ -62,8 +63,7 @@ let package = Package(
         .product(name: "CommandLineKit", package: "swift-commandlinekit")
       ],
       exclude: [
-        "CLFormat.h",
-        "CLFormat.docc"
+        "CLFormat.h"
       ]
     ),
     .executableTarget(
@@ -81,6 +81,6 @@ let package = Package(
     ),
   ],
   
-  // Required Swift language version.
-  swiftLanguageVersions: [.v5]
+  // Required Swift language mode.
+  swiftLanguageModes: [.v5]
 )

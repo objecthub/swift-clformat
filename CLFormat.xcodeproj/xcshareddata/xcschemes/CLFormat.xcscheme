@@ -8,9 +8,9 @@
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
-            buildForRunning = "NO"
+            buildForRunning = "YES"
             buildForProfiling = "YES"
-            buildForArchiving = "NO"
+            buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
@@ -31,20 +31,6 @@
                BlueprintIdentifier = "CCB5F0FA29C1455B00587140"
                BuildableName = "CLFormatTests.xctest"
                BlueprintName = "CLFormatTests"
-               ReferencedContainer = "container:CLFormat.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "NO"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CCB5F11829C148A400587140"
-               BuildableName = "CLFormatTool"
-               BlueprintName = "CLFormatTool"
                ReferencedContainer = "container:CLFormat.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

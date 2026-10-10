@@ -636,12 +636,22 @@ public struct Currency: Hashable, Codable, CustomStringConvertible {
                     currencySymbol: Currency.currencySymbol(from: alpha))
   }
   
+  /// Returns the ISO 4217 code of the currency used by the given locale. `Locale.currencyCode`
+  /// is deprecated as of macOS 13/iOS 16, but it is the only option on earlier releases.
+  private static func currencyCode(of locale: Locale) -> String? {
+    if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
+      return locale.currency?.identifier
+    } else {
+      return locale.currencyCode
+    }
+  }
+
   private static func currencySymbol(from code: String) -> String? {
     var res: String? = nil
     let locales = NSLocale.availableLocaleIdentifiers
     for localeid in locales {
       let locale = Locale(identifier: localeid as String)
-      if let currencyCode = locale.currencyCode,
+      if let currencyCode = Currency.currencyCode(of: locale),
          currencyCode == code,
          let currencySymbol = locale.currencySymbol {
         let count = currencySymbol.count
