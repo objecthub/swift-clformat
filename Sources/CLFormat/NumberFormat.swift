@@ -126,6 +126,9 @@ public struct NumberFormat {
     let eDigits = max(exponentDigits ?? 0,
                       Int(exponent == 0 ? 0.0 : floor(log10(abs(exponent)))) + 1)
     let sDigits = forcesign || number.asDouble < 0.0 ? 1 : 0
+    // Number of zeros printed after the decimal point (only for non-positive scale factors).
+    // They are inserted after the number has been formatted and shift the exponent accordingly.
+    var exponentShift = 0
     if scaleFactor > 0 {
       let fDigits = fractionDigits ?? (scaleFactor - 1)
       let intDigits = min(fDigits + 1, scaleFactor)
@@ -153,8 +156,8 @@ public struct NumberFormat {
       }
       formatter.minimumIntegerDigits = 0
       formatter.maximumIntegerDigits = 0
-      formatter.multiplier = NSNumber(value: pow(10.0, Double(intDigits)))
-      formatter.decimalSeparator = "." + String(repeating: "0", count: intDigits)
+      formatter.decimalSeparator = "."
+      exponentShift = intDigits
       if forcesign {
         formatter.negativePrefix = formatter.minusSign + "0"
         formatter.positivePrefix = formatter.plusSign + "0"
@@ -174,6 +177,22 @@ public struct NumberFormat {
     }
     formatter.usesGroupingSeparator = usegroup
     var str = formatter.string(from: number.nsnumber) ?? number.description
+    if exponentShift > 0 {
+      // The zeros are not part of the formatter's decimal separator, because that is limited in
+      // length. Scaling the number via `formatter.multiplier` is not an option either, since it
+      // overflows for large integers and large shifts. Hence, the zeros are inserted into the
+      // formatted mantissa and the exponent is adjusted.
+      var parts = str.split(separator: "|", maxSplits: 1, omittingEmptySubsequences: true)
+                     .map(String.init)
+      if let range = parts[0].range(of: formatter.decimalSeparator) {
+        parts[0].insert(contentsOf: String(repeating: "0", count: exponentShift),
+                        at: range.upperBound)
+      }
+      if parts.count == 2, !number.asDouble.isZero, let exp = Int(parts[1]) {
+        parts[1] = String(exp + exponentShift)
+      }
+      str = parts.joined(separator: "|")
+    }
     let comp = str.split(separator: "|", maxSplits: 1, omittingEmptySubsequences: true)
     if let exponentDigits = exponentDigits {
       if comp.count == 2, let exp = Int(comp[1]) {

@@ -146,6 +146,39 @@ final class CLFormatRobustnessTests: XCTestCase {
     XCTAssertEqual(try clformat("~,,0G", args: 3.14e100), "3.14E+100")
   }
 
+  func testNegativeScaleFactorWithIntegers() throws {
+    // The formatter used to scale numbers by 10^k via a multiplier; for integers this
+    // overflowed (Int64) and printed the digits of Int.max instead of the argument.
+    XCTAssertEqual(try clformat("~,,,-20E", args: 7), "0.000000000000000000007E+21")
+    XCTAssertEqual(try clformat("~,,,-10E", args: 123456789012), "0.0000000000123456789012E+22")
+    XCTAssertEqual(try clformat("~,,,-10:@E", args: -7), "-0.00000000007E+11")
+    XCTAssertEqual(try clformat("~,5,,-3E", args: 1_000_000_000_000_000_000), "0.00010E+22")
+    // Integers and equivalent doubles yield the same output
+    for value in [7, -7, 255, 12345, 123456789012, 1_000_000_000_000_000_000, 99999] {
+      for control in ["~,,,-1E", "~,,,-3E", "~,5,,-3E", "~,12,,-10E", "~,,2,-17E",
+                      "~,,,-19E", "~,,,-20E", "~,,,-50E", "~15,,,-20E", "~,,,-20G"] {
+        XCTAssertEqual(try clformat(control, args: value),
+                       try clformat(control, args: Double(value)),
+                       "\(control) with \(value)")
+      }
+    }
+  }
+
+  func testLargeNegativeScaleFactors() throws {
+    // Shifting the exponent used to overflow Double (multiplier 10^k) and print infinity
+    for shift in [300, 308, 309, 400, 1000] {
+      XCTAssertEqual(try clformat("~,,,-\(shift)E", args: 7.0),
+                     "0." + String(repeating: "0", count: shift) + "7E+\(shift + 1)")
+      XCTAssertEqual(try clformat("~,,,-\(shift)E", args: 7),
+                     "0." + String(repeating: "0", count: shift) + "7E+\(shift + 1)")
+    }
+    XCTAssertEqual(try clformat("~,500,,-400E", args: 7.5),
+                   "0." + String(repeating: "0", count: 400) + "75" +
+                   String(repeating: "0", count: 98) + "E+401")
+    XCTAssertEqual(try clformat("~,,,-400E", args: 0.0),
+                   "0." + String(repeating: "0", count: 400) + "0E+0")
+  }
+
   func testDegenerateExponentParameters() throws {
     // Zero fraction digits combined with a non-positive scale factor used to crash
     // the formatter (negative repeat count). The exact output is not specified; the
