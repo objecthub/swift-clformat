@@ -36,7 +36,7 @@ in `Package.swift` and make your target depend on the `CLFormat` product:
 
 ```swift
 dependencies: [
-  .package(url: "https://github.com/objecthub/swift-clformat.git", from: "1.3.0")
+  .package(url: "https://github.com/objecthub/swift-clformat.git", from: "1.4.0")
 ],
 targets: [
   .target(name: "MyTarget",

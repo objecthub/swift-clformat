@@ -15,7 +15,8 @@ try clformat("~A is ~D year~:P old.", args: "Vicky", 1)
 ```
 
 Directives start with a tilde (`~`), optionally followed by comma-separated _parameters_ and
-the modifiers `:`, `@`, and `+`, and end with a character that identifies the directive. For
+the modifiers `:`, `@`, and `+`, and end with a character that identifies the directive (see
+<doc:Directives> for a reference of all directives). For
 example, `~,2F` prints a floating-point number with two fractional digits, and `~:D` groups
 the digits of an integer.
 

@@ -82,5 +82,5 @@ let package = Package(
   ],
   
   // Required Swift language mode.
-  swiftLanguageModes: [.v6]
+  swiftLanguageModes: [.v5, .v6]
 )

@@ -22,7 +22,7 @@ introduced in a way to not impact backward compatibility.
      is output:</p>
   <ol>
      <li>If <i>arg</i> implements protocol <tt>CLFormatConvertible</tt> then property
-        <tt>clformatDebugDescription</tt> will be output.</li>
+        <tt>clformatDescription</tt> will be output.</li>
      <li>If <i>arg</i> implements protocol <tt>CustomStringConvertible</tt> then property
          <tt>description</tt> will be output.</li>
      <li>String interpolation is used to turn <i>arg</i> into a string.
@@ -394,7 +394,7 @@ introduced in a way to not impact backward compatibility.
      codes, the shortest currency symbol is being used. For negative currency codes, the
      corresponding alphabetic code (ignoring the sign) is being used. Struct
      <a href="https://github.com/objecthub/swift-clformat/blob/main/Sources/CLFormat/Currency.swift">Currency</a>
-     provides a conventient way to access currency codes.</p>
+     provides a convenient way to access currency codes.</p>
   <p>By specifying the <tt>+</tt> modifier, it is possible to enable locale-specific output
      of the monetary value using the locale provided to function <tt>clformat</tt>. In this
      case, also the currency associated with this locale is being used.</p>
@@ -437,7 +437,7 @@ introduced in a way to not impact backward compatibility.
   <p>FRESHLINE:&nbsp;&nbsp;<b>~<i>n</i>&</b></p>
   <p>Unless it can be determined that the output is already at the beginning of a line,
      this directive outputs a newline if <i>n</i> > 0. This conditional newline is followed
-     by <i>n</i> − 1 newlines, it <i>n</i> > 1. Nothing is output if <i>n</i> = 0.</p>
+     by <i>n</i> − 1 newlines, if <i>n</i> > 1. Nothing is output if <i>n</i> = 0.</p>
   </td>
 </tr>
 <tr valign="top">
@@ -487,6 +487,23 @@ introduced in a way to not impact backward compatibility.
      moves the cursor to a "standard multiple-of-eight tab stop" if not at one already. If the
      current output column cannot be determined, however, then <i>colinc</i> is ignored, and
      exactly <i>colrel</i> spaces are output.</p>
+  </td>
+</tr>
+<tr valign="top">
+  <td><b>~<i>newline</i></b></td>
+  <td>
+  <p>LINE CONTINUATION:&nbsp;&nbsp;<b>~<i>newline</i></b>,&nbsp;&nbsp;<b>~:<i>newline</i></b>,&nbsp;&nbsp;<b>~@<i>newline</i></b></p>
+  <p>This directive consumes the newline character that follows the tilde. It makes it possible to
+     break long control strings over several lines. Without modifiers, the newline and the space
+     characters at the beginning of the next line are ignored, so the continuation line can be
+     indented freely. With the <tt>:</tt> modifier, only the newline is ignored and the spaces of the
+     next line are kept. With the <tt>@</tt> modifier, the newline is kept (as if <tt>~%</tt> had been
+     used), and the spaces of the next line are ignored. The combination <tt>:@</tt> is not
+     supported.</p>
+  <p>&nbsp;&nbsp;<tt>clformat("one~\n&nbsp;&nbsp;&nbsp;two~\n&nbsp;&nbsp;&nbsp;three")</tt> &DoubleLongRightArrow; <tt>onetwothree</tt><br />
+     &nbsp;&nbsp;<tt>clformat("one~:\n&nbsp;&nbsp;&nbsp;two")</tt> &DoubleLongRightArrow; <tt>one&nbsp;&nbsp;&nbsp;two</tt><br />
+     &nbsp;&nbsp;<tt>clformat("one~@\n&nbsp;&nbsp;&nbsp;two")</tt> &DoubleLongRightArrow; <tt>one</tt><br />
+     &nbsp;&nbsp;&nbsp;&nbsp;<tt>two</tt></p>
   </td>
 </tr>
 <tr valign="top">
@@ -550,7 +567,7 @@ introduced in a way to not impact backward compatibility.
        &DoubleLongRightArrow; <tt>Twenty-three errors</tt></p>
   <p>If the <tt>+</tt> modifier is provided together with the <tt>:</tt> modifier,
      all characters corresponding to named XML entities are being converted into
-     names XML entities. If modifier <tt>@</tt> is added, then only those characters
+     named XML entities. If modifier <tt>@</tt> is added, then only those characters
      are converted which conflict with XML syntax. The modifier combination <tt>+@</tt>
      converts the output by stripping off all diacritics. Modifier <tt>+</tt> only will
      escape characters such that the result can be used as a Swift string literal.</p>
@@ -587,7 +604,7 @@ introduced in a way to not impact backward compatibility.
      <i>arg</i> is <tt>nil</tt>, otherwise the <i>some</i> control string is chosen.</p>
   <p><i>Boolean selector:</i>&nbsp; Whenever the directive has the form
      ~+&#91;<i>false</i>~;<i>true</i>~&#93; the <i>false</i> control string is chosen if
-     <i>arg</i> is the boolean value <tt>false</tt>, otherwise the <i>some</i> control
+     <i>arg</i> is the boolean value <tt>false</tt>, otherwise the <i>true</i> control
      string is chosen.</p>
   <p><i>Selector test:</i>&nbsp; Whenever the directive has the form
      ~@&#91;<i>true</i>~&#93;, the next argument <i>arg</i> is tested for being
@@ -620,23 +637,23 @@ introduced in a way to not impact backward compatibility.
      &nbsp;&nbsp;<tt>clformat("Winners: ~{~#[~;~A~:;~A, ~]~}.", args: ["Fred", "Harry", "Jill"])</tt><br />
      &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Winners: Fred, Harry, Jill.</tt><br />
      &nbsp;&nbsp;<tt>clformat("Pairs:~{ &lt;~A,~S&gt;~}.", args: ["A", 1, "B", 2, "C", 3])</tt><br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Pairs: &lt;A, 1&gt; &lt;B, 2&gt; &lt;C, 3&gt;.</tt></p>
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Pairs: &lt;A,1&gt; &lt;B,2&gt; &lt;C,3&gt;.</tt></p>
   <p><tt>~:<i>n,m</i>{<i>str</i>~}</tt> is similar, but the argument should be a list of sublists.
      At each repetition step (capped by <i>n</i>), one sublist is used as the list of arguments
      for processing <i>str</i> with an iteration cap of <i>m</i>. On the next repetition, a new
      sublist is used, whether or not all elements of the last sublist had been processed.<p>
   <p>&nbsp;&nbsp;<tt>clformat("Pairs:~:{ &lt;~A,~S&gt;~}.", args: [["A", 1], ["B", 2], ["C", 3]])</tt><br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Pairs: &lt;A, 1&gt; &lt;B, 2&gt; &lt;C, 3&gt;.</tt></p>
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Pairs: &lt;A,1&gt; &lt;B,2&gt; &lt;C,3&gt;.</tt></p>
   <p><tt>~@{<i>str</i>~}</tt> is similar to <tt>~{<i>str</i>~}</tt>, but instead of using
      one argument that is a sequence, all the remaining arguments are used as the list
      of arguments for the iteration.</p>
   <p>&nbsp;&nbsp;<tt>clformat("Pairs:~@{ &lt;~A,~S&gt;~}.", args: "A", 1, "B", 2, "C", 3)</tt><br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Pairs: &lt;A, 1&gt; &lt;B, 2&gt; &lt;C, 3&gt;.</tt></p>
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Pairs: &lt;A,1&gt; &lt;B,2&gt; &lt;C,3&gt;.</tt></p>
   <p><tt>~:@{<i>str</i>~}</tt> combines the features of <tt>~:{<i>str</i>~}</tt> and
      <tt>~@{<i>str</i>~}</tt>. All the remaining arguments are used, and each one must be a
      sequence. On each iteration, the next argument is used as a list of arguments to <i>str</i>.</p>
   <p>&nbsp;&nbsp;<tt>clformat("Pairs:~:@{ &lt;~A,~S&gt;~}.", args: ["A", 1], ["B", 2], ["C", 3])</tt><br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Pairs: &lt;A, 1&gt; &lt;B, 2&gt; &lt;C, 3&gt;.</tt></p>
+     &nbsp;&nbsp;&nbsp;&nbsp;&DoubleLongRightArrow; <tt>Pairs: &lt;A,1&gt; &lt;B,2&gt; &lt;C,3&gt;.</tt></p>
   <p>Terminating the repetition directive with <tt>~:}</tt> instead of <tt>~}</tt> forces
      <i>str</i> to be processed at least once, even if the initial sequence is empty. However,
      it will not override an explicit prefix parameter of zero. If <i>str</i> is empty, then an

@@ -22,14 +22,14 @@ The framework is thread-safe: parsed controls (``CLControl``), format configurat
 control strings or unusual arguments; it throws a ``CLControlError`` or a ``CLFormatError``
 instead.
 
-The complete list of supported directives is documented in the
-[directive reference](https://github.com/objecthub/swift-clformat/blob/main/DIRECTIVES.md).
+The complete list of supported directives is documented in the <doc:Directives>.
 
 ## Topics
 
 ### Essentials
 
 - <doc:GettingStarted>
+- <doc:Directives>
 - ``clformat(_:config:locale:tabsize:linewidth:displayWidth:args:)``
 - ``clformat(_:config:locale:tabsize:linewidth:displayWidth:arguments:)``
 - ``clprintf(_:config:locale:tabsize:linewidth:displayWidth:args:terminator:)``
