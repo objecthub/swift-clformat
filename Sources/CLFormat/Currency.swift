@@ -83,7 +83,10 @@ public struct Currency: Hashable, Codable, CustomStringConvertible {
   
   /// Create a currency value based on a numeric currency code.
   public init?(numericCode: Int) {
-    self.init(numericCode: UInt16(numericCode))
+    guard let code = UInt16(exactly: numericCode) else {
+      return nil
+    }
+    self.init(numericCode: code)
   }
   
   /// Return a localized currency symbol for this currency in the given locale.

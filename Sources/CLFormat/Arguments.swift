@@ -216,6 +216,9 @@ open class Arguments: CustomStringConvertible {
   public func nextAsParameter() throws -> Parameter {
     if let arg = try self.next() {
       if let param = self.coerceToParameter(arg) {
+        if case .number(let num) = param, num.magnitude > UInt(Parameters.maxNumber) {
+          throw CLFormatError.cannotUseArgumentAsParameter(self.index - 1, arg)
+        }
         return param
       } else {
         throw CLFormatError.cannotUseArgumentAsParameter(self.index - 1, arg)

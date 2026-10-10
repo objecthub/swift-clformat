@@ -92,7 +92,7 @@ public class CLControlParser {
                 numstr.append(ch)
                 ch = try self.nextChar()
               }
-              if let num = Int(numstr, radix: 10) {
+              if let num = Int(numstr, radix: 10), num.magnitude <= UInt(Parameters.maxNumber) {
                 params.append(.number(num))
               } else {
                 throw CLControlError.malformedNumericParameter(numstr)

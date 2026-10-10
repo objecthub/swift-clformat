@@ -60,8 +60,15 @@ public enum Parameter: Equatable, CustomStringConvertible {
 /// Struct `Parameters` represents a sequence of parameters.
 /// 
 public struct Parameters: Equatable, CustomStringConvertible {
+
+  /// The largest absolute value allowed for a numeric parameter. Parameters denote widths,
+  /// counts, columns, positions, and similar quantities. Larger values are not useful, but
+  /// they can lead to arithmetic overflows or exhaust memory. The control parser and `~V`
+  /// parameters taken from arguments reject numbers beyond this limit.
+  public static let maxNumber = 1_000_000
+
   private let params: [Parameter]
-  
+
   /// Constructor.
   public init(_ params: [Parameter] = []) {
     self.params = params

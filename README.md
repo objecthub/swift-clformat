@@ -178,6 +178,8 @@ characters that are copied verbatim into the output as well as
 tilde (`~`) and end with a single character identifying the type of the directive.
 Directives may take prefix _parameters_ written immediately after the tilde
 character, separated by comma. Both integers and characters are allowed as parameters.
+Integer parameters are limited to the range from -1,000,000 to 1,000,000 (see
+`Parameters.maxNumber`); larger numbers are rejected with an error.
 They may be followed by formatting _modifiers_ `:`, `@`, and `+`. This is the general
 format of a formatting directive:
 

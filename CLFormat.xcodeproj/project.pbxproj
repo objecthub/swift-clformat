@@ -15,6 +15,7 @@
 		CCB5F0F629C1455B00587140 /* CLFormat.docc in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0F529C1455B00587140 /* CLFormat.docc */; };
 		CCB5F0FC29C1455B00587140 /* CLFormat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB5F0F229C1455B00587140 /* CLFormat.framework */; };
 		CCB5F10129C1455B00587140 /* CLFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F10029C1455B00587140 /* CLFormatTests.swift */; };
+		CCE5A1012FD9A00100D85F2A /* CLFormatRobustnessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE5A1022FD9A00100D85F2A /* CLFormatRobustnessTests.swift */; };
 		CCB5F10229C1455B00587140 /* CLFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = CCB5F0F429C1455B00587140 /* CLFormat.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CCB5F10929C1475F00587140 /* NumberFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0D429C114F600587140 /* NumberFormat.swift */; };
 		CCB5F10A29C1475F00587140 /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F0DA29C1156400587140 /* Modifiers.swift */; };
@@ -85,6 +86,7 @@
 		CCB5F0F529C1455B00587140 /* CLFormat.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = CLFormat.docc; sourceTree = "<group>"; };
 		CCB5F0FB29C1455B00587140 /* CLFormatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CLFormatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCB5F10029C1455B00587140 /* CLFormatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLFormatTests.swift; sourceTree = "<group>"; };
+		CCE5A1022FD9A00100D85F2A /* CLFormatRobustnessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLFormatRobustnessTests.swift; sourceTree = "<group>"; };
 		CCB5F11929C148A400587140 /* CLFormatTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CLFormatTool; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCB5F11B29C148A400587140 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		CCB5F12229C7974B00587140 /* CLFormatConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLFormatConfig.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				CCB5F10029C1455B00587140 /* CLFormatTests.swift */,
+				CCE5A1022FD9A00100D85F2A /* CLFormatRobustnessTests.swift */,
 			);
 			name = CLFormatTests;
 			path = Tests/CLFormatTests;
@@ -349,6 +352,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CCB5F10129C1455B00587140 /* CLFormatTests.swift in Sources */,
+				CCE5A1012FD9A00100D85F2A /* CLFormatRobustnessTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

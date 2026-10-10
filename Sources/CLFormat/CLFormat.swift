@@ -121,7 +121,7 @@ extension String {
     var i = index == nil ? self.startIndex : self.index(after: index!)
     var col = 0
     while i < self.endIndex {
-      if self[i] == "\t" {
+      if self[i] == "\t" && tabsize > 0 {
         col += tabsize - (col % tabsize)
       } else {
         col += 1

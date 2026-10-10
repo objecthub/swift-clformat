@@ -103,6 +103,21 @@ public struct NumberFormat {
                             usegroup: Bool,
                             uselocale: Bool,
                             forcesign: Bool) -> String {
+    // Infinity and NaN have no exponent; render them like in the fixed-point style.
+    guard number.asDouble.isFinite else {
+      return NumberFormat.format(number,
+                                 width: width,
+                                 padchar: padchar,
+                                 overflowchar: overflowchar,
+                                 fractionDigits: nil,
+                                 exp: 0,
+                                 groupsep: nil,
+                                 groupsize: nil,
+                                 locale: locale,
+                                 usegroup: usegroup,
+                                 uselocale: uselocale,
+                                 forcesign: forcesign)
+    }
     let formatter = NumberFormatter()
     formatter.numberStyle = .scientific
     formatter.usesSignificantDigits = false
@@ -128,7 +143,7 @@ public struct NumberFormat {
       }
     } else {
       let fDigits = fractionDigits ?? (1 - scaleFactor)
-      let intDigits = -max(1 - fDigits, scaleFactor)
+      let intDigits = max(-max(1 - fDigits, scaleFactor), 0)
       if fractionDigits == nil {
         formatter.minimumFractionDigits = 1
         formatter.maximumFractionDigits = max((width ?? 100) - sDigits - intDigits - eDigits - 4, 1)
@@ -163,7 +178,7 @@ public struct NumberFormat {
     if let exponentDigits = exponentDigits {
       if comp.count == 2, let exp = Int(comp[1]) {
         let padding = String(repeating: "0",
-                             count: exponentDigits - comp[1].count + (exp < 0 ? 1 : 0))
+                             count: max(exponentDigits - comp[1].count + (exp < 0 ? 1 : 0), 0))
         str = "\(comp[0])\(exponentchar ?? "E")\(exp >= 0 ? "+" : "-")\(padding)\(abs(exp))"
       } else if comp.count == 1 {
         let padding = String(repeating: "0", count: exponentDigits)
@@ -204,9 +219,12 @@ public struct NumberFormat {
     } else {
       formatter.minimumFractionDigits = 1
       if let width = width, width > 1, exp >= -100, exp <= 100 {
-        let num = number.asDouble
-        let intDigits = num.isZero ? 1.0 : max(ceil(log10(num * pow(10.0, Double(exp)))), 1.0)
-        formatter.maximumFractionDigits = width - Int(intDigits) - 1
+        // The magnitude determines the number of integer digits. Non-finite numbers
+        // (infinity and NaN) are rendered by the formatter without digits.
+        let magnitude = abs(number.asDouble * pow(10.0, Double(exp)))
+        let intDigits = magnitude.isFinite && magnitude > 0 ? max(Int(ceil(log10(magnitude))), 1)
+                                                            : 1
+        formatter.maximumFractionDigits = width - intDigits - 1
       } else {
         formatter.maximumFractionDigits = (width ?? 100) - 2
       }
@@ -237,7 +255,11 @@ public struct NumberFormat {
       formatter.paddingCharacter = String(padchar)
       formatter.paddingPosition = .beforePrefix
     }
-    let str = formatter.string(from: number.nsnumber) ?? number.description
+    var str = formatter.string(from: number.nsnumber) ?? number.description
+    // The formatter does not pad infinity and NaN to the requested width
+    if let width = width, width > 1, str.count < width, !number.asDouble.isFinite {
+      str = String(repeating: padchar, count: width - str.count) + str
+    }
     if let width = width, width > 1, str.count > width, let overflowchar = overflowchar {
       return String(repeating: overflowchar, count: width)
     }
@@ -287,7 +309,8 @@ public struct NumberFormat {
     }
   }
   
-  /// Format integers using a given radix.
+  /// Format integers using a given radix. Returns `nil` if the radix is not between 2 and 36,
+  /// or if `number` is not an integer and `force` is false.
   public static func format(_ number: Number,
                             radix: Int,
                             mincol: Int,
@@ -298,6 +321,9 @@ public struct NumberFormat {
                             forcesign: Bool,
                             uppercase: Bool,
                             force: Bool) -> String? {
+    guard (2...36).contains(radix) else {
+      return nil
+    }
     var str: String
     var float: Bool = false
     switch number {
@@ -327,7 +353,7 @@ public struct NumberFormat {
           return nil
         }
     }
-    if usegroup && !float {
+    if usegroup && !float && groupsize > 0 {
       var index = str.endIndex
       while index > str.startIndex {
         if let i = str.index(index, offsetBy: -groupsize, limitedBy: str.startIndex) {

@@ -407,6 +407,21 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         let ec = try parameters.character(6) ?? "E"
         let number = try arguments.nextAsNumber()
         let arg = number.asDouble
+        // Infinity and NaN have no exponent; render them like in the fixed-point style.
+        guard arg.isFinite else {
+          return .append(NumberFormat.format(number,
+                                             width: w,
+                                             padchar: pc,
+                                             overflowchar: oc,
+                                             fractionDigits: nil,
+                                             exp: 0,
+                                             groupsep: nil,
+                                             groupsize: nil,
+                                             locale: arguments.locale,
+                                             usegroup: modifiers.contains(.colon),
+                                             uselocale: modifiers.contains(.plus),
+                                             forcesign: modifiers.contains(.at)))
+        }
         let n = arg.isZero ? 0 : Int(floor(log10(abs(arg)))) + 1
         let ee = e == nil ? 4 : e! + 2
         let nd = d == nil ? max("\(arg)".count, min(n, 7)) : d!
@@ -669,7 +684,7 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         return .append(res)
       case .justification(let sections, let spare, let linewidth):
         let mincol = try parameters.number(0) ?? 0
-        let colinc = try parameters.number(1) ?? 1
+        let colinc = max(try parameters.number(1) ?? 1, 1)
         let minpad = try parameters.number(2) ?? 0
         let padchar = try parameters.character(3) ?? " "
         let maxcol = try parameters.number(4)
@@ -806,10 +821,11 @@ public enum StandardDirectiveSpecifier: DirectiveSpecifier {
         }
       }
     } else if count < mincol || minpad > 0 {
+      let colinc = max(colinc, 1)
       var padcount = max(((mincol - count - minpad + colinc - 1) / colinc)
                          * colinc + minpad, minpad)
       if let maxcol = maxcol, padcount + count > maxcol {
-        padcount = maxcol - count
+        padcount = max(maxcol - count, 0)
       }
       if left && right {
         str = String(repeating: padchar, count: padcount - (padcount / 2)) + str +
