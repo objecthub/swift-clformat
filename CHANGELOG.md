@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.3 (2026-10-10)
+- Fix crashes and hangs caused by edge-case control strings and arguments:
+  - `~wF` (width, no fraction digits) crashed for every negative number
+  - `~E`, `~G`, and `~wF` crashed for infinity and NaN; they are now rendered as `+∞`, `-∞`, and `NaN`, padded to the requested width
+  - `~w,d,eE` crashed if the exponent has more digits than requested via `e`
+  - `~E` and `~G` crashed for zero fraction digits combined with a scale factor `k <= 0`
+  - A column increment of 0 (e.g. `~5,0A` and `~5,0<...~>`) caused a division by zero; it is now treated like 1
+  - A maximum column of 0 crashed `~A`, `~S`, and `~W` for one-character strings
+  - `~nR` crashed for radix `n` outside of 2...36; it now throws `CLFormatError.cannotRepresentNumber`
+  - A group size of 0 (e.g. `~,,' ,0:X`) caused an infinite loop; grouping is now skipped
+  - `Currency(numericCode:)` and `~$` crashed for numeric codes outside of the `UInt16` range; they now return `nil` and omit the currency symbol, respectively
+  - A tab size of 0 or less crashed `~T`; tabs now count as a single column
+- Fix `~E` and `~G` for scale factors `k <= 0`: large integers printed the digits of `Int.max` and large shifts printed `∞`
+- Limit numeric directive parameters to the range -1,000,000...1,000,000 (see `Parameters.maxNumber`). Larger values used to overflow or exhaust memory. They are now rejected with `CLControlError.malformedNumericParameter` (control string) or `CLFormatError.cannotUseArgumentAsParameter` (parameter `v`).
+- Raise the minimum platform versions to macOS 12 (was 11) and watchOS 9 (was 8), as required by the Xcode 27 SDKs; iOS 15 and tvOS 15 are unchanged. visionOS 1 is now supported.
+- Require MarkdownKit 2.0 and CommandLineKit 1.1.2; the package now uses `swift-tools-version` 6.0
+- Fix the deprecation warning for `Locale.currencyCode`
+- Make the Xcode project consistent with `Package.swift` (deployment targets); the `CLFormat` scheme now builds for iOS, tvOS, watchOS, and visionOS
+- Migrate to Xcode 27
+- Add regression tests for all fixed crashes and hangs
+
+## 1.2.1 (2026-06-12)
+- Fix the `CommandLineKit` product dependency in `Package.swift`
+
 ## 1.2 (2026-06-12)
 - Support a new boolean `displayWidth` parameter (for all `clformat`-related functions) which uses the terminal width of characters to implement justification and padding-related directives (vs. the number of characters). This makes it possible to align output containing emojies.
 - Migrate to Xcode 26
