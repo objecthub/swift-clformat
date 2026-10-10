@@ -27,7 +27,7 @@ import Foundation
 /// data (e.g. for the composite directives, such as iteration, conditional,
 /// conversation, and justification).
 /// 
-public struct Directive: CustomStringConvertible {
+public struct Directive: Sendable, CustomStringConvertible {
   
   /// The parameters of this directive.
   public let parameters: Parameters
@@ -53,7 +53,7 @@ public struct Directive: CustomStringConvertible {
 }
 
 /// Protocol defining directive specifiers.
-public protocol DirectiveSpecifier: CustomStringConvertible {
+public protocol DirectiveSpecifier: Sendable, CustomStringConvertible {
   
   /// The character identifying a directive type.
   var identifier: Character { get }
@@ -76,7 +76,7 @@ public protocol DirectiveSpecifier: CustomStringConvertible {
 ///   - `break(str)` instructs the formatter to append `str` to the formatted output
 ///     and to skip all remaining iterations (can only be used in the body of an
 ///     iteration directive)
-public enum Instruction: Equatable {
+public enum Instruction: Sendable, Equatable {
   case `append`(String)       // Append the string to the output
   case `continue`(String)     // Stop the current iteration and continue with next
   case `break`(String)        // Exit the iteration

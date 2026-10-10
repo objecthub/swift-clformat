@@ -28,7 +28,13 @@ import Foundation
 /// parsed parameters and modifiers in a new directive specifier value. Composite
 /// directives have more complex parsing logic.
 /// 
-public struct CLFormatConfig {
+/// Format configurations are value types and can be shared between threads. Since they
+/// hold closures (argument factory, directive parsers) and an environment with values of
+/// arbitrary types, the compiler cannot verify this. Hence, `CLFormatConfig` is declared
+/// as `@unchecked Sendable`: argument factories and directive parsers must be thread-safe,
+/// and the values stored in `environment` must not be mutated while they are in use.
+/// 
+public struct CLFormatConfig: @unchecked Sendable {
   private var makeArguments: (Locale?, Int, Int, Bool, [Any?], Int?) -> Arguments
   private var directiveParsers: [Character : DirectiveParser]
   public var nilRepresentation: String
@@ -262,5 +268,43 @@ public struct CLFormatConfig {
   /// The default format configuration for the functions `clformat` and `clprintf`. This
   /// configuation is mutable so that the behavior can be changed globally. Please note
   /// that the `String` initializers do not rely on this mutable config as a default.
-  public static var `default`: CLFormatConfig = CLFormatConfig.standard
+  /// 
+  /// Reading and writing the default configuration is thread-safe. Modifying individual
+  /// properties (e.g. `CLFormatConfig.default.nilRepresentation = "null"`) reads the
+  /// configuration, modifies a copy, and writes it back. This is not atomic: concurrent
+  /// modifications may overwrite each other. It is best to configure the default once at
+  /// startup, before formatting from multiple threads.
+  public static var `default`: CLFormatConfig {
+    get {
+      return CLFormatConfig.defaultStorage.value
+    }
+    set {
+      CLFormatConfig.defaultStorage.value = newValue
+    }
+  }
+  
+  private static let defaultStorage = DefaultStorage(CLFormatConfig.standard)
+  
+  /// Lock-protected storage for the default configuration.
+  private final class DefaultStorage: @unchecked Sendable {
+    private let lock = NSLock()
+    private var config: CLFormatConfig
+    
+    init(_ config: CLFormatConfig) {
+      self.config = config
+    }
+    
+    var value: CLFormatConfig {
+      get {
+        self.lock.lock()
+        defer { self.lock.unlock() }
+        return self.config
+      }
+      set {
+        self.lock.lock()
+        defer { self.lock.unlock() }
+        self.config = newValue
+      }
+    }
+  }
 }

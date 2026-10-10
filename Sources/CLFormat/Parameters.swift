@@ -31,7 +31,7 @@ import Foundation
 ///   - `number(N)`: Represents the integer `N`.
 ///   - `character(C)`: Represents the character `C`.
 /// 
-public enum Parameter: Equatable, CustomStringConvertible {
+public enum Parameter: Equatable, Sendable, CustomStringConvertible {
   case none
   case nextArgument
   case remainingArguments
@@ -59,7 +59,7 @@ public enum Parameter: Equatable, CustomStringConvertible {
 ///
 /// Struct `Parameters` represents a sequence of parameters.
 /// 
-public struct Parameters: Equatable, CustomStringConvertible {
+public struct Parameters: Equatable, Sendable, CustomStringConvertible {
 
   /// The largest absolute value allowed for a numeric parameter. Parameters denote widths,
   /// counts, columns, positions, and similar quantities. Larger values are not useful, but

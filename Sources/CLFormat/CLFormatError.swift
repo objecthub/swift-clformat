@@ -22,7 +22,11 @@ import Foundation
 ///
 /// Enumeration encapsulating all formatting errors for the built-in directives.
 ///
-public enum CLFormatError: LocalizedError, CustomStringConvertible {
+/// Some cases carry arbitrary values (`Any`) for error reporting. They are only used for
+/// producing error messages and are never mutated, which is why this type is declared as
+/// `Sendable` even though the compiler cannot verify this.
+///
+public enum CLFormatError: LocalizedError, @unchecked Sendable, CustomStringConvertible {
   case malformedDirective(String)
   case unsupportedDirective(String)
   case argumentOutOfRange(Int, Int)

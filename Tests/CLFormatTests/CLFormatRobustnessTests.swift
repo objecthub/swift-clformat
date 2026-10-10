@@ -220,4 +220,108 @@ final class CLFormatRobustnessTests: XCTestCase {
     XCTAssertEqual(try clformat("\t~5T", tabsize: 0), "\t    ")
     XCTAssertEqual(try clformat("\t~5T", tabsize: -4), "\t    ")
   }
+  
+  // MARK: - Thread safety
+  
+  /// Collects results from concurrently running closures.
+  private final class Collector: @unchecked Sendable {
+    private let lock = NSLock()
+    private var results: [String] = []
+    
+    func add(_ result: String) {
+      self.lock.lock()
+      self.results.append(result)
+      self.lock.unlock()
+    }
+    
+    var all: [String] {
+      self.lock.lock()
+      defer { self.lock.unlock() }
+      return self.results
+    }
+  }
+  
+  func testDefaultConfigurationIsUsedByClformat() throws {
+    let original = CLFormatConfig.default
+    defer { CLFormatConfig.default = original }
+    XCTAssertEqual(try clformat("~A", arguments: [nil]), "nil")
+    CLFormatConfig.default.nilRepresentation = "null"
+    XCTAssertEqual(try clformat("~A", arguments: [nil]), "null")
+    // An explicit configuration wins over the default; `String` initializers do not use it
+    XCTAssertEqual(try clformat("~A", config: CLFormatConfig.standard, arguments: [nil]), "nil")
+    XCTAssertEqual(try String(control: "~A", arguments: [nil]), "nil")
+    XCTAssertEqual(CLFormatConfig.standard.nilRepresentation, "nil")
+  }
+  
+  func testDefaultConfigurationIsThreadSafe() throws {
+    // The default configuration used to be an unsynchronized global variable, which
+    // is a data race (reported by the thread sanitizer) when changed during formatting.
+    let original = CLFormatConfig.default
+    defer { CLFormatConfig.default = original }
+    var alpha = CLFormatConfig.standard
+    alpha.nilRepresentation = "alpha"
+    var beta = CLFormatConfig.standard
+    beta.nilRepresentation = "beta"
+    let (configA, configB) = (alpha, beta)
+    let collector = Collector()
+    DispatchQueue.concurrentPerform(iterations: 8) { worker in
+      for i in 0..<500 {
+        if worker % 4 == 0 {
+          CLFormatConfig.default = i % 2 == 0 ? configA : configB
+        } else {
+          collector.add((try? clformat("~A", arguments: [nil])) ?? "<error>")
+        }
+      }
+    }
+    let results = collector.all
+    XCTAssertEqual(results.count, 6 * 500)
+    XCTAssertTrue(Set(results).isSubset(of: ["nil", "alpha", "beta"]), "\(Set(results))")
+  }
+  
+  func testSharedControlCanBeUsedFromMultipleThreads() throws {
+    // A parsed control is immutable and can be formatted concurrently from several threads
+    let control = try CLControl(string: "~D file~:P: ~{~A~^, ~}; ~8@A|")
+    let failures = Collector()
+    DispatchQueue.concurrentPerform(iterations: 8) { worker in
+      for i in 0..<300 {
+        let count = (worker * 7 + i) % 5
+        let items = (0..<count).map { "item\(worker)-\($0)" }
+        let tag = "t\(i)"
+        let expected = "\(count) file\(count == 1 ? "" : "s"): " +
+                       items.joined(separator: ", ") + "; " +
+                       String(repeating: " ", count: max(8 - tag.count, 0)) + tag + "|"
+        let actual = (try? control.format(args: count, items, tag)) ?? "<error>"
+        if actual != expected {
+          failures.add("\(actual) != \(expected)")
+        }
+      }
+    }
+    XCTAssertEqual(failures.all, [])
+  }
+  
+  func testPublicTypesAreSendable() throws {
+    // Compile-time check: these types are shared between threads, e.g. as thrown errors,
+    // or as part of parsed controls that are formatted from several threads
+    func requireSendable<T: Sendable>(_ type: T.Type) {}
+    // Configuration
+    requireSendable(CLFormatConfig.self)
+    // Parsed controls and their components
+    requireSendable(CLControl.self)
+    requireSendable(CLControl.Component.self)
+    requireSendable(Directive.self)
+    requireSendable((any DirectiveSpecifier).self)
+    requireSendable(StandardDirectiveSpecifier.self)
+    requireSendable(Parameters.self)
+    requireSendable(Parameter.self)
+    requireSendable(Modifiers.self)
+    // Formatting context and results
+    requireSendable(Context.self)
+    requireSendable(Context.History.self)
+    requireSendable(Instruction.self)
+    // Errors and values
+    requireSendable(CLFormatError.self)
+    requireSendable(CLControlError.self)
+    requireSendable(Currency.self)
+    requireSendable(Number.self)
+  }
 }

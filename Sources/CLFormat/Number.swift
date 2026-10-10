@@ -27,7 +27,7 @@ import Foundation
 /// factory for `NSNumber` instances. Finally, enumeration `Number` implements a few
 /// features needed for `CLFormat`.
 /// 
-public enum Number: Equatable, Codable, CustomStringConvertible {
+public enum Number: Equatable, Codable, Sendable, CustomStringConvertible {
   case int(Int)
   case int16(Int16)
   case int32(Int32)

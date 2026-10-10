@@ -22,7 +22,7 @@ import Foundation
 ///
 /// Enumeration encapsulating all parsing errors for the built-in directive parsers.
 ///
-public enum CLControlError: LocalizedError, CustomStringConvertible {
+public enum CLControlError: LocalizedError, Sendable, CustomStringConvertible {
   case prematureEndOfControl
   case duplicateModifier(String)
   case malformedParameter

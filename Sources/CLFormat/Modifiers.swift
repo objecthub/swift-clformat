@@ -25,7 +25,7 @@ import Foundation
 /// modifiers: `colon`, `at`, and `plus`. `plus` is CLFormat-specific and not
 /// available in the original Common Lisp implementation.
 /// 
-public struct Modifiers: OptionSet, CustomStringConvertible {
+public struct Modifiers: OptionSet, Sendable, CustomStringConvertible {
   public let rawValue: Int
   public static let colon = Modifiers(rawValue: 1 << 0)
   public static let at = Modifiers(rawValue: 1 << 1)

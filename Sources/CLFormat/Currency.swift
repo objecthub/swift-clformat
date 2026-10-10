@@ -33,7 +33,7 @@ import Foundation
 ///   - Shortest currency symbol (e.g. $, €, £, ￥)
 ///   - Minor unit (number of digits to represent the next minor unit, e.g. cents)
 /// 
-public struct Currency: Hashable, Codable, CustomStringConvertible {
+public struct Currency: Hashable, Codable, Sendable, CustomStringConvertible {
   
   /// Name of the currency in English.
   public let name: String

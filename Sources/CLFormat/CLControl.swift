@@ -29,10 +29,10 @@ import Foundation
 /// a sequence of "components". A component is either a text fragment or a
 /// formatting directive.
 /// 
-public struct CLControl: CustomStringConvertible {
+public struct CLControl: Sendable, CustomStringConvertible {
   
   /// Implementation of control components as an enumeration.
-  public enum Component: CustomStringConvertible {
+  public enum Component: Sendable, CustomStringConvertible {
     case text(Substring)
     case directive(Directive)
     
@@ -143,9 +143,9 @@ public struct CLControl: CustomStringConvertible {
 /// A `Context` value represents a formatting context, i.e. a linked list of
 /// `History` values and a format configuration.
 ///
-public struct Context {
+public struct Context: Sendable {
   
-  public enum History {
+  public enum History: Sendable {
     case root
     indirect case frame(String, History)
     
