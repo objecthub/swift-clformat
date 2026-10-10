@@ -1,6 +1,6 @@
 # Swift CLFormat
 
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fobjecthub%2Fswift-clformat%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/objecthub/swift-clformat) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fobjecthub%2Fswift-clformat%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/objecthub/swift-clformat) [![IDE: Xcode 26](https://img.shields.io/badge/IDE-Xcode%2026-blue.svg?style=flat)](https://developer.apple.com/xcode/) [![Package managers: SwiftPM, Carthage](https://img.shields.io/badge/Package%20managers-SwiftPM,%20Carthage-green.svg?style=flat)](https://github.com/Carthage/Carthage) [![License: Apache](http://img.shields.io/badge/License-Apache-lightgrey.svg?style=flat)](https://raw.githubusercontent.com/objecthub/swift-clformat/master/LICENSE)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fobjecthub%2Fswift-clformat%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/objecthub/swift-clformat) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fobjecthub%2Fswift-clformat%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/objecthub/swift-clformat) [![IDE: Xcode 27](https://img.shields.io/badge/IDE-Xcode%2027-blue.svg?style=flat)](https://developer.apple.com/xcode/) [![Package managers: SwiftPM, Carthage](https://img.shields.io/badge/Package%20managers-SwiftPM,%20Carthage-green.svg?style=flat)](https://github.com/Carthage/Carthage) [![License: Apache](http://img.shields.io/badge/License-Apache-lightgrey.svg?style=flat)](https://raw.githubusercontent.com/objecthub/swift-clformat/master/LICENSE)
 
 This framework implements
 [Common Lisp's `format` procedure](https://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node200.html#SECTION002633000000000000000)
@@ -13,6 +13,7 @@ data that includes their own preferred formatting strings.
 
 The documentation of this framework includes:
 
+  - How to [install](#installation) the framework,
   - The [<tt>clformat</tt> API](#API),
   - A description of the [formatting language](#formatting-language),
   - A comprehensive list of the [supported formatting directives](DIRECTIVES.md),
@@ -28,6 +29,33 @@ clformat("~D file~:P ~A. Average latency: ~,2Fms.", args: 1, "stored", 68.1)
 ⇒ "1 file stored. Average latency: 68.10ms."
 ```
 
+## Installation
+
+_CLFormat_ is distributed as a Swift package. To use it in a package, add it as a dependency
+in `Package.swift` and make your target depend on the `CLFormat` product:
+
+```swift
+dependencies: [
+  .package(url: "https://github.com/objecthub/swift-clformat.git", from: "1.3.0")
+],
+targets: [
+  .target(name: "MyTarget",
+          dependencies: [.product(name: "CLFormat", package: "swift-clformat")])
+]
+```
+
+In Xcode, choose _File_ > _Add Package Dependencies..._ and enter the repository URL
+`https://github.com/objecthub/swift-clformat.git`.
+
+Supported platforms are macOS 12, iOS 15, tvOS 15, watchOS 9, and visionOS 1 (or later).
+Building the package requires a Swift 6 toolchain (Xcode 16 or later); the package can be
+used from code compiled in the Swift 5 or the Swift 6 language mode. The package also
+provides the command-line tool `CLFormatTool`, which is described [below](#command-line-tool).
+
+All public value types, including parsed controls (`CLControl`) and format configurations
+(`CLFormatConfig`), are `Sendable`. A `CLControl` value is immutable and can be formatted
+concurrently from multiple threads.
+
 ## API
 
 ### clformat and clprintf
@@ -37,7 +65,7 @@ the following signature:
 
 ```swift
 func clformat(_ control: String,
-              config: CLControlParserConfig? = CLControlParserConfig.default,
+              config: CLFormatConfig? = CLFormatConfig.default,
               locale: Locale? = nil,
               tabsize: Int = 4,
               linewidth: Int = 80,
@@ -72,13 +100,13 @@ try clformat("~A is ~D year~:P old.", args: "Vicky", 1)
 ⇒ "Vicky is 1 year old."
 ```
 
-There is also an [overloaded variant](https://github.com/objecthub/swift-clformat/blob/7b1b0ab894180449101330c867e740463e5e38d5/Sources/CLFormat/CLFormat.swift#L131)
+There is also an [overloaded variant](https://github.com/objecthub/swift-clformat/blob/main/Sources/CLFormat/CLFormat.swift)
 of `clformat` which supports arguments provided as
 an array. It is otherwise equivalent to the first variant.
 
 ```swift
 func clformat(_ control: String,
-              config: CLControlParserConfig? = CLControlParserConfig.default,
+              config: CLFormatConfig? = CLFormatConfig.default,
               locale: Locale? = nil,
               tabsize: Int = 4,
               linewidth: Int = 80,
@@ -86,14 +114,14 @@ func clformat(_ control: String,
               arguments: [Any?]) throws -> String
 ```
 
-Finally, there are is an [overloaded function](https://github.com/objecthub/swift-clformat/blob/7b1b0ab894180449101330c867e740463e5e38d5/Sources/CLFormat/CLFormat.swift#L157)
+Finally, there is an [overloaded function](https://github.com/objecthub/swift-clformat/blob/main/Sources/CLFormat/CLFormat.swift)
 `clprintf` which prints out the formatted
 string directly to the standard output port. Via the `terminator` argument it is possible
 to control whether a newline character is added automatically.
 
 ```swift
 func clprintf(_ control: String,
-              config: CLControlParserConfig? = CLControlParserConfig.default,
+              config: CLFormatConfig? = CLFormatConfig.default,
               locale: Locale? = nil,
               tabsize: Int = 4,
               linewidth: Int = 80,
@@ -101,7 +129,7 @@ func clprintf(_ control: String,
               args: Any?...,
               terminator: String = "\n") throws
 func clprintf(_ control: String,
-              config: CLControlParserConfig? = CLControlParserConfig.default,
+              config: CLFormatConfig? = CLFormatConfig.default,
               locale: Locale? = nil,
               tabsize: Int = 4,
               linewidth: Int = 80,
@@ -111,15 +139,17 @@ func clprintf(_ control: String,
 ```
 
 Note that, by default, both `clformat` and `clprintf` use the formatting directives as
-specified by [`CLControlParserConfig.default`](https://github.com/objecthub/swift-clformat/blob/7b1b0ab894180449101330c867e740463e5e38d5/Sources/CLFormat/CLControlParserConfig.swift#L239).
-This is a mutable parser configuration that
+specified by [`CLFormatConfig.default`](https://github.com/objecthub/swift-clformat/blob/main/Sources/CLFormat/CLFormatConfig.swift).
+This is a mutable format configuration that
 can be used to influence all invocations of `clformat` and `clprintf` which don't provide
-their own parser configuration.
+their own format configuration. Reading and writing `CLFormatConfig.default` is thread-safe.
+Since modifying individual properties of the default configuration is not atomic, it is best
+to configure it once at startup, before formatting from multiple threads.
 
 ### String extensions
 
 Similar to how `printf` is integrated into Swift's `String` API, framework _CLFormat_
-provides two new [`String` initializers](https://github.com/objecthub/swift-clformat/blob/7b1b0ab894180449101330c867e740463e5e38d5/Sources/CLFormat/CLFormat.swift#L87)
+provides two new [`String` initializers](https://github.com/objecthub/swift-clformat/blob/main/Sources/CLFormat/CLFormat.swift)
 which make use of the _CLFormat_ formatting mechanism.
 They can be used interchangably with `clformat` to allow for a more object-oriented style as
 opposed to the procedural nature of `clformat`.
@@ -127,14 +157,14 @@ opposed to the procedural nature of `clformat`.
 ```swift
 extension String {
   init(control: String,
-       config: CLControlParserConfig? = nil,
+       config: CLFormatConfig? = nil,
        locale: Locale? = nil,
        tabsize: Int = 4,
        linewidth: Int = 80,
        displayWidth: Bool = false,
        args: Any?...) throws
   init(control: String,
-       config: CLControlParserConfig? = nil,
+       config: CLFormatConfig? = nil,
        locale: Locale? = nil,
        tabsize: Int = 4,
        linewidth: Int = 80,
@@ -360,7 +390,7 @@ ARGUMENTS│ [["hot", "dog"], ["hamburger"], ["ice", "cream"]]
 The following technologies are needed to build the _CLFormat_ framework. The library
 and the command-line tool can both be built either using _Xcode_ or the _Swift Package Manager_.
 
-- [Xcode 26](https://developer.apple.com/xcode/)
+- [Xcode 27](https://developer.apple.com/xcode/) (or a Swift 6 toolchain with SwiftPM)
 - [Swift 6](https://developer.apple.com/swift/)
 - [Swift Package Manager](https://swift.org/package-manager/)
 - [MarkdownKit](http://github.com/objecthub/swift-markdownkit)

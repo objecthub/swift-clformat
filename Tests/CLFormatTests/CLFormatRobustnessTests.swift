@@ -179,6 +179,17 @@ final class CLFormatRobustnessTests: XCTestCase {
                    "0." + String(repeating: "0", count: 400) + "0E+0")
   }
 
+  func testDecimalNumbersKeepTheirPrecision() throws {
+    // `NSDecimalNumber` arguments used to be converted to `Double`, losing digits
+    let decimal = try XCTUnwrap(Decimal(string: "12345678901234567890.123456789"))
+    let expected = "12345678901234567890.123456789"
+    XCTAssertEqual(try clformat("~,9F", args: decimal), expected)
+    XCTAssertEqual(try clformat("~,9F", args: NSDecimalNumber(decimal: decimal)), expected)
+    XCTAssertEqual(try clformat("~,9F", args: NSDecimalNumber(string: "12345678901234567890.123456789")),
+                   expected)
+    XCTAssertEqual(try clformat("~,2F", args: NSDecimalNumber(string: "0.126")), "0.13")
+  }
+  
   func testDegenerateExponentParameters() throws {
     // Zero fraction digits combined with a non-positive scale factor used to crash
     // the formatter (negative repeat count). The exact output is not specified; the

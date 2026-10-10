@@ -87,6 +87,7 @@ open class Arguments: CustomStringConvertible {
     return Self(locale: self.locale,
                 tabsize: self.tabsize,
                 linewidth: self.linewidth,
+                displayWidth: self.displayWidth,
                 args: args,
                 numArgumentsLeft: numArgumentsLeft)
   }

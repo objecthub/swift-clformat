@@ -60,14 +60,16 @@ public enum Number: Equatable, Codable, Sendable, CustomStringConvertible {
       self = .uint16(num)
     } else if let num = arg as? UInt32 {
       self = .uint32(num)
+    } else if let num = arg as? NSDecimalNumber {
+      // This has to be checked before `Float` and `Double`, since decimal numbers can be
+      // cast to them (losing precision)
+      self = .decimal(num as Decimal)
     } else if let num = arg as? Float {
       self = .float(num)
     } else if let num = arg as? Double {
       self = .double(num)
     } else if let num = arg as? Decimal {
       self = .decimal(num)
-    } else if let num = arg as? NSDecimalNumber {
-      self = .decimal(num as Decimal)
     } else {
       return nil
     }

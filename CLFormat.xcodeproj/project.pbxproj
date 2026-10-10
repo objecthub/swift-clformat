@@ -30,6 +30,10 @@
 		CCB5F11C29C148A400587140 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F11B29C148A400587140 /* main.swift */; };
 		CCB5F12329C7974B00587140 /* CLFormatConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB5F12229C7974B00587140 /* CLFormatConfig.swift */; };
 		CCE5A1012FD9A00100D85F2A /* CLFormatRobustnessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE5A1022FD9A00100D85F2A /* CLFormatRobustnessTests.swift */; };
+		CCE5A161FD9A00100D85F2A /* CLFormatDirectiveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE5A162FD9A00100D85F2A /* CLFormatDirectiveTests.swift */; };
+		CCE5A151FD9A00100D85F2A /* CLFormatAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE5A152FD9A00100D85F2A /* CLFormatAPITests.swift */; };
+		CCE5A141FD9A00100D85F2A /* CurrencyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE5A142FD9A00100D85F2A /* CurrencyTests.swift */; };
+		CCE5A131FD9A00100D85F2A /* CLFormatErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE5A132FD9A00100D85F2A /* CLFormatErrorTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +94,10 @@
 		CCB5F11B29C148A400587140 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		CCB5F12229C7974B00587140 /* CLFormatConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLFormatConfig.swift; sourceTree = "<group>"; };
 		CCE5A1022FD9A00100D85F2A /* CLFormatRobustnessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLFormatRobustnessTests.swift; sourceTree = "<group>"; };
+		CCE5A162FD9A00100D85F2A /* CLFormatDirectiveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLFormatDirectiveTests.swift; sourceTree = "<group>"; };
+		CCE5A152FD9A00100D85F2A /* CLFormatAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLFormatAPITests.swift; sourceTree = "<group>"; };
+		CCE5A142FD9A00100D85F2A /* CurrencyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyTests.swift; sourceTree = "<group>"; };
+		CCE5A132FD9A00100D85F2A /* CLFormatErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLFormatErrorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +183,10 @@
 			children = (
 				CCB5F10029C1455B00587140 /* CLFormatTests.swift */,
 				CCE5A1022FD9A00100D85F2A /* CLFormatRobustnessTests.swift */,
+				CCE5A162FD9A00100D85F2A /* CLFormatDirectiveTests.swift */,
+				CCE5A152FD9A00100D85F2A /* CLFormatAPITests.swift */,
+				CCE5A142FD9A00100D85F2A /* CurrencyTests.swift */,
+				CCE5A132FD9A00100D85F2A /* CLFormatErrorTests.swift */,
 			);
 			name = CLFormatTests;
 			path = Tests/CLFormatTests;
@@ -353,6 +365,10 @@
 			files = (
 				CCB5F10129C1455B00587140 /* CLFormatTests.swift in Sources */,
 				CCE5A1012FD9A00100D85F2A /* CLFormatRobustnessTests.swift in Sources */,
+				CCE5A161FD9A00100D85F2A /* CLFormatDirectiveTests.swift in Sources */,
+				CCE5A151FD9A00100D85F2A /* CLFormatAPITests.swift in Sources */,
+				CCE5A141FD9A00100D85F2A /* CurrencyTests.swift in Sources */,
+				CCE5A131FD9A00100D85F2A /* CLFormatErrorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

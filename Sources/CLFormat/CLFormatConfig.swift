@@ -157,7 +157,7 @@ public struct CLFormatConfig: @unchecked Sendable {
     config.parse(")") { parser, parameters, modifiers in
       guard parameters.parameterCount == 0,
             !modifiers.contains(.at), !modifiers.contains(.colon) else {
-        throw CLControlError.malformedDirective("~\(modifiers))")
+        throw CLControlError.malformedDirective("~\(parameters)\(modifiers))")
       }
       return .exit(parameters, modifiers, StandardDirectiveSpecifier.conversionEnd)
     }
@@ -191,7 +191,7 @@ public struct CLFormatConfig: @unchecked Sendable {
     config.parse("]") { parser, parameters, modifiers in
       guard parameters.parameterCount == 0,
             !modifiers.contains(.at), !modifiers.contains(.colon) else {
-        throw CLControlError.malformedDirective("~\(modifiers)]")
+        throw CLControlError.malformedDirective("~\(parameters)\(modifiers)]")
       }
       return .exit(parameters, modifiers, StandardDirectiveSpecifier.conditionalEnd)
     }
@@ -199,7 +199,7 @@ public struct CLFormatConfig: @unchecked Sendable {
       guard parameters.parameterCount == 0 ||
               (parameters.parameterCount <= 2 && modifiers.contains(.colon)),
             !modifiers.contains(.at) else {
-        throw CLControlError.malformedDirective("~:;")
+        throw CLControlError.malformedDirective("~\(parameters)\(modifiers);")
       }
       parser.i = parser.control.index(after: parser.i)
       return .exit(parameters, modifiers, StandardDirectiveSpecifier.separator)
@@ -219,7 +219,7 @@ public struct CLFormatConfig: @unchecked Sendable {
     }
     config.parse("}") { parser, parameters, modifiers in
       guard parameters.parameterCount == 0, !modifiers.contains(.at) else {
-        throw CLControlError.malformedDirective("~\(modifiers)}")
+        throw CLControlError.malformedDirective("~\(parameters)\(modifiers)}")
       }
       return .exit(parameters, modifiers, StandardDirectiveSpecifier.iterationEnd)
     }
@@ -258,7 +258,7 @@ public struct CLFormatConfig: @unchecked Sendable {
     config.parse(">") { parser, parameters, modifiers in
       guard parameters.parameterCount == 0,
             !modifiers.contains(.at), !modifiers.contains(.colon) else {
-        throw CLControlError.malformedDirective("~\(modifiers)>")
+        throw CLControlError.malformedDirective("~\(parameters)\(modifiers)>")
       }
       return .exit(parameters, modifiers, StandardDirectiveSpecifier.justificationEnd)
     }

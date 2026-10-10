@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.4 (unreleased)
+- Adopt the Swift 6 language mode. All public value types are now `Sendable` (`CLControl`, `Directive`, `Parameters`, `Number`, `Currency`, `Context`, ...), as are the error types and `CLFormatConfig`. A parsed `CLControl` can be formatted concurrently from several threads.
+- `DirectiveSpecifier` now refines `Sendable`. Custom directive specifiers have to be `Sendable`, i.e. they must not have mutable state.
+- Make `CLFormatConfig.default` thread-safe. Changing it while formatting on other threads used to be a data race.
+- Fix `displayWidth` being ignored inside iterations (`~{`, `~:{`, `~@{`) and indirections (`~?`)
+- Fix `NSDecimalNumber` arguments being converted to `Double`, which lost precision
+- Report the parameters of malformed closing directives (e.g. `~1)`) in the error message
+- Add DocC documentation and installation instructions to the README
+- Extend the test suite considerably, in particular for errors, currencies, and less common directives
+
 ## 1.3 (2026-10-10)
 - Fix crashes and hangs caused by edge-case control strings and arguments:
   - `~wF` (width, no fraction digits) crashed for every negative number
